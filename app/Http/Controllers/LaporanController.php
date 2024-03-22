@@ -18,10 +18,37 @@ use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $laporan = Laporan::with('Material','Proses','Tonase','Operator','Stockraw.Material')->orderBy('tanggal','desc')->get();
-        return view('laporan',compact('laporan'));
+        if (!$request->input('search')=="") {
+            $keyword = $request->input('search');
+            $laporan = Laporan::whereHas('Material', function ($query) use ($keyword) {
+                    $query->where('nama_barang', 'like', "$keyword");
+                })
+                ->orWhereHas('Proses', function ($query) use ($keyword) {
+                    $query->where('nama_proses', 'like', "$keyword");
+                })
+                ->orWhereHas('Tonase', function ($query) use ($keyword) {
+                    $query->where('nama_tonase', 'like', "$keyword");
+                })
+                ->orWhereHas('Operator', function ($query) use ($keyword) {
+                    $query->where('nama_operator', 'like', "$keyword");
+                })
+                ->orWhere('jumlah_sheet', 'like', "$keyword")
+                ->orWhere('jam_mulai', 'like', "$keyword")
+                ->orWhere('jam_selesai', 'like', "$keyword")
+                ->orWhere('jumlah_jam', 'like', "$keyword")
+                ->orWhere('jumlah_ok', 'like', "$keyword")
+                ->orWhere('jumlah_ng', 'like', "$keyword")
+                ->orWhere('keterangan', 'like', "$keyword")
+                ->orWhere('tanggal', 'like', "$keyword")
+                ->get();
+            return view('laporan',compact('laporan'));
+        }
+        else{
+            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Stockraw.Material')->orderBy('tanggal','desc')->get();
+            return view('laporan',compact('laporan'));
+    }
     }
 
     public function index2()
@@ -119,7 +146,7 @@ class LaporanController extends Controller
             $sheet=$stockraw->jumlah_sheet;
             
             if ($sheet<$attributes['jumlah_sheet']) {
-                return redirect('/laporan');
+                return redirect('/laporan_add')->with('success','Jumlah sheet melebihi stock yang tersisa');
             }
             else{
                $jumlah=$sheet-$attributes['jumlah_sheet'];
@@ -132,13 +159,20 @@ class LaporanController extends Controller
         }
         else{
             $wip=Wip::where('id_material',$attributes['id_material'])->first();
-            $part=$wip->jumlah_part;
-
-            $jumlah=$part+$attributes['jumlah_ok'];
+            
+            if ($wip) {
+                $part=$wip->jumlah_part;
+                $jumlah=$part+$attributes['jumlah_ok'];
 
                 Wip::where('id_material',$attributes['id_material'])->update([
                 'jumlah_part'    => $jumlah,
-                ]); 
+                ]);
+            }
+            else{
+               return redirect('/laporan_add')->with('success','Material Tersebut Tidak ada di WIP'); 
+            }
+
+             
         }
         
         Laporan::create($attributes);
@@ -206,6 +240,40 @@ class LaporanController extends Controller
         
         $attributes['jumlah_jam']=$selisih;
         
+        if ($attributes['id_proses']==1) {
+
+            $stockraw=Stockraw::where('id_material',$attributes['id_material'])->first();
+            $sheet=$stockraw->jumlah_sheet;
+            
+            if ($sheet<$attributes['jumlah_sheet']) {
+                return redirect('/laporan_add')->with('success','Jumlah sheet melebihi stock yang tersisa');
+            }
+            else{
+               $jumlah=$sheet-$attributes['jumlah_sheet'];
+
+                Stockraw::where('id_material',$attributes['id_material'])->update([
+                'jumlah_sheet'    => $jumlah,
+                ]); 
+            }
+            
+        }
+        else{
+            $wip=Wip::where('id_material',$attributes['id_material'])->first();
+            
+            if ($wip) {
+                $part=$wip->jumlah_part;
+                $jumlah=$part+$attributes['jumlah_ok'];
+
+                Wip::where('id_material',$attributes['id_material'])->update([
+                'jumlah_part'    => $jumlah,
+                ]);
+            }
+            else{
+               return redirect('/laporan_add')->with('success','Material Tersebut Tidak ada di WIP'); 
+            }
+
+             
+        }
         
         Laporan::where('id_laporan_produksi',$id)
         ->update([
