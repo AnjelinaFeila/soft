@@ -8,10 +8,22 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header">
-              <h6>Tabel Laporan Produksi </h6>
-              @if(auth()->user()->position=='admin')
-              <a class="btn btn-success btn-md" href="{{ url('laporan_add') }}"><i class="fa fa-plus"></i></a>
-              @endif
+                <div class="row text-right form-inline">
+                  <h6 class="position-relative float-start col-md-6">Tabel Laporan Produksi </h6>
+                  <div class="row form-inline form-group text-right col-md-6">
+                  <form action="/laporan" method="GET">
+                    <button type="submit" class="btn btn-secondary position-relative float-end mx-auto col-md-1"><i class="fa fa-search"></i></button>
+                    <div class="form-group row col-md-6 position-relative float-end" >
+                      <input class="form-control position-relative" placeholder="Search..." type="text" name="search" >
+                    </div>
+                  </form>
+                  </div>
+                </div>
+                @if(auth()->user()->position=='admin')
+                   <div class="col-md-6">
+                     <a class="btn btn-success btn-sm  position-relative float-start" href="{{ url('laporan_add') }}"><i class="fa fa-plus"></i></a>
+                   </div>
+                  @endif
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">

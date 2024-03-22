@@ -37,5 +37,17 @@ class Stock_rawSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+         DB::table('stock_raw_material')->insert([
+            'no_preorder' => 5,
+            'id_material' => 3,
+            'jumlah_sheet'=> 200,
+            'ukuran'=> '12x10x11',
+            'kg_persheet' => 20,
+            'jumlah_nutt'=>3,
+            'id_supplier'=>2,
+            'id_customer'=>1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
     }
 }

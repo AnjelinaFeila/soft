@@ -23,7 +23,16 @@ class WIPSeeder extends Seeder
             'updated_at' => now()
         ]);
         DB::table('work_in_progress')->insert([
-            'id_material' => 1,
+            'id_material' => 2,
+            'kg_perpart' => 12,
+            'jumlah_part'=>400,
+            'last_produksi'=>now(),
+            'id_proses'=>1,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        DB::table('work_in_progress')->insert([
+            'id_material' => 3,
             'kg_perpart' => 12,
             'jumlah_part'=>400,
             'last_produksi'=>now(),
