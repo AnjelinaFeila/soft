@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tonase;
+use App\Models\Laporan;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,18 @@ class TonaseController extends Controller
     {
         $tonase = Tonase::find($id);
 
-        $tonase->delete();
+        $laporan = Laporan::where('id_tonase', $id)->exists();
 
-        return redirect('/tonase');
+        
+        if ($laporan) {
+            return redirect('/tonase')->with('success','Gagal Menghapus,Tonase Terhubung Dengan Stockraw');
+        }
+        else{
+            $tonase->delete();
+
+            return redirect('/tonase');
+        }
+            
     }
 
     public function show($id)

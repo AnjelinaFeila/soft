@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proses;
+use App\Models\Laporan;
+use App\Models\Wip;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +23,21 @@ class ProsesController extends Controller
     {
         $proses = Proses::find($id);
 
-        $proses->delete();
+        $laporan = Laporan::where('id_proses', $id)->exists();
+        $wip = Wip::where('id_proses', $id)->exists();
 
-        return redirect('/proses');
+        if ($laporan) {
+            return redirect('/proses')->with('success','Gagal Menghapus,Proses Terhubung Dengan Laporan Produksi');
+        }
+        if ($wip) {
+            return redirect('/proses')->with('success','Gagal Menghapus,Proses Terhubung Dengan WIP');
+        }
+        else{
+            $proses->delete();
+            return redirect('/proses');
+        }
+
+            
     }
 
     public function show($id)

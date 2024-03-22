@@ -6,6 +6,14 @@
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12">
+          @if(session('success'))
+              <div class="m-3  alert alert-danger alert-dismissible fade show" id="alert-success" role="alert">
+                  <span class="alert-text text-white">{{ session('success') }}</span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                  </button>
+              </div>
+          @endif
           <div class="card mb-4">
             <div class="card-header">
               <h6>Tabel Material</h6>

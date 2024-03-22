@@ -10,6 +10,7 @@ use App\Models\Wip;
 use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\Delivery;
+use App\Models\Laporan;
 
 class Material extends Model
 {
@@ -23,6 +24,9 @@ class Material extends Model
     }
     public function delivery(){
         return $this->hasOne(Delivery::class,'id_material');
+    }
+    public function laporan(){
+        return $this->hasOne(Laporan::class,'id_material');
     }
     public function customer(){
         return $this->belongsTo(Customer::class,'id_customer');

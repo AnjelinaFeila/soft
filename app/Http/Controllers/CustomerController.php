@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Stockraw;
+use App\Models\Delivery;
+use App\Models\Material;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +24,25 @@ class CustomerController extends Controller
     {
         $customer = Customer::find($id);
 
-        $customer->delete();
+        $stockraw = Stockraw::where('id_customer', $id)->exists();
+        $material = Material::where('id_customer', $id)->exists();
+        $delivery = Delivery::where('id_customer', $id)->exists();
 
-        return redirect('/customer');
+        
+        if ($stockraw) {
+            return redirect('/customer')->with('success','Gagal Menghapus,Customer Terhubung Dengan Stockraw');
+        }
+        if ($material) {
+            return redirect('/customer')->with('success','Gagal Menghapus,Customer Terhubung Dengan Material');
+        }if ($delivery) {
+            return redirect('/customer')->with('success','Gagal Menghapus,Customer Terhubung Dengan Delivery');
+        }
+        else{
+            $customer->delete();
+            return redirect('/customer'); 
+        }
+
+            
     }
 
     public function show($id)

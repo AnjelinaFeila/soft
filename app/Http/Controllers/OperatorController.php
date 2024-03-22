@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Operator;
+use App\Models\Laporan;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,18 @@ class OperatorController extends Controller
     {
         $operator = Operator::find($id);
 
-        $operator->delete();
+        $laporan = Laporan::where('id_operator', $id)->exists();
 
-        return redirect('/operator');
+        if ($laporan) {
+            return redirect('/operator')->with('success','Gagal Menghapus,Operator Terhubung Dengan Laporan Produksi');
+        }
+        else{
+            $operator->delete();
+
+            return redirect('/operator');
+        }
+
+            
     }
 
     public function show($id)

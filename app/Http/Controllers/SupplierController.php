@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\Material;
+use App\Models\Stockraw;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +23,20 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::find($id);
 
-        $supplier->delete();
+        $stockraw = Stockraw::where('id_supplier', $id)->exists();
+        $material = Material::where('id_supplier', $id)->exists();
 
-        return redirect('/supplier');
+        
+        if ($stockraw) {
+            return redirect('/supplier')->with('success','Gagal Menghapus,Supplier Terhubung Dengan Stockraw');
+        }
+        if ($material) {
+            return redirect('/supplier')->with('success','Gagal Menghapus,Supplier Terhubung Dengan Material');
+        }
+        else{
+            $supplier->delete();
+            return redirect('/supplier');
+        }
     }
 
     public function show($id)

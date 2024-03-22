@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use App\Models\Stockraw;
+use App\Models\Wip;
 use App\Models\Customer;
 use App\Models\Supplier;
+use App\Models\Delivery;
+use App\Models\Laporan;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,9 +34,29 @@ class MaterialController extends Controller
     {
         $material = Material::find($id);
 
-        $material->delete();
+        $laporan = Laporan::where('id_material', $id)->exists();
+        $stockraw = Stockraw::where('id_material', $id)->exists();
+        $wip = Wip::where('id_material', $id)->exists();
+        $delivery = Delivery::where('id_material', $id)->exists();
 
-        return redirect('/material');
+        if ($laporan) {
+            return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Laporan Produksi');
+        }
+        if ($stockraw) {
+            return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Stockraw');
+        }
+        if ($wip) {
+            return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan WIP');
+        }
+        if ($delivery) {
+            return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Delivery');
+        }
+        else{
+            $material->delete();
+
+            return redirect('/material');
+        }
+        
     }
 
     public function show($id)
