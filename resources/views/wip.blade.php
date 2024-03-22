@@ -9,6 +9,7 @@
           <div class="card mb-4">
             <div class="card-header">
               <h6>Tabel Work In Progress</h6>
+              <a href="{{ route('export-wip') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">

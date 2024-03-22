@@ -20,6 +20,7 @@ use App\Http\Controllers\UserManageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => 'auth'], function () {
+
+	Route::get('/export-laporan', [ExportController::class, 'exportToExcel1'])->name('export-laporan');
+	Route::get('/export-stockraw', [ExportController::class, 'exportToExcel2'])->name('export-stockraw');
+	Route::get('/export-wip', [ExportController::class, 'exportToExcel3'])->name('export-wip');
 
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
 
