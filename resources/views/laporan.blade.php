@@ -24,7 +24,7 @@
                      <a class="btn btn-success btn-sm  position-relative float-start" href="{{ url('laporan_add') }}"><i class="fa fa-plus"></i></a>
                    </div>
                   @endif
-                   <a href="{{ route('handlaporan') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
+                   <a href="{{ route('export-laporan') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">

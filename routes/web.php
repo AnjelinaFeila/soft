@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/export-laporan', [ExportController::class, 'exportToExcel1'])->name('export-laporan');
 	Route::get('/export-stockraw', [ExportController::class, 'exportToExcel2'])->name('export-stockraw');
-	Route::get('/handlaporan', [ExhandlerController::class, 'Handler1'])->name('handlaporan');
+	Route::get('/export-wip', [ExportController::class, 'exportToExcel3'])->name('export-wip');
 
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
 
