@@ -8,23 +8,7 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header">
-                <div class="row text-right form-inline">
-                  <h6 class="position-relative float-start col-md-6">Tabel Laporan Produksi </h6>
-                  <div class="row form-inline form-group text-right col-md-6">
-                  <form action="/laporan" method="GET">
-                    <button type="submit" class="btn btn-secondary position-relative float-end mx-auto col-md-1"><i class="fa fa-search"></i></button>
-                    <div class="form-group row col-md-6 position-relative float-end" >
-                      <input class="form-control position-relative" placeholder="Search..." type="text" name="search" >
-                    </div>
-                  </form>
-                  </div>
-                </div>
-                @if(auth()->user()->position=='admin')
-                   <div class="col-md-6">
-                     <a class="btn btn-success btn-sm  position-relative float-start" href="{{ url('laporan_add') }}"><i class="fa fa-plus"></i></a>
-                   </div>
-                  @endif
-                   <a href="{{ route('handlaporan') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
+                   <a href="{{ route('export-laporan') }}" class="btn btn-primary btn-sm position-relative float-start mx-auto">Export to Excel</a>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -43,71 +27,51 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah OK</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah NG</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Keterangan</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated At</th>
-                      <th  class="text-secondary opacity-7"></th>
-                      <th rowspan="2" class="text-secondary opacity-7"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($laporan as $lap)
+                    @foreach($data as $dat)
                       <tr>
                         <td>
                           <div class="d-flex px-2 py-1">
                             <div class="d-flex flex-column justify-content-center">
-                              <h6 class="mb-0 text-sm">{{ $lap->tanggal }}</h6>
+                              <h6 class="mb-0 text-sm">{{ $dat->tanggal }}</h6>
                             </div>
                           </div>
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->material->nama_barang }}
+                          {{ $dat->material->nama_barang }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->proses->nama_proses }}
+                          {{ $dat->proses->nama_proses }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->tonase->nama_tonase }}
+                          {{ $dat->tonase->nama_tonase }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->jumlah_sheet }}
+                          {{ $dat->jumlah_sheet }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->operator->nama_operator }}
+                          {{ $dat->operator->nama_operator }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->jam_mulai }}
+                          {{ $dat->jam_mulai }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->jam_selesai }}
+                          {{ $dat->jam_selesai }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->jumlah_jam }}
+                          {{ $dat->jumlah_jam }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->jumlah_ok }}
+                          {{ $dat->jumlah_ok }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->jumlah_ng }}
+                          {{ $dat->jumlah_ng }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->keterangan }}
+                          {{ $dat->keterangan }}
                         </td>
-                        <td class="align-middle text-center text-sm">
-                          {{ $lap->updated_at }}
-                        </td>
-                        @if(auth()->user()->position=='admin')
-                        <td class="align-middle">
-                          <a href="{{route('laporan.showlaporan',$lap->id_laporan_produksi)}}" class="btn btn-warning btn-sm">
-                            <i class="fa fa-pencil"></i>
-                          </a>
-                        </td>
-                        <td class="align-middle">
-                          <form method="post" action="{{route('laporan.destroy',$lap->id_laporan_produksi)}}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                          </form>
-                        </td>
-                        @endif
                       </tr>
                     @endforeach
                   </tbody>

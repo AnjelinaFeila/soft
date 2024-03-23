@@ -17,6 +17,7 @@ use App\Http\Controllers\TonaseController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserManageController;
+use App\Http\Controllers\ExhandlerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/export-laporan', [ExportController::class, 'exportToExcel1'])->name('export-laporan');
 	Route::get('/export-stockraw', [ExportController::class, 'exportToExcel2'])->name('export-stockraw');
-	Route::get('/export-wip', [ExportController::class, 'exportToExcel3'])->name('export-wip');
+	Route::get('/handlaporan', [ExhandlerController::class, 'Handler1'])->name('handlaporan');
 
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
 

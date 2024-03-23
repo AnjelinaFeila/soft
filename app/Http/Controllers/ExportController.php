@@ -21,29 +21,16 @@ class ExportController extends Controller
     {
         $data = Laporan::with('Material','Proses','Tonase','Operator','Stockraw.Material')->orderBy('tanggal','desc')->get();
 
-        $fileName = 'Laporan_produksi.csv';
+         $excelContent = view('exportlaporan', ['data' => $data])->render();
 
-        $headers = array(
-            "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=$fileName",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
-        );
+    // Set headers for Excel download
+    $headers = [
+        'Content-Type' => 'application/vnd.ms-excel',
+        'Content-Disposition' => 'attachment; filename="laporan_produksi.xlsx"',
+    ];
 
-        $handle = fopen('php://output', 'w');
-        fputcsv($handle, array('tanggal', 'nama material', 'proses','tonase','jumlah sheet','operator','jam mulai','jam selesai','jumlah jam','jumlah ok','jumlah ng','keterangan')); 
-
-        
-        foreach ($data as $row) {
-            fputcsv($handle, array($row->tanggal, $row->material->nama_barang, $row->proses->nama_proses,$row->tonase->nama_tonase,$row->jumlah_sheet,$row->operator->nama_operator,$row->jam_mulai,$row->jam_selesai,$row->jumlah_jam,$row->jumlah_ok,$row->jumlah_ng,$row->keterangan)); // Adjust column names as needed
-        }
-
-        fclose($handle);
-
-
-
-        return Response::make('', 200, $headers);
+    // Return Excel content as a download
+    return response($excelContent, 200, $headers);
     }
 
     public function exportToExcel2()
