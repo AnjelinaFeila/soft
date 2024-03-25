@@ -22,7 +22,7 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created at</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated at</th>
                       <th rowspan="2" class="text-secondary opacity-7"></th>
-                      @if(auth()->user()->position=='admin')
+                      @if(auth()->user()->position=='superadmin')
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('add_user') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
                     </tr>
@@ -52,7 +52,7 @@
                         <td class="align-middle text-center text-sm">
                           {{ $us->updated_at }}
                         </td>
-                        @if(auth()->user()->position=='admin')
+                        @if(auth()->user()->position=='superadmin')
                         <td class="align-middle">
                           <a href="{{route('user.showuser',$us->id)}}" class="btn btn-warning btn-sm">
                             <i class="fa fa-pencil"></i>

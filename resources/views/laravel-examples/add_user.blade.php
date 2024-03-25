@@ -60,8 +60,12 @@
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
                                     <select class="form-control" name="position">
                                         <option value="owner"> Owner </option>
-                                        <option value="user"> User </option>
+                                        <option value="superadmin"> SuperAdmin </option>
                                         <option value="admin"> Admin </option>
+                                        <option value="ppic"> PPIC </option>
+                                        <option value="supervisor"> Supervisor </option>
+                                        <option value="leader"> Leader </option>
+                                        <option value="processing"> Processing </option>
                                     </select>
                                 </div>
                             </div>

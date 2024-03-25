@@ -29,7 +29,7 @@
             <span class="nav-link-text ms-1">Profil</span>
         </a>
       </li>
-      @if(auth()->user()->position=='admin' || auth()->user()->position=='user')
+      @if(auth()->user()->position=='superadmin' || auth()->user()->position=='admin' || auth()->user()->position=='owner')
       <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('user-management') ? 'active' : '') }}" href="{{ url('user-management') }}">
             <div class=" icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -85,13 +85,38 @@
           <span class="nav-link-text ms-1">Material</span>
         </a>
       </li>
+      @if(auth()->user()->position=='superadmin' || auth()->user()->position=='admin' || auth()->user()->position=='owner')
+      <li class="nav-item">
+        <a class="nav-link {{ (Request::is('finish') ? 'active' : '') }}" href="{{ url('finish') }}">
+          <div class=" icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <span class="nav-link-text ms-1">Finish Good</span>
+        </a>
+      </li>
       <li class="nav-item mt-2">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Data</h6>
       </li>
       <li class="nav-item">
+        <a class="nav-link {{ (Request::is('target') ? 'active' : '') }} " href="{{ url('target') }}">
+            <div class="icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa fa-crosshairs"></i>
+            </div>
+            <span class="nav-link-text ms-1">Minimal Target</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ (Request::is('notgood') ? 'active' : '') }}" href="{{ url('notgood') }}">
+          <div class=" icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-exclamation-triangle"></i>
+          </div>
+          <span class="nav-link-text ms-1">Not Good</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link {{ (Request::is('operator') ? 'active' : '') }} " href="{{ url('operator') }}">
             <div class="icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="fa fa-user-tie"></i>
+                <i class="fa fa-briefcase"></i>
             </div>
             <span class="nav-link-text ms-1">Operator</span>
         </a>
@@ -128,6 +153,7 @@
             <span class="nav-link-text ms-1">Proses</span>
         </a>
       </li>
+      @endif
     </ul>
   </div>
 </aside>

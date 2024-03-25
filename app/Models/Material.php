@@ -11,6 +11,9 @@ use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\Delivery;
 use App\Models\Laporan;
+use App\Models\Finish;
+use App\Models\Notgood;
+use App\Models\Target;
 
 class Material extends Model
 {
@@ -18,6 +21,15 @@ class Material extends Model
 
     public function stockraw(){
         return $this->hasOne(Stockraw::class,'id_material');
+    }
+    public function finish(){
+        return $this->hasOne(Finish::class,'id_material');
+    }
+    public function notgood(){
+        return $this->hasOne(Notgood::class,'id_material');
+    }
+    public function target(){
+        return $this->hasOne(Target::class,'id_material');
     }
     public function wip(){
         return $this->hasOne(Wip::class,'id_material');
@@ -42,6 +54,7 @@ class Material extends Model
         'nama_barang',
         'kg_persheet',
         'kg_perpart',
+        'jumlah_persheet',
         'ukuran',
         'id_supplier',
         'id_customer',

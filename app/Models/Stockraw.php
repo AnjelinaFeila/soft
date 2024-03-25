@@ -34,7 +34,6 @@ class Stockraw extends Model
         'no_preorder',
         'id_material',
         'jumlah_sheet',
-        'ukuran',
         'kg_persheet',
         'jumlah_nutt',
         'id_supplier',

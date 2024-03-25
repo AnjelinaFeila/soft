@@ -23,7 +23,7 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">QC</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated At</th>
                       <th  class="text-secondary opacity-7"></th>
-                      @if(auth()->user()->position=='admin')
+                      @if(auth()->user()->position!='owner')
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('delivery_add') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
                     </tr>
@@ -52,7 +52,7 @@
                         <td class="align-middle text-center text-sm">
                           {{ $del->updated_at }}
                         </td>
-                        @if(auth()->user()->position=='admin')
+                        @if(auth()->user()->position!='owner')
                           <td class="align-middle">
                           <a href="{{route('delivery.showdelivery',$del->id_delivery)}}" class="btn btn-warning btn-sm">
                             <i class="fa fa-pencil"></i>

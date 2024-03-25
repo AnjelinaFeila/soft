@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Stockraw;
 use App\Models\Wip;
 use App\Models\Material;
+use App\Models\Finish;
 
 class Customer extends Model
 {
@@ -21,6 +22,9 @@ class Customer extends Model
     }
     public function material(){
         return $this->hasOne(Material::class,'id_customer');
+    }
+    public function finish(){
+        return $this->hasOne(Finish::class,'id_customer');
     }
     protected $table='customer';
     protected $primaryKey='id_customer';

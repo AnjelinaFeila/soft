@@ -16,66 +16,54 @@
           @endif
           <div class="card mb-4">
             <div class="card-header">
-              <h6>Tabel Material</h6>
+              <h6>Tabel Finish Good</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Barang</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Kg Persheet</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kg Perpart</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah Persheet</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ukuran</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Supplier</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Customer</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated At</th>
-                      <th  class="text-secondary opacity-7"></th>
-                      @if(auth()->user()->position!='owner')
-                      <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('material_add') }}"><i class="fa fa-plus"></i></a></th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Material</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Jumlah</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Customer</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Qc</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated at</th>
+                      <th rowspan="2" class="text-secondary opacity-7"></th>
+                      @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')
+                      <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('finish_add') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($material as $mat)
+                    @foreach($finish as $fin)
                       <tr>
                         <td>
                           <div class="d-flex px-2 py-1">
                             <div class="d-flex flex-column justify-content-center">
-                              <h6 class="mb-0 text-sm">{{ $mat->nama_barang }}</h6>
+                              <h6 class="mb-0 text-sm">{{ $fin->material->nama_barang }}</h6>
                             </div>
                           </div>
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $mat->kg_persheet }}
+                          {{ $fin->jumlah }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $mat->kg_perpart }}
+                          {{ $fin->customer->nama_customer }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $mat->jumlah_persheet }}
+                          {{ $fin->qc }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $mat->ukuran }}
+                          {{ $fin->updated_at }}
                         </td>
-                        <td class="align-middle text-center text-sm">
-                          {{ $mat->supplier->nama_supplier }}
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          {{ $mat->customer->nama_customer }}
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          {{ $mat->updated_at }}
-                        </td>
-                        @if(auth()->user()->position!='owner')
+                        @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')
                         <td class="align-middle">
-                          <a href="{{route('materials.showmat',$mat->id_material)}}" class="btn btn-warning btn-sm">
+                          <a href="{{route('finish.showfinish',$fin->id_finishgood)}}" class="btn btn-warning btn-sm">
                             <i class="fa fa-pencil"></i>
                           </a>
                         </td>
                         <td class="align-middle">
-                          <form method="post" action="{{route('materials.destroy',$mat->id_material)}}">
+                          <form method="post" action="{{route('finish.destroy',$fin->id_finishgood)}}">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>

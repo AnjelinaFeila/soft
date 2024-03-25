@@ -9,7 +9,9 @@
           <div class="card mb-4">
             <div class="card-header">
               <h6>Tabel Work In Progress</h6>
+              @if(auth()->user()->position!='owner')
               <a href="{{ route('export-wip') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
+              @endif
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -23,7 +25,7 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Proses</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated At</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
-                      @if(auth()->user()->position=='admin')
+                      @if(auth()->user()->position!='owner')
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('wip_add') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
                     </tr>
@@ -53,7 +55,7 @@
                         <td class="align-middle text-center text-sm">
                           {{ $wip->updated_at }}
                         </td>
-                        @if(auth()->user()->position=='admin')
+                        @if(auth()->user()->position!='owner')
                         <td class="align-middle">
                           <a href="{{route('wip.showwip',$wip->id_wip)}}" class="btn btn-warning btn-sm">
                             <i class="fa fa-pencil"></i>

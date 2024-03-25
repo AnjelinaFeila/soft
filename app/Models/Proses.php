@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Laporan_produksi;
 use App\Models\Wip;
+use App\Models\Notgood;
 
 class Proses extends Model
 {
@@ -17,6 +18,9 @@ class Proses extends Model
     }
     public function Wip(){
         return $this->hasOne(Wip::class,'id_proses');
+    }
+    public function Notgood(){
+        return $this->hasOne(Notgood::class,'id_proses');
     }
     protected $table='proses';
     protected $primaryKey='id_proses';

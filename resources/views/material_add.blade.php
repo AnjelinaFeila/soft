@@ -67,6 +67,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="user.location" class="form-control-label">{{ __('Jumlah Persheet') }}</label>
+                                <div class="@error('user.location') border border-danger rounded-3 @enderror">
+                                    <input class="form-control" type="number" id="name" name="jumlah_persheet" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Ukuran') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
                                     <input class="form-control" type="text" id="name" name="ukuran" value="0">

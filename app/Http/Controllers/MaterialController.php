@@ -9,6 +9,8 @@ use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\Delivery;
 use App\Models\Laporan;
+use App\Models\Finish;
+use App\Models\Notgood;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +40,8 @@ class MaterialController extends Controller
         $stockraw = Stockraw::where('id_material', $id)->exists();
         $wip = Wip::where('id_material', $id)->exists();
         $delivery = Delivery::where('id_material', $id)->exists();
+        $finish = Finish::where('id_material', $id)->exists();
+        $notgood = Notgood::where('id_material', $id)->exists();
 
         if ($laporan) {
             return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Laporan Produksi');
@@ -50,6 +54,12 @@ class MaterialController extends Controller
         }
         if ($delivery) {
             return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Delivery');
+        }
+        if ($finish) {
+            return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Finish Good');
+        }
+        if ($notgood) {
+            return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Not Good');
         }
         else{
             $material->delete();
@@ -74,6 +84,7 @@ class MaterialController extends Controller
             'nama_barang' => ['required', 'max:255'],
             'kg_persheet'     => ['max:50'],
             'kg_perpart'     => ['max:50'],
+            'jumlah_persheet'     => ['max:50'],
             'ukuran'     => ['max:100'],
             'id_supplier' => ['max:255'],
             'id_customer' => ['max:255'],
@@ -93,6 +104,7 @@ class MaterialController extends Controller
             'nama_barang' => ['max:255'],
             'kg_persheet'     => ['max:50'],
             'kg_perpart'     => ['max:50'],
+            'jumlah_persheet'     => ['max:50'],
             'ukuran'     => ['max:100'],
             'id_supplier' => ['max:255'],
             'id_customer' => ['max:255'],
@@ -104,6 +116,7 @@ class MaterialController extends Controller
             'nama_barang'    => $attributes['nama_barang'],
             'kg_persheet' => $attributes['kg_persheet'],
             'kg_perpart'     => $attributes['kg_perpart'],
+            'jumlah_persheet'     => $attributes['jumlah_persheet'],
             'ukuran' => $attributes['ukuran'],
             'id_supplier' => $attributes['id_supplier'],
             'id_customer' => $attributes['id_customer'],

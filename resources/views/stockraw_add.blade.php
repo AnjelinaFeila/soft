@@ -30,7 +30,7 @@
                         </div>
                     @endif
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('No Preorder') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
@@ -41,6 +41,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('Nama Material') }}</label>
@@ -53,24 +55,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Jumlah Sheet') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
                                     <input class="form-control" name="jumlah_sheet" type="number" id="number" value="0">
-                                        @error('phone')
-                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.phone" class="form-control-label">{{ __('Ukuran') }}</label>
-                                <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="text" id="number" name="ukuran" value="0">
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror

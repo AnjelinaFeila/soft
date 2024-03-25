@@ -16,9 +16,10 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No Preorder</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nama Material</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Nama Material</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">No Preorder</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Jumlah Sheet</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Jumlah PartperSheet</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kg PerSheet</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ukuran</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah Nutt</th>
@@ -26,7 +27,7 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Customer</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated At</th>
                       <th  class="text-secondary opacity-7"></th>
-                      @if(auth()->user()->position=='admin')
+                      @if(auth()->user()->position!='owner')
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('stockraw_add') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
                     </tr>
@@ -35,19 +36,22 @@
                     @foreach($stockraw as $stock)
                       <tr>
                         <td class="align-middle text-center text-sm">
-                            <h6 class="mb-0 text-sm">{{ $stock->no_preorder }}</h6>
+                            <h6 class="mb-0 text-sm">{{ $stock->material->nama_barang }}</h6>
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $stock->material->nama_barang }}
+                          {{ $stock->no_preorder }}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $stock->jumlah_sheet }}
                         </td>
                         <td class="align-middle text-center text-sm">
+                          {{ $stock->jumlah_sheet*$stock->material->jumlah_persheet }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
                           {{ $stock->kg_persheet }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $stock->ukuran }}
+                          {{ $stock->material->ukuran }}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $stock->jumlah_nutt }}
@@ -61,7 +65,7 @@
                         <td class="align-middle text-center text-sm">
                           {{ $stock->updated_at }}
                         </td>
-                        @if(auth()->user()->position=='admin')
+                        @if(auth()->user()->position!='owner')
                         <td class="align-middle">
                           <a href="{{route('stock.showstock',$stock->id_stock_raw)}}" class="btn btn-warning btn-sm">
                             <i class="fa fa-pencil"></i>

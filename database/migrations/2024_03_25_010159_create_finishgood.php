@@ -7,20 +7,18 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.a
+     * Run the migrations.
      */
     public function up()
     {
-        Schema::create('stock_raw_material', function (Blueprint $table) {
-            $table->increments('id_stock_raw');
-            $table->integer('no_preorder')->nullable(false);
+        Schema::create('finishgood', function (Blueprint $table) {
+            $table->increments('id_finishgood');
             $table->integer('id_material')->nullable(false);
-            $table->integer('jumlah_sheet');
-            $table->decimal('kg_persheet');
-            $table->integer('jumlah_nutt');
-            $table->integer('id_supplier');
+            $table->integer('jumlah')->nullable(false);
             $table->integer('id_customer');
+            $table->string('qc');
             $table->timestamps();
+
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_raw_material');
+        Schema::dropIfExists('finishgood');
     }
 };

@@ -19,12 +19,14 @@
                   </form>
                   </div>
                 </div>
-                @if(auth()->user()->position=='admin')
+                @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')
                    <div class="col-md-6">
                      <a class="btn btn-success btn-sm  position-relative float-start" href="{{ url('laporan_add') }}"><i class="fa fa-plus"></i></a>
                    </div>
                   @endif
+                  @if(auth()->user()->position!='owner')
                    <a href="{{ route('export-laporan') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
+                   @endif
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -40,6 +42,7 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Mulai</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Selesai</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah Jam</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Target</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah OK</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah NG</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Keterangan</th>
@@ -83,6 +86,9 @@
                           {{ $lap->jumlah_jam }}
                         </td>
                         <td class="align-middle text-center text-sm">
+                          {{ $targetPerWorkingHour = ($lap->target->minimal_target / 60) * (Carbon\Carbon::parse($lap->jumlah_jam)->hour * 60 + Carbon\Carbon::parse($lap->jumlah_jam)->minute) }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
                           {{ $lap->jumlah_ok }}
                         </td>
                         <td class="align-middle text-center text-sm">
@@ -94,7 +100,7 @@
                         <td class="align-middle text-center text-sm">
                           {{ $lap->updated_at }}
                         </td>
-                        @if(auth()->user()->position=='admin')
+                        @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')
                         <td class="align-middle">
                           <a href="{{route('laporan.showlaporan',$lap->id_laporan_produksi)}}" class="btn btn-warning btn-sm">
                             <i class="fa fa-pencil"></i>

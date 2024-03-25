@@ -9,7 +9,9 @@ use App\Models\Proses;
 use App\Models\Tonase;
 use App\Models\Operator;
 use App\Models\Stockraw;
+use App\Models\Notgood;
 use App\Models\Wip;
+use App\Models\Target;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -21,6 +23,35 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
+        $materials = Material::pluck('id_material')->toArray();
+        $proseses = Proses::pluck('id_proses')->toArray();
+
+        // Ambil semua kombinasi data yang sudah ada di dalam tabel "target"
+        $existingCombinations = Target::pluck('id_material', 'id_proses')->toArray();
+
+        foreach ($materials as $materialId) {
+        foreach ($proseses as $prosesId) {
+            $combinationExists = isset($existingCombinations[$materialId]) && $existingCombinations[$materialId] === $prosesId;
+
+            if (!$combinationExists) {
+                // Masukkan kombinasi baru ke dalam tabel "target"
+                Target::updateOrCreate(
+                    ['id_material' => $materialId, 'id_proses' => $prosesId,'minimal_target'=>0]
+                );
+            }
+        }
+    }
+
+    // Hapus data yang tidak ada dalam kombinasi dari tabel "material" dan "proses"
+    Target::whereNotIn('id_material', $materials)
+        ->orWhereNotIn('id_proses', $proseses)
+        ->delete();
+        
+        
+
+
+
+        
         if (!$request->input('search')=="") {
             $keyword = $request->input('search');
             $laporan = Laporan::whereHas('Material', function ($query) use ($keyword) {
@@ -35,10 +66,14 @@ class LaporanController extends Controller
                 ->orWhereHas('Operator', function ($query) use ($keyword) {
                     $query->where('nama_operator', 'like', "$keyword");
                 })
+                ->orWhereHas('Target', function ($query) use ($keyword) {
+                    $query->where('minimal_target', 'like', "$keyword");
+                })
                 ->orWhere('jumlah_sheet', 'like', "$keyword")
                 ->orWhere('jam_mulai', 'like', "$keyword")
                 ->orWhere('jam_selesai', 'like', "$keyword")
                 ->orWhere('jumlah_jam', 'like', "$keyword")
+                ->orWhere('minimal_target', 'like', "$keyword")
                 ->orWhere('jumlah_ok', 'like', "$keyword")
                 ->orWhere('jumlah_ng', 'like', "$keyword")
                 ->orWhere('keterangan', 'like', "$keyword")
@@ -47,7 +82,7 @@ class LaporanController extends Controller
             return view('laporan',compact('laporan'));
         }
         else{
-            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Stockraw.Material')->orderBy('tanggal','desc')->get();
+            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->get();
             return view('laporan',compact('laporan'));
     }
     }
@@ -65,8 +100,16 @@ class LaporanController extends Controller
     public function destroy($id)
     {
         $laporan = Laporan::find($id);
+        $ng=Notgood::where('id_material',$laporan->id_material)->first();
+        $jumlah=$ng->jumlah_ng-$laporan->jumlah_ng;
 
         $laporan->delete();
+
+        Notgood::where('id_notgood',$ng->id_notgood)
+        ->update([
+            'jumlah_ng' => $jumlah,
+            
+        ]);
 
         return redirect('/laporan');
     }
@@ -99,6 +142,36 @@ class LaporanController extends Controller
             'jumlah_ng' => ['max:10'],
             'keterangan'=> ['max:255'],
         ]);
+
+        $ngd = request()->validate([
+            'id_material'     => ['max:50'],
+            'jumlah_ng' => ['max:10'],
+            'keterangan'=> ['max:255'],
+        ]);
+
+        $ngmat=$ngd['id_material'];
+        $ng=$ngd['jumlah_ng'];
+        $ngket=$ngd['keterangan'];
+
+        $notgood=Notgood::where('id_material',$ngmat)->first();
+
+        if ($notgood) {
+            $exng=$notgood->jumlah_ng;
+            $jumlah=$exng+$ng;
+            if ($ngket=="") {
+                $ngd['keterangan']=$notgood->keterangan;
+            }
+            Notgood::where('id_notgood',$notgood->id_notgood)
+        ->update([
+            'id_material' => $ngd['id_material'],
+            'jumlah_ng' => $jumlah,
+            'keterangan' => $ngd['keterangan'],
+            
+        ]);
+        }
+        else{
+            Notgood::create($ngd);
+        }
 
         $jamm = Carbon::parse($attributes['jam_mulai']);
         $jams = Carbon::parse($attributes['jam_selesai']);
@@ -175,6 +248,8 @@ class LaporanController extends Controller
 
              
         }
+
+
         
         Laporan::create($attributes);
 
@@ -200,10 +275,52 @@ class LaporanController extends Controller
             'keterangan'=> ['max:255'],
         ]);
 
+        $ngd = request()->validate([
+            'id_material'     => ['max:50'],
+            'jumlah_ng' => ['max:10'],
+            'keterangan'=> ['max:255'],
+        ]);
+
+        $ngmat=$ngd['id_material'];
+        $ng=$ngd['jumlah_ng'];
+        $ngket=$ngd['keterangan'];
+
+        $notgood=Notgood::where('id_material',$ngmat)->first();
+        $ng_laporan=Laporan::find($id);
+
+        if ($ngd['jumlah_ng']<$ng_laporan->jumlah_ng) {
+            $exng=$ng_laporan->jumlah_ng-$ngd['jumlah_ng'];
+            $jumlah=$notgood->jumlah_ng-$exng;
+            if ($ngket=="") {
+                $ngd['keterangan']=$notgood->keterangan;
+            }
+            Notgood::where('id_notgood',$notgood->id_notgood)
+        ->update([
+            'id_material' => $ngd['id_material'],
+            'jumlah_ng' => $jumlah,
+            'keterangan' => $ngd['keterangan'],
+            
+        ]);
+        }
+        if ($ngd['jumlah_ng']>$ng_laporan->jumlah_ng) {
+            $exng=$ngd['jumlah_ng']-$ng_laporan->jumlah_ng;
+            $jumlah=$notgood->jumlah_ng+$exng;
+            if ($ngket=="") {
+                $ngd['keterangan']=$notgood->keterangan;
+            }
+            Notgood::where('id_notgood',$notgood->id_notgood)
+        ->update([
+            'id_material' => $ngd['id_material'],
+            'jumlah_ng' => $jumlah,
+            'keterangan' => $ngd['keterangan'],
+            
+        ]);
+        }
+
         $jamm = Carbon::parse($attributes['jam_mulai']);
         $jams = Carbon::parse($attributes['jam_selesai']);
 
-       $jamm = Carbon::parse($attributes['jam_mulai']);
+        $jamm = Carbon::parse($attributes['jam_mulai']);
         $jams = Carbon::parse($attributes['jam_selesai']);
 
         $exh1 = Carbon::createFromTimeString('12:00:00');

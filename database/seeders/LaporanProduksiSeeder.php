@@ -58,14 +58,14 @@ class LaporanProduksiSeeder extends Seeder
             'jumlah_jam'=>now(),
             'jumlah_ok'=>30,
             'jumlah_ng'=>20,
-            'keterangan'=>'production table has created successfuly without any problem 2',
+            'keterangan'=>'production table has created successfuly without any problem 3',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         DB::table('laporan_produksi')->insert([
             'tanggal'=>now(),
-            'id_material'=>2,
+            'id_material'=>3,
             'id_proses'=>1,
             'id_tonase'=>2,
             'jumlah_sheet'=>10,
@@ -75,14 +75,14 @@ class LaporanProduksiSeeder extends Seeder
             'jumlah_jam'=>now(),
             'jumlah_ok'=>15,
             'jumlah_ng'=>23,
-            'keterangan'=>'production table has created successfuly without any problem 2',
+            'keterangan'=>'production table has created successfuly without any problem 4',
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         DB::table('laporan_produksi')->insert([
             'tanggal'=>now(),
-            'id_material'=>2,
+            'id_material'=>3,
             'id_proses'=>1,
             'id_tonase'=>2,
             'jumlah_sheet'=>10,
@@ -92,7 +92,7 @@ class LaporanProduksiSeeder extends Seeder
             'jumlah_jam'=>now(),
             'jumlah_ok'=>21,
             'jumlah_ng'=>15,
-            'keterangan'=>'production table has created successfuly without any problem 2',
+            'keterangan'=>'production table has created successfuly without any problem 5',
             'created_at' => now(),
             'updated_at' => now()
         ]);

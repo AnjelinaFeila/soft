@@ -11,6 +11,7 @@ use App\Models\Tonase;
 use App\Models\Operator;
 use App\Models\Stockraw;
 use App\Models\Wip;
+use App\Models\Target;
 
 
 class Laporan extends Model
@@ -34,6 +35,11 @@ class Laporan extends Model
     }
     public function wip(){
         return $this->belongsTo(Stockraw::class,'id_wip');
+    }
+    public function target()
+    {
+        return $this->hasOne(Target::class, 'id_material', 'id_material')
+                ->where('id_proses', $this->id_proses);
     }
     protected $table='laporan_produksi';
     protected $primaryKey='id_laporan_produksi';

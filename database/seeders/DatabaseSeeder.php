@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             DeliverySeeder::class,
             LaporanProduksiSeeder::class,
             OperatorSeeder::class,
+            FinishSeeder::class,
+            NotgoodSeeder::class,
             WIPSeeder::class
         ]);
     }

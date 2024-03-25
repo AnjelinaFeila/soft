@@ -11,6 +11,8 @@ use App\Models\Stockraw;
 use App\Models\Supplier;
 use App\Models\Customer;
 use App\Models\Wip;
+use App\Models\Target;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +23,7 @@ class ExportController extends Controller
 {
     public function exportToExcel1()
     {
-        $data = Laporan::with('Material','Proses','Tonase','Operator','Stockraw.Material')->orderBy('tanggal','desc')->get();
+        $data = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->get();
 
         $spreadsheet = new Spreadsheet();
 
@@ -35,10 +37,11 @@ class ExportController extends Controller
         $sheet->setCellValue('F1', 'Operator');
         $sheet->setCellValue('G1', 'Jam Mulai');
         $sheet->setCellValue('H1', 'Jam Selesai');
-        $sheet->setCellValue('I1', 'Jumlah Jam');
-        $sheet->setCellValue('J1', 'Jumlah OK');
-        $sheet->setCellValue('K1', 'Jumlah NG');
-        $sheet->setCellValue('L1', 'Keterangan');
+        $sheet->setCellValue('I1', 'Target');
+        $sheet->setCellValue('J1', 'Jumlah Jam');
+        $sheet->setCellValue('K1', 'Jumlah OK');
+        $sheet->setCellValue('L1', 'Jumlah NG');
+        $sheet->setCellValue('M1', 'Keterangan');
      
 
      
@@ -53,9 +56,10 @@ class ExportController extends Controller
             $sheet->setCellValue('G' . $row, $item->jam_mulai);
             $sheet->setCellValue('H' . $row, $item->jam_selesai);
             $sheet->setCellValue('I' . $row, $item->jumlah_jam);
-            $sheet->setCellValue('J' . $row, $item->jumlah_ok);
-            $sheet->setCellValue('K' . $row, $item->jumlah_ng);
-            $sheet->setCellValue('L' . $row, $item->keterangan);
+            $sheet->setCellValue('J' . $row, $targetPerWorkingHour = ($item->target->minimal_target / 60) * (Carbon::parse($item->jumlah_jam)->hour * 60 + Carbon::parse($item->jumlah_jam)->minute));
+            $sheet->setCellValue('K' . $row, $item->jumlah_ok);
+            $sheet->setCellValue('L' . $row, $item->jumlah_ng);
+            $sheet->setCellValue('M' . $row, $item->keterangan);
      
             $row++;
         }
@@ -90,11 +94,12 @@ class ExportController extends Controller
         $sheet->setCellValue('A1', 'No Preorder');
         $sheet->setCellValue('B1', 'Nama Material');
         $sheet->setCellValue('C1', 'Jumlah Sheet');
-        $sheet->setCellValue('D1', 'KG PerSheet');
-        $sheet->setCellValue('E1', 'Ukuran');
-        $sheet->setCellValue('F1', 'Jumlah Nutt');
-        $sheet->setCellValue('G1', 'Supplier');
-        $sheet->setCellValue('H1', 'Customer');
+        $sheet->setCellValue('D1', 'Jumlah PartperSheet');
+        $sheet->setCellValue('E1', 'KG PerSheet');
+        $sheet->setCellValue('F1', 'Ukuran');
+        $sheet->setCellValue('G1', 'Jumlah Nutt');
+        $sheet->setCellValue('H1', 'Supplier');
+        $sheet->setCellValue('I1', 'Customer');
      
 
      
@@ -103,11 +108,12 @@ class ExportController extends Controller
             $sheet->setCellValue('A' . $row, $item->no_preorder);
             $sheet->setCellValue('B' . $row, $item->material->nama_barang);
             $sheet->setCellValue('C' . $row, $item->jumlah_sheet);
-            $sheet->setCellValue('D' . $row, $item->kg_persheet);
-            $sheet->setCellValue('E' . $row, $item->ukuran);
-            $sheet->setCellValue('F' . $row, $item->jumlah_nutt);
-            $sheet->setCellValue('G' . $row, $item->supplier->nama_supplier);
-            $sheet->setCellValue('H' . $row, $item->customer->nama_customer);
+            $sheet->setCellValue('D' . $row, $item->jumlah_sheet*$item->material->jumlah_persheet);
+            $sheet->setCellValue('E' . $row, $item->kg_persheet);
+            $sheet->setCellValue('F' . $row, $item->material->ukuran);
+            $sheet->setCellValue('G' . $row, $item->jumlah_nutt);
+            $sheet->setCellValue('H' . $row, $item->supplier->nama_supplier);
+            $sheet->setCellValue('I' . $row, $item->customer->nama_customer);
      
             $row++;
         }

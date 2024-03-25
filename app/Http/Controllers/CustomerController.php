@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Stockraw;
 use App\Models\Delivery;
 use App\Models\Material;
+use App\Models\Finish;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ class CustomerController extends Controller
         $stockraw = Stockraw::where('id_customer', $id)->exists();
         $material = Material::where('id_customer', $id)->exists();
         $delivery = Delivery::where('id_customer', $id)->exists();
+        $finish = Finish::where('id_customer', $id)->exists();
 
         
         if ($stockraw) {
@@ -36,6 +38,9 @@ class CustomerController extends Controller
             return redirect('/customer')->with('success','Gagal Menghapus,Customer Terhubung Dengan Material');
         }if ($delivery) {
             return redirect('/customer')->with('success','Gagal Menghapus,Customer Terhubung Dengan Delivery');
+        }
+        if ($finish) {
+            return redirect('/customer')->with('success','Gagal Menghapus,Customer Terhubung Dengan Finish Good');
         }
         else{
             $customer->delete();

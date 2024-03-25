@@ -17,7 +17,9 @@ use App\Http\Controllers\TonaseController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserManageController;
-use App\Http\Controllers\ExhandlerController;
+use App\Http\Controllers\FinishController;
+use App\Http\Controllers\NotgoodController;
+use App\Http\Controllers\TargetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +75,22 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('customer_add', function () {
 		return view('customer_add');
 	})->name('customer_add');
+
+	Route::get('finish', function () {
+		return view('finish');
+	})->name('finish');
+
+	Route::get('finish_add', function () {
+		return view('finish_add');
+	})->name('finish_add');
+
+	Route::get('notgood', function () {
+		return view('notgood');
+	})->name('notgood');
+
+	Route::get('target', function () {
+		return view('target');
+	})->name('target');
 
 	Route::get('tonase', function () {
 		return view('tonase');
@@ -168,6 +186,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/showcustomer/{id}', [CustomerController::class, 'show'])->name('customer.showcustomer');
     Route::post('/customer/{id}', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customer/{id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
+
+    Route::get('/finish', [FinishController::class, 'index']);
+    Route::get('/finish_add', [FinishController::class, 'index2']);
+    Route::post('/finish', [FinishController::class, 'store']);
+    Route::get('/showfinish/{id}', [FinishController::class, 'show'])->name('finish.showfinish');
+    Route::post('/finish/{id}', [FinishController::class, 'update'])->name('finish.update');
+    Route::delete('/finish/{id}', [FinishController::class, 'destroy'])->name('finish.destroy');
+
+    Route::get('/notgood', [NotgoodController::class, 'index']);
+    Route::get('/shownotgood/{id}', [NotgoodController::class, 'show'])->name('notgood.shownotgood');
+    Route::post('/notgood/{id}', [NotgoodController::class, 'update'])->name('notgood.update');
+    Route::delete('/notgood/{id}', [NotgoodController::class, 'destroy'])->name('notgood.destroy');
+
+    Route::get('/target', [TargetController::class, 'index']);
+    Route::get('/showtarget/{id}', [TargetController::class, 'show'])->name('target.showtarget');
+    Route::post('/target/{id}', [TargetController::class, 'update'])->name('target.update');
 
     Route::get('/supplier', [SupplierController::class, 'index']);
     Route::post('/supplier', [SupplierController::class, 'store']);

@@ -67,6 +67,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="user.location" class="form-control-label">{{ __('Jumlah Persheet') }}</label>
+                                <div class="@error('user.location') border border-danger rounded-3 @enderror">
+                                    <input class="form-control" type="text" id="name" name="jumlah_persheet" value="{{$material->jumlah_persheet}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Ukuran') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
                                     <input class="form-control" type="text" id="name" name="ukuran" value="{{$material->ukuran}}">
@@ -80,7 +90,7 @@
                                 <label for="user.phone" class="form-control-label">{{ __('Supplier') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
                                     <select name="id_supplier" class="form-control">
-                                        <option value="{{$material->customer->id_supplier}}">{{$material->supplier->nama_supplier}}</option>
+                                        <option value="{{$material->supplier->id_supplier}}">{{$material->supplier->nama_supplier}}</option>
                                         @foreach($supplier as $sup)
                                             <option value="{{$sup->id_supplier}}">{{$sup->nama_supplier}}</option>
                                         @endforeach
