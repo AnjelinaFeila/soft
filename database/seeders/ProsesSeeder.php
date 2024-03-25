@@ -53,5 +53,11 @@ class ProsesSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        DB::table('proses')->insert([
+            'nama_proses' => 'no proses',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
     }
 }
