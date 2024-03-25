@@ -103,7 +103,7 @@
                             $selisih=$targetPerWorkingHour-$lap->jumlah_ok;
                           @endphp
 
-                          @if($targetPerWorkingHour < $lap->jumlah_ok)
+                          @if($targetPerWorkingHour <= $lap->jumlah_ok)
                           &#10004;
                           @else
                           &#10006;
@@ -111,7 +111,7 @@
                         </td>
                         <td class="align-middle text-center text-sm">
                           @if($selisih<0)
-                          0
+                          {{$lap->jumlah_ok-$targetPerWorkingHour}}
                           @else
                           {{ $selisih }}
                           @endif

@@ -53,14 +53,14 @@ class ExportController extends Controller
         foreach ($data as $item) {
             $targetPerWorkingHour = ($item->target->minimal_target / 60) * (Carbon::parse($item->jumlah_jam)->hour * 60 + Carbon::parse($item->jumlah_jam)->minute);
             $selisih=$targetPerWorkingHour-$item->jumlah_ok;
-            if ($targetPerWorkingHour < $item->jumlah_ok) {
+            if ($targetPerWorkingHour <= $item->jumlah_ok) {
                 $target='✔';
             }
             else{
                  $target='✖';
             }
             if ($selisih<0) {
-                $value=0;
+                $value=$item->jumlah_ok-$targetPerWorkingHour;
             }
             else{
                 $value=$selisih;
