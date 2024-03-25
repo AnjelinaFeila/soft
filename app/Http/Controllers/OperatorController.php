@@ -43,6 +43,18 @@ class OperatorController extends Controller
         return view('/showoperator',['operator'=>$operator]);
     }
 
+    public function show2()
+    {
+        $operators = Operator::all();
+        $reports = Laporan::with('Operator')->orderBy('tanggal', 'desc')
+            ->get()
+            ->groupBy(function ($report) {
+                return $report->Operator->nama_operator;
+            });
+
+        return view('peroperator', ['operators' => $operators, 'reports' => $reports]);
+    }
+
     public function store(Request $request)
     {
        

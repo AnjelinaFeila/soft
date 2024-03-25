@@ -30,6 +30,7 @@
                       @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('operator_add') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
+                      <a href="{{ route('peroperator') }}" class="btn btn-secondary btn-sm position-relative float-start mx-auto">Tabel Per Operator</a>
                     </tr>
                   </thead>
                   <tbody>

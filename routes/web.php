@@ -171,6 +171,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/operator', [OperatorController::class, 'index']);
     Route::post('/operator', [OperatorController::class, 'store']);
     Route::get('/showoperator/{id}', [OperatorController::class, 'show'])->name('operator.showoperator');
+    Route::get('/peroperator', [OperatorController::class, 'show2'])->name('peroperator');
     Route::post('/operator/{id}', [OperatorController::class, 'update'])->name('operator.update');
     Route::delete('/operator/{id}', [OperatorController::class, 'destroy'])->name('operator.destroy');
 
