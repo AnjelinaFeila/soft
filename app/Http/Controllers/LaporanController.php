@@ -23,35 +23,6 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        $materials = Material::pluck('id_material')->toArray();
-        $proseses = Proses::pluck('id_proses')->toArray();
-
-        // Ambil semua kombinasi data yang sudah ada di dalam tabel "target"
-        $existingCombinations = Target::pluck('id_material', 'id_proses')->toArray();
-
-        foreach ($materials as $materialId) {
-        foreach ($proseses as $prosesId) {
-            $combinationExists = isset($existingCombinations[$materialId]) && $existingCombinations[$materialId] === $prosesId;
-
-            if (!$combinationExists) {
-                // Masukkan kombinasi baru ke dalam tabel "target"
-                Target::updateOrCreate(
-                    ['id_material' => $materialId, 'id_proses' => $prosesId,'minimal_target'=>0]
-                );
-            }
-        }
-    }
-
-    // Hapus data yang tidak ada dalam kombinasi dari tabel "material" dan "proses"
-    Target::whereNotIn('id_material', $materials)
-        ->orWhereNotIn('id_proses', $proseses)
-        ->delete();
-        
-        
-
-
-
-        
         if (!$request->input('search')=="") {
             $keyword = $request->input('search');
             $laporan = Laporan::whereHas('Material', function ($query) use ($keyword) {
@@ -66,23 +37,19 @@ class LaporanController extends Controller
                 ->orWhereHas('Operator', function ($query) use ($keyword) {
                     $query->where('nama_operator', 'like', "$keyword");
                 })
-                ->orWhereHas('Target', function ($query) use ($keyword) {
-                    $query->where('minimal_target', 'like', "$keyword");
-                })
                 ->orWhere('jumlah_sheet', 'like', "$keyword")
                 ->orWhere('jam_mulai', 'like', "$keyword")
                 ->orWhere('jam_selesai', 'like', "$keyword")
                 ->orWhere('jumlah_jam', 'like', "$keyword")
-                ->orWhere('minimal_target', 'like', "$keyword")
                 ->orWhere('jumlah_ok', 'like', "$keyword")
                 ->orWhere('jumlah_ng', 'like', "$keyword")
                 ->orWhere('keterangan', 'like', "$keyword")
                 ->orWhere('tanggal', 'like', "$keyword")
-                ->get();
+                ->paginate(5);
             return view('laporan',compact('laporan'));
         }
         else{
-            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->get();
+            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->paginate(5);
             return view('laporan',compact('laporan'));
     }
     }
@@ -162,15 +129,24 @@ class LaporanController extends Controller
                 $ngd['keterangan']=$notgood->keterangan;
             }
             Notgood::where('id_notgood',$notgood->id_notgood)
-        ->update([
+            ->update([
             'id_material' => $ngd['id_material'],
             'jumlah_ng' => $jumlah,
             'keterangan' => $ngd['keterangan'],
-            
-        ]);
+            ]);
         }
         else{
             Notgood::create($ngd);
+        }
+
+        $targ=Target::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first();
+
+        if (!$targ) {
+            Target::create([
+                'id_material' => $attributes['id_material'],
+                'id_proses' => $attributes['id_proses'],
+                'minimal_target' => 0,
+            ]);
         }
 
         $jamm = Carbon::parse($attributes['jam_mulai']);
@@ -190,7 +166,7 @@ class LaporanController extends Controller
 
         if ($exh1->between($jamm, $jams) && $exh2->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(60);
+            $jams->subMinutes(120);
         }
 
         if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
@@ -218,6 +194,7 @@ class LaporanController extends Controller
 
             $stockraw=Stockraw::where('id_material',$attributes['id_material'])->first();
             $sheet=$stockraw->jumlah_sheet;
+             $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->first();
             
             if ($sheet<$attributes['jumlah_sheet']) {
                 return redirect('/laporan_add')->with('success','Jumlah sheet melebihi stock yang tersisa');
@@ -229,10 +206,22 @@ class LaporanController extends Controller
                 'jumlah_sheet'    => $jumlah,
                 ]); 
             }
+
+            if ($wip) {
+                $part=$wip->jumlah_part;
+                $jumlah=$part+$attributes['jumlah_ok'];
+
+                Wip::where('id_material',$attributes['id_material'])->update([
+                'jumlah_part'    => $jumlah,
+                ]);
+            }
+            else{
+               return redirect('/laporan_add')->with('success','Material Tersebut Tidak ada di WIP'); 
+            }
             
         }
         else{
-            $wip=Wip::where('id_material',$attributes['id_material'])->first();
+            $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->first();
             
             if ($wip) {
                 $part=$wip->jumlah_part;
@@ -334,7 +323,7 @@ class LaporanController extends Controller
 
         if ($exh1->between($jamm, $jams) && $exh2->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(60);
+            $jams->subMinutes(120);
         }
 
         if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {

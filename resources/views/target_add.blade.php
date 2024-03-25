@@ -6,10 +6,10 @@
     <div class="container-fluid py-4">
         <div class="card">
             <div class="card-header pb-0 px-3">
-                <h6 class="mb-0">{{ __('Edit Minimal Target') }}</h6>
+                <h6 class="mb-0">{{ __('Add Minimal Target') }}</h6>
             </div>
             <div class="card-body pt-4 p-3">
-                <form action="{{route ('target.update',$target->id_minimaltarget)}}" method="POST" role="form text-left">
+                <form action="/target" method="POST" role="form text-left">
                     @csrf
                     @if($errors->any())
                         <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
@@ -34,7 +34,6 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Material') }}</label>
                                 <select class="form-control" name="id_material">
-                                    <option value="{{$target->id_material}}">{{$target->material->nama_barang}}</option>
                                     @foreach($material as $mat)
                                         <option value="{{$mat->id_material}}">{{$mat->nama_barang}}</option>
                                     @endforeach
@@ -45,7 +44,6 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Proses') }}</label>
                                 <select class="form-control" name="id_proses">
-                                    <option value="{{$target->id_proses}}">{{$target->proses->nama_proses}}</option>
                                     @foreach($proses as $pro)
                                         <option value="{{$pro->id_proses}}">{{$pro->nama_proses}}</option>
                                     @endforeach
@@ -58,7 +56,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Minimal Target') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" id="name" name="minimal_target" value="{{$target->minimal_target}}">
+                                    <input class="form-control" type="number" id="name" name="minimal_target" value="0">
                                 </div>
                             </div>
                         </div>

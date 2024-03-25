@@ -32,6 +32,9 @@
                       @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('finish_add') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
+                      @if(auth()->user()->position!='owner')
+                        <a href="{{ route('export-finish') }}" class="btn btn-primary btn-sm position-relative float-start mx-auto">Export to Excel</a>
+                      @endif
                     </tr>
                   </thead>
                   <tbody>

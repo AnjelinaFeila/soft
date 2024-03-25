@@ -1,13 +1,10 @@
 <?php
 
-use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\StockRawController;
 use App\Http\Controllers\WipController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
@@ -42,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/export-laporan', [ExportController::class, 'exportToExcel1'])->name('export-laporan');
 	Route::get('/export-stockraw', [ExportController::class, 'exportToExcel2'])->name('export-stockraw');
 	Route::get('/export-wip', [ExportController::class, 'exportToExcel3'])->name('export-wip');
+	Route::get('/export-delivery', [ExportController::class, 'exportToExcel4'])->name('export-delivery');
+	Route::get('/export-finish', [ExportController::class, 'exportToExcel5'])->name('export-finish');
 
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
 
@@ -200,8 +199,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/notgood/{id}', [NotgoodController::class, 'destroy'])->name('notgood.destroy');
 
     Route::get('/target', [TargetController::class, 'index']);
+    Route::get('/target_add', [TargetController::class, 'index2']);
+    Route::post('/target', [TargetController::class, 'store']);
     Route::get('/showtarget/{id}', [TargetController::class, 'show'])->name('target.showtarget');
     Route::post('/target/{id}', [TargetController::class, 'update'])->name('target.update');
+    Route::delete('/target/{id}', [TargetController::class, 'destroy'])->name('target.del');
 
     Route::get('/supplier', [SupplierController::class, 'index']);
     Route::post('/supplier', [SupplierController::class, 'store']);

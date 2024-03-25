@@ -28,7 +28,9 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Minimal Target</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated at</th>
                       <th rowspan="2" class="text-secondary opacity-7"></th>
-                      <th rowspan="2" class="text-secondary opacity-7"></th>
+                      @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')
+                      <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('target_add') }}"><i class="fa fa-plus"></i></a></th>
+                      @endif
                     </tr>
                   </thead>
                   <tbody>
@@ -55,6 +57,13 @@
                           <a href="{{route('target.showtarget',$target->id_minimaltarget)}}" class="btn btn-warning btn-sm">
                             <i class="fa fa-pencil"></i>
                           </a>
+                        </td>
+                        <td class="align-middle">
+                          <form method="post" action="{{route('target.del',$target->id_minimaltarget)}}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                          </form>
                         </td>
                         @endif
                       </tr>

@@ -26,7 +26,8 @@
                   @endif
                   @if(auth()->user()->position!='owner')
                    <a href="{{ route('export-laporan') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
-                   @endif
+                  @endif
+
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -37,14 +38,16 @@
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nama Material</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Proses</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tonase</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Target pcs/jam</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah Sheet</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Operator</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Mulai</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Selesai</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah Jam</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Target</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah OK</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah NG</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Target</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">+/-</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Keterangan</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated At</th>
                       <th  class="text-secondary opacity-7"></th>
@@ -71,6 +74,9 @@
                           {{ $lap->tonase->nama_tonase }}
                         </td>
                         <td class="align-middle text-center text-sm">
+                          {{ $lap->target->minimal_target }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
                           {{ $lap->jumlah_sheet }}
                         </td>
                         <td class="align-middle text-center text-sm">
@@ -86,13 +92,32 @@
                           {{ $lap->jumlah_jam }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $targetPerWorkingHour = ($lap->target->minimal_target / 60) * (Carbon\Carbon::parse($lap->jumlah_jam)->hour * 60 + Carbon\Carbon::parse($lap->jumlah_jam)->minute) }}
-                        </td>
-                        <td class="align-middle text-center text-sm">
                           {{ $lap->jumlah_ok }}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $lap->jumlah_ng }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          @php
+                            $targetPerWorkingHour = ($lap->target->minimal_target / 60) * (Carbon\Carbon::parse($lap->jumlah_jam)->hour * 60 + Carbon\Carbon::parse($lap->jumlah_jam)->minute);
+                            $selisih=$targetPerWorkingHour-$lap->jumlah_ok;
+                          @endphp
+
+                          @if($targetPerWorkingHour < $lap->jumlah_ok)
+                          &#10004;
+                          @else
+                          &#10006;
+                          @endif
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          @if($selisih<0)
+                          0
+                          @else
+                          {{ $selisih }}
+                          @endif
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          {{ $lap->keterangan }}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $lap->keterangan }}
@@ -119,7 +144,7 @@
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div>{{$laporan->appends(request()->except('page'))->links('pagination')}}
           </div>
         </div>
       </div>

@@ -12,6 +12,8 @@ use App\Models\Supplier;
 use App\Models\Customer;
 use App\Models\Wip;
 use App\Models\Target;
+use App\Models\Delivery;
+use App\Models\Finish;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -33,33 +35,51 @@ class ExportController extends Controller
         $sheet->setCellValue('B1', 'Nama Material');
         $sheet->setCellValue('C1', 'Proses');
         $sheet->setCellValue('D1', 'Tonase');
-        $sheet->setCellValue('E1', 'Jumlah Sheet');
-        $sheet->setCellValue('F1', 'Operator');
-        $sheet->setCellValue('G1', 'Jam Mulai');
-        $sheet->setCellValue('H1', 'Jam Selesai');
-        $sheet->setCellValue('I1', 'Target');
+        $sheet->setCellValue('E1', 'Target pcs/jam');
+        $sheet->setCellValue('F1', 'Jumlah Sheet');
+        $sheet->setCellValue('G1', 'Operator');
+        $sheet->setCellValue('H1', 'Jam Mulai');
+        $sheet->setCellValue('I1', 'Jam Selesai');
         $sheet->setCellValue('J1', 'Jumlah Jam');
         $sheet->setCellValue('K1', 'Jumlah OK');
         $sheet->setCellValue('L1', 'Jumlah NG');
-        $sheet->setCellValue('M1', 'Keterangan');
+        $sheet->setCellValue('M1', 'Target');
+        $sheet->setCellValue('N1', '+/-');
+        $sheet->setCellValue('O1', 'Keterangan');
      
 
      
         $row = 2;
         foreach ($data as $item) {
+            $targetPerWorkingHour = ($item->target->minimal_target / 60) * (Carbon::parse($item->jumlah_jam)->hour * 60 + Carbon::parse($item->jumlah_jam)->minute);
+            $selisih=$targetPerWorkingHour-$item->jumlah_ok;
+            if ($targetPerWorkingHour < $item->jumlah_ok) {
+                $target='✔';
+            }
+            else{
+                 $target='✖';
+            }
+            if ($selisih<0) {
+                $value=0;
+            }
+            else{
+                $value=$selisih;
+            }
             $sheet->setCellValue('A' . $row, $item->tanggal);
             $sheet->setCellValue('B' . $row, $item->material->nama_barang);
             $sheet->setCellValue('C' . $row, $item->proses->nama_proses);
             $sheet->setCellValue('D' . $row, $item->tonase->nama_tonase);
-            $sheet->setCellValue('E' . $row, $item->jumlah_sheet);
-            $sheet->setCellValue('F' . $row, $item->operator->nama_operator);
-            $sheet->setCellValue('G' . $row, $item->jam_mulai);
-            $sheet->setCellValue('H' . $row, $item->jam_selesai);
-            $sheet->setCellValue('I' . $row, $item->jumlah_jam);
-            $sheet->setCellValue('J' . $row, $targetPerWorkingHour = ($item->target->minimal_target / 60) * (Carbon::parse($item->jumlah_jam)->hour * 60 + Carbon::parse($item->jumlah_jam)->minute));
+            $sheet->setCellValue('E' . $row, $item->target->minimal_target);
+            $sheet->setCellValue('F' . $row, $item->jumlah_sheet);
+            $sheet->setCellValue('G' . $row, $item->operator->nama_operator);
+            $sheet->setCellValue('H' . $row, $item->jam_mulai);
+            $sheet->setCellValue('I' . $row, $item->jam_selesai);
+            $sheet->setCellValue('J' . $row, $item->jumlah_jam);
             $sheet->setCellValue('K' . $row, $item->jumlah_ok);
             $sheet->setCellValue('L' . $row, $item->jumlah_ng);
-            $sheet->setCellValue('M' . $row, $item->keterangan);
+            $sheet->setCellValue('M' . $row, $target);
+            $sheet->setCellValue('N' . $row, $value);
+            $sheet->setCellValue('O' . $row, $item->keterangan);
      
             $row++;
         }
@@ -179,5 +199,91 @@ class ExportController extends Controller
         ];
 
         return response()->download($tempFilePath, 'wip.xlsx', $headers);
+    }
+
+    public function exportToExcel4()
+    {
+        $data = Delivery::with('Material','Customer')->orderBy('id_material','asc')->get();
+
+        $spreadsheet = new Spreadsheet();
+
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Nama Material');
+        $sheet->setCellValue('B1', 'Jumlah Part');
+        $sheet->setCellValue('C1', 'KG PerPart');
+        $sheet->setCellValue('D1', 'Customer');
+        $sheet->setCellValue('E1', 'Tanggal Delivery');
+        $sheet->setCellValue('F1', 'Qc');
+
+     
+        $row = 2;
+        foreach ($data as $item) {
+            $sheet->setCellValue('A' . $row, $item->material->nama_barang);
+            $sheet->setCellValue('B' . $row, $item->jumlah_part);
+            $sheet->setCellValue('C' . $row, $item->material->kg_perpart);
+            $sheet->setCellValue('D' . $row, $item->customer->nama_customer);
+            $sheet->setCellValue('E' . $row, $item->tanggal_delivery);
+            $sheet->setCellValue('F' . $row, $item->qc);
+            $row++;
+        }
+
+
+        foreach (range('A', 'Z') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'excel');
+        $writer->save($tempFilePath);
+
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="data.xlsx"',
+        ];
+
+        return response()->download($tempFilePath, 'delivery.xlsx', $headers);
+    }
+
+    public function exportToExcel5()
+    {
+        $data = Finish::with('Material','Customer')->orderBy('id_material','asc')->get();
+
+        $spreadsheet = new Spreadsheet();
+
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Nama Material');
+        $sheet->setCellValue('B1', 'Jumlah');
+        $sheet->setCellValue('C1', 'Customer');
+        $sheet->setCellValue('D1', 'Qc');
+
+     
+        $row = 2;
+        foreach ($data as $item) {
+            $sheet->setCellValue('A' . $row, $item->material->nama_barang);
+            $sheet->setCellValue('B' . $row, $item->jumlah);
+            $sheet->setCellValue('C' . $row, $item->customer->nama_customer);
+            $sheet->setCellValue('D' . $row, $item->qc);
+            $row++;
+        }
+
+
+        foreach (range('A', 'Z') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'excel');
+        $writer->save($tempFilePath);
+
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="data.xlsx"',
+        ];
+
+        return response()->download($tempFilePath, 'finish_good.xlsx', $headers);
     }
 }
