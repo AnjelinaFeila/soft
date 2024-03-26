@@ -152,34 +152,36 @@ class LaporanController extends Controller
         $jamm = Carbon::parse($attributes['jam_mulai']);
         $jams = Carbon::parse($attributes['jam_selesai']);
 
+
+
         $exh1 = Carbon::createFromTimeString('12:00:00');
         $exh2 = Carbon::createFromTimeString('13:00:00');
 
         $exh3 = Carbon::createFromTimeString('18:00:00');
         $exh4 = Carbon::createFromTimeString('18:30:00');
 
-        $exh5 = Carbon::createFromTimeString('00:00:00');
-        $exh6 = Carbon::createFromTimeString('04:30:00');
+        $exh5 = Carbon::createFromTimeString('24:00:00');
+        $exh6 = Carbon::createFromTimeString('01:00:00');
 
         $exh7 = Carbon::createFromTimeString('04:30:00');
         $exh8 = Carbon::createFromTimeString('05:00:00');
 
         if ($exh1->between($jamm, $jams) && $exh2->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(120);
+            $jams->addMinutes(1380);
         }
 
-        if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
+        else if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
             $jams->subMinutes(30);
         }
 
-        if (!$jamm->between($exh5, $exh6) && $jams->between($exh5, $exh6)) {
+        else if ($exh5->between($jamm, $jams) && $exh6->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->addMinutes(1410);
+            $jams->subMinutes(120);
         }
 
-        if ($exh7->between($jamm, $jams) && $exh8->between($jamm, $jams)) {
+        else if ($exh7->between($jamm, $jams) && $exh8->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
             $jams->subMinutes(30);
         }
@@ -309,34 +311,34 @@ class LaporanController extends Controller
         $jamm = Carbon::parse($attributes['jam_mulai']);
         $jams = Carbon::parse($attributes['jam_selesai']);
 
-        $jamm = Carbon::parse($attributes['jam_mulai']);
-        $jams = Carbon::parse($attributes['jam_selesai']);
-
-        $exh1 = Carbon::createFromTimeString('12:00:00');
+       $exh1 = Carbon::createFromTimeString('12:00:00');
         $exh2 = Carbon::createFromTimeString('13:00:00');
+
         $exh3 = Carbon::createFromTimeString('18:00:00');
         $exh4 = Carbon::createFromTimeString('18:30:00');
-        $exh5 = Carbon::createFromTimeString('00:00:00');
+
+        $exh5 = Carbon::createFromTimeString('24:00:00');
         $exh6 = Carbon::createFromTimeString('01:00:00');
+
         $exh7 = Carbon::createFromTimeString('04:30:00');
         $exh8 = Carbon::createFromTimeString('05:00:00');
 
         if ($exh1->between($jamm, $jams) && $exh2->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(120);
+            $jams->addMinutes(1380);
         }
 
-        if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
+        else if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
             $jams->subMinutes(30);
         }
 
-        if (!$jamm->between($exh5, $exh6) && $jams->between($exh5, $exh6)) {
+        else if ($exh5->between($jamm, $jams) && $exh6->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->addMinutes(1410);
+            $jams->subMinutes(120);
         }
 
-        if ($exh7->between($jamm, $jams) && $exh8->between($jamm, $jams)) {
+        else if ($exh7->between($jamm, $jams) && $exh8->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
             $jams->subMinutes(30);
         }
