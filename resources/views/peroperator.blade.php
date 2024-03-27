@@ -31,9 +31,15 @@
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Material</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Proses</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tonase</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Target PCs/jam</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Mulai</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jam Selesai</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah Jam</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah Sheet</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah OK</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jumlah NG</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Target</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">+/-</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Keterangan</th>
                     </tr>
                   </thead>
@@ -60,6 +66,18 @@
                           {{ $report->Tonase->nama_tonase }}
                         </td>
                         <td class="align-middle text-center text-sm">
+                          {{ $report->Target->minimal_target }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          {{ $report->jam_mulai }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          {{ $report->jam_selesai }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          {{ $report->jumlah_jam }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
                             {{ $report->jumlah_sheet }}
                         </td>
                         <td class="align-middle text-center text-sm">
@@ -67,6 +85,25 @@
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $report->jumlah_ng }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          @php
+                            $targetPerWorkingHour = ($report->target->minimal_target / 60) * (Carbon\Carbon::parse($report->jumlah_jam)->hour * 60 + Carbon\Carbon::parse($report->jumlah_jam)->minute);
+                            $selisih=$targetPerWorkingHour-$report->jumlah_ok;
+                          @endphp
+
+                          @if($targetPerWorkingHour <= $report->jumlah_ok)
+                          &#10004;
+                          @else
+                          &#10006;
+                          @endif
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          @if($selisih<0)
+                          {{$report->jumlah_ok-$targetPerWorkingHour}}
+                          @else
+                          {{ $selisih }}
+                          @endif
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $report->keterangan }}

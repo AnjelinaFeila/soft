@@ -301,23 +301,50 @@ class ExportController extends Controller
         $sheet->setCellValue('C1', 'Material');
         $sheet->setCellValue('D1', 'Proses');
         $sheet->setCellValue('E1', 'Tonase');
-        $sheet->setCellValue('F1', 'Jumlah Sheet');
-        $sheet->setCellValue('G1', 'Jumlah OK');
-        $sheet->setCellValue('H1', 'Jumlah NG');
-        $sheet->setCellValue('I1', 'Keterangan');
+        $sheet->setCellValue('F1', 'Target pcs/jam');
+        $sheet->setCellValue('G1', 'Jam Mulai');
+        $sheet->setCellValue('H1', 'Jam Selesai');
+        $sheet->setCellValue('I1', 'Jumlah Jam');
+        $sheet->setCellValue('J1', 'Jumlah Sheet');
+        $sheet->setCellValue('K1', 'Jumlah OK');
+        $sheet->setCellValue('L1', 'Jumlah NG');
+        $sheet->setCellValue('M1', 'Target');
+        $sheet->setCellValue('N1', '+/-');
+        $sheet->setCellValue('O1', 'Keterangan');
 
      
         $row = 2;
         foreach ($data as $item) {
+            $targetPerWorkingHour = ($item->target->minimal_target / 60) * (Carbon::parse($item->jumlah_jam)->hour * 60 + Carbon::parse($item->jumlah_jam)->minute);
+            $selisih=$targetPerWorkingHour-$item->jumlah_ok;
+            if ($targetPerWorkingHour <= $item->jumlah_ok) {
+                $target='✔';
+            }
+            else{
+                 $target='✖';
+            }
+            if ($selisih<0) {
+                $value=$item->jumlah_ok-$targetPerWorkingHour;
+            }
+            else{
+                $value=$selisih;
+            }
+            
             $sheet->setCellValue('A' . $row, $item->operator->nama_operator);
             $sheet->setCellValue('B' . $row, $item->tanggal);
             $sheet->setCellValue('C' . $row, $item->material->nama_barang);
             $sheet->setCellValue('D' . $row, $item->proses->nama_proses);
             $sheet->setCellValue('E' . $row, $item->tonase->nama_tonase);
-            $sheet->setCellValue('F' . $row, $item->jumlah_sheet);
-            $sheet->setCellValue('G' . $row, $item->jumlah_ok);
-            $sheet->setCellValue('H' . $row, $item->jumlah_ng);
-            $sheet->setCellValue('I' . $row, $item->keterangan);
+            $sheet->setCellValue('F' . $row, $item->target->minimal_target);
+            $sheet->setCellValue('G' . $row, $item->jumlah_sheet);
+            $sheet->setCellValue('H' . $row, $item->jam_mulai);
+            $sheet->setCellValue('I' . $row, $item->jam_selesai);
+            $sheet->setCellValue('J' . $row, $item->jumlah_jam);
+            $sheet->setCellValue('K' . $row, $item->jumlah_ok);
+            $sheet->setCellValue('L' . $row, $item->jumlah_ng);
+            $sheet->setCellValue('M' . $row, $target);
+            $sheet->setCellValue('N' . $row, $value);
+            $sheet->setCellValue('O' . $row, $item->keterangan);
             $row++;
         }
 
