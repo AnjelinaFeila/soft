@@ -30,6 +30,16 @@
                         </div>
                     @endif
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="user.location" class="form-control-label">{{ __('Nama Pegawai') }}</label>
+                                <div class="@error('user.location') border border-danger rounded-3 @enderror">
+                                    <input class="form-control" type="text" id="name" name="nama_pegawai" value="{{$finish->nama_pegawai}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Material') }}</label>

@@ -32,6 +32,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="user-email" class="form-control-label">{{ __('No Surat Jalan') }}</label>
+                                <div class="@error('email')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" name="no_surat_jalan" value="0" type="" id="number" value=" ">
+                                        @error('phone')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('Nama Material') }}</label>
                                 <div class="@error('email')border border-danger rounded-3 @enderror">
                                     <select name="id_material" class="form-control">
@@ -42,6 +53,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Jumlah Part') }}</label>
@@ -53,8 +66,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Customer') }}</label>
@@ -64,6 +75,19 @@
                                             <option value="{{$cus->id_customer}}">{{$cus->nama_customer}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user.phone" class="form-control-label">{{ __('Tanggal Produksi') }}</label>
+                                <div class="@error('user.phone')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" name="tanggal_produksi" type="date" id="number" value="2024-01-01">
+                                        @error('phone')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
                                 </div>
                             </div>
                         </div>

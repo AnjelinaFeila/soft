@@ -23,6 +23,7 @@ class Finish extends Model
 
     protected $fillable = [
         'id_finishgood',
+        'nama_pegawai',
         'id_material',
         'jumlah',
         'id_customer',

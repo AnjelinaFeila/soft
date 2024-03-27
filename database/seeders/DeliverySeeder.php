@@ -13,10 +13,12 @@ class DeliverySeeder extends Seeder
     public function run()
     {
         DB::table('delivery')->insert([
+            'no_surat_jalan' => 1,
             'id_material' => 1,
             'kg_perpart'=> 12,
             'id_customer'=>1,
             'jumlah_part'=>10,
+            'tanggal_produksi'=>now(),
             'tanggal_delivery'=>now(),
             'qc'=>'✔',
             'created_at' => now(),
@@ -24,10 +26,12 @@ class DeliverySeeder extends Seeder
         ]);
 
         DB::table('delivery')->insert([
+            'no_surat_jalan' => 1,
             'id_material' => 1,
             'kg_perpart'=> 7,
             'id_customer'=>2,
             'jumlah_part'=>20,
+            'tanggal_produksi'=>now(),
             'tanggal_delivery'=>now(),
             'qc'=>'✖',
             'created_at' => now(),

@@ -47,10 +47,12 @@ class DeliveryController extends Controller
     {
 
         $attributes = request()->validate([
+            'no_surat_jalan'     => ['max:10'],
             'id_material'     => ['max:10'],
             'kg_perpart'=> ['max:100'],
             'id_customer'     => ['max:100'],
             'jumlah_part'      =>  ['max:50'],
+            'tanggal_produksi'     => ['max:100'],
             'tanggal_delivery'     => ['max:100'],
             'qc'     => ['max:100'],
         ]);
@@ -66,21 +68,25 @@ class DeliveryController extends Controller
     {
 
         $attributes = request()->validate([
-            'id_material'     => ['required','max:10'],
-            'kg_perpart'=> ['required','max:100'],
-            'id_customer'     => ['required','max:100'],
-            'jumlah_part'      =>  ['required','max:50'],
-            'tanggal_delivery'     => ['required','max:100'],
+            'no_surat_jalan'     => ['max:10'],
+            'id_material'     => ['max:10'],
+            'kg_perpart'=> ['max:100'],
+            'id_customer'     => ['max:100'],
+            'jumlah_part'      =>  ['max:50'],
+            'tanggal_produksi'     => ['max:100'],
+            'tanggal_delivery'     => ['max:100'],
             'qc'     => ['max:100'],
         ]);
         
         
         Delivery::where('id_delivery',$id)
         ->update([
+            'no_surat_jalan' => $attributes['no_surat_jalan'],
             'id_material' => $attributes['id_material'],
             'kg_perpart' => $attributes['kg_perpart'],
             'id_customer' => $attributes['id_customer'],
             'jumlah_part' => $attributes['jumlah_part'],
+            'tanggal_produksi' => $attributes['tanggal_produksi'],
             'tanggal_delivery' => $attributes['tanggal_delivery'],
             'qc' => $attributes['qc'],
         ]);

@@ -15,10 +15,12 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">No Surat Jalan</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nama Material</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Jumlah Part</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kg PerPart</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Customer</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal Produksi</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal Delivery</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">QC</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Updated At</th>
@@ -35,6 +37,9 @@
                     @foreach($delivery as $del)
                       <tr>
                         <td class="align-middle text-center text-sm">
+                          {{ $del->no_surat_jalan }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
                           {{ $del->material->nama_barang }}
                         </td>
                         <td class="align-middle text-center text-sm">
@@ -45,6 +50,9 @@
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $del->customer->nama_customer }}
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          {{ $del->tanggal_produksi }}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $del->tanggal_delivery }}

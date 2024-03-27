@@ -196,7 +196,7 @@ class LaporanController extends Controller
 
             $stockraw=Stockraw::where('id_material',$attributes['id_material'])->first();
             $sheet=$stockraw->jumlah_sheet;
-             $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->first();
+            $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->first();
             
             if ($sheet<$attributes['jumlah_sheet']) {
                 return redirect('/laporan_add')->with('success','Jumlah sheet melebihi stock yang tersisa');
@@ -281,7 +281,7 @@ class LaporanController extends Controller
 
         if ($ngd['jumlah_ng']<$ng_laporan->jumlah_ng) {
             $exng=$ng_laporan->jumlah_ng-$ngd['jumlah_ng'];
-            $jumlah=$notgood->jumlah_ng-$exng;
+            $jumlah=$notgood->jumlah_ng+$exng;
             if ($ngket=="") {
                 $ngd['keterangan']=$notgood->keterangan;
             }
@@ -295,7 +295,7 @@ class LaporanController extends Controller
         }
         if ($ngd['jumlah_ng']>$ng_laporan->jumlah_ng) {
             $exng=$ngd['jumlah_ng']-$ng_laporan->jumlah_ng;
-            $jumlah=$notgood->jumlah_ng+$exng;
+            $jumlah=$notgood->jumlah_ng-$exng;
             if ($ngket=="") {
                 $ngd['keterangan']=$notgood->keterangan;
             }
@@ -311,7 +311,7 @@ class LaporanController extends Controller
         $jamm = Carbon::parse($attributes['jam_mulai']);
         $jams = Carbon::parse($attributes['jam_selesai']);
 
-       $exh1 = Carbon::createFromTimeString('12:00:00');
+        $exh1 = Carbon::createFromTimeString('12:00:00');
         $exh2 = Carbon::createFromTimeString('13:00:00');
 
         $exh3 = Carbon::createFromTimeString('18:00:00');
@@ -355,7 +355,7 @@ class LaporanController extends Controller
             $sheet=$stockraw->jumlah_sheet;
             
             if ($sheet<$attributes['jumlah_sheet']) {
-                return redirect('/laporan_add')->with('success','Jumlah sheet melebihi stock yang tersisa');
+                return redirect('/showlaporan/'.$id)->with('success','Jumlah sheet melebihi stock yang tersisa');
             }
             else{
                $jumlah=$sheet-$attributes['jumlah_sheet'];
@@ -378,7 +378,7 @@ class LaporanController extends Controller
                 ]);
             }
             else{
-               return redirect('/laporan_add')->with('success','Material Tersebut Tidak ada di WIP'); 
+               return redirect('/showlaporan/'.$id)->with('success','Material Tersebut Tidak ada di WIP'); 
             }
 
              

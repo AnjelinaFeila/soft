@@ -209,22 +209,26 @@ class ExportController extends Controller
 
 
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Nama Material');
-        $sheet->setCellValue('B1', 'Jumlah Part');
-        $sheet->setCellValue('C1', 'KG PerPart');
-        $sheet->setCellValue('D1', 'Customer');
-        $sheet->setCellValue('E1', 'Tanggal Delivery');
-        $sheet->setCellValue('F1', 'Qc');
+        $sheet->setCellValue('A1', 'No Surat Jalan');
+        $sheet->setCellValue('B1', 'Nama Material');
+        $sheet->setCellValue('C1', 'Jumlah Part');
+        $sheet->setCellValue('D1', 'KG PerPart');
+        $sheet->setCellValue('E1', 'Customer');
+        $sheet->setCellValue('F1', 'Tanggal Produksi');
+        $sheet->setCellValue('G1', 'Tanggal Delivery');
+        $sheet->setCellValue('H1', 'Qc');
 
      
         $row = 2;
         foreach ($data as $item) {
-            $sheet->setCellValue('A' . $row, $item->material->nama_barang);
-            $sheet->setCellValue('B' . $row, $item->jumlah_part);
-            $sheet->setCellValue('C' . $row, $item->material->kg_perpart);
-            $sheet->setCellValue('D' . $row, $item->customer->nama_customer);
-            $sheet->setCellValue('E' . $row, $item->tanggal_delivery);
-            $sheet->setCellValue('F' . $row, $item->qc);
+            $sheet->setCellValue('A' . $row, $item->no_surat_jalan);
+            $sheet->setCellValue('B' . $row, $item->material->nama_barang);
+            $sheet->setCellValue('C' . $row, $item->jumlah_part);
+            $sheet->setCellValue('D' . $row, $item->material->kg_perpart);
+            $sheet->setCellValue('E' . $row, $item->customer->nama_customer);
+            $sheet->setCellValue('F' . $row, $item->tanggal_produksi);
+            $sheet->setCellValue('G' . $row, $item->tanggal_delivery);
+            $sheet->setCellValue('H' . $row, $item->qc);
             $row++;
         }
 
@@ -254,18 +258,20 @@ class ExportController extends Controller
 
 
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Nama Material');
-        $sheet->setCellValue('B1', 'Jumlah');
-        $sheet->setCellValue('C1', 'Customer');
-        $sheet->setCellValue('D1', 'Qc');
+        $sheet->setCellValue('A1', 'Nama Pegawai');
+        $sheet->setCellValue('B1', 'Nama Material');
+        $sheet->setCellValue('C1', 'Jumlah');
+        $sheet->setCellValue('D1', 'Customer');
+        $sheet->setCellValue('E1', 'Qc');
 
      
         $row = 2;
         foreach ($data as $item) {
-            $sheet->setCellValue('A' . $row, $item->material->nama_barang);
-            $sheet->setCellValue('B' . $row, $item->jumlah);
-            $sheet->setCellValue('C' . $row, $item->customer->nama_customer);
-            $sheet->setCellValue('D' . $row, $item->qc);
+            $sheet->setCellValue('A' . $row, $item->nama_pegawai);
+            $sheet->setCellValue('B' . $row, $item->material->nama_barang);
+            $sheet->setCellValue('C' . $row, $item->jumlah);
+            $sheet->setCellValue('D' . $row, $item->customer->nama_customer);
+            $sheet->setCellValue('E' . $row, $item->qc);
             $row++;
         }
 

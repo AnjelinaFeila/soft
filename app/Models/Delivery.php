@@ -23,10 +23,12 @@ class Delivery extends Model
 
     protected $fillable = [
         'id_delivery',
+        'no_surat_jalan',
         'id_material',
         'kg_perpart',
         'id_customer',
         'jumlah_part',
+        'tanggal_produksi',
         'tanggal_delivery',
         'qc',
     ];
