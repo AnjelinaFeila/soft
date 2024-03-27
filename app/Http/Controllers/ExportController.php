@@ -308,10 +308,10 @@ class ExportController extends Controller
         $sheet->setCellValue('D1', 'Proses');
         $sheet->setCellValue('E1', 'Tonase');
         $sheet->setCellValue('F1', 'Target pcs/jam');
+        $sheet->setCellValue('J1', 'Jumlah Sheet');
         $sheet->setCellValue('G1', 'Jam Mulai');
         $sheet->setCellValue('H1', 'Jam Selesai');
         $sheet->setCellValue('I1', 'Jumlah Jam');
-        $sheet->setCellValue('J1', 'Jumlah Sheet');
         $sheet->setCellValue('K1', 'Jumlah OK');
         $sheet->setCellValue('L1', 'Jumlah NG');
         $sheet->setCellValue('M1', 'Target');

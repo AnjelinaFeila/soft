@@ -171,17 +171,17 @@ class LaporanController extends Controller
             $jams->addMinutes(1380);
         }
 
-        else if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
+        if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
             $jams->subMinutes(30);
         }
 
-        else if ($exh5->between($jamm, $jams) && $exh6->between($jamm, $jams)) {
+        if ($exh5->between($jamm, $jams) && $exh6->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
             $jams->subMinutes(120);
         }
 
-        else if ($exh7->between($jamm, $jams) && $exh8->between($jamm, $jams)) {
+        if ($exh7->between($jamm, $jams) && $exh8->between($jamm, $jams)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
             $jams->subMinutes(30);
         }
