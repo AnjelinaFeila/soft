@@ -152,39 +152,66 @@ class LaporanController extends Controller
         $jamm = Carbon::parse($attributes['jam_mulai']);
         $jams = Carbon::parse($attributes['jam_selesai']);
 
-
-
         $exh1 = Carbon::createFromTimeString('12:00:00');
         $exh2 = Carbon::createFromTimeString('13:00:00');
 
         $exh3 = Carbon::createFromTimeString('18:00:00');
         $exh4 = Carbon::createFromTimeString('18:30:00');
 
-        $exh5 = Carbon::createFromTimeString('24:00:00');
+        $exh5 = Carbon::createFromTimeString('00:00:00');
         $exh6 = Carbon::createFromTimeString('01:00:00');
 
         $exh7 = Carbon::createFromTimeString('04:30:00');
         $exh8 = Carbon::createFromTimeString('05:00:00');
 
-        if ($exh1->between($jamm, $jams) && $exh2->between($jamm, $jams)) {
+        $ret=0;
+
+        if ($jamm->lt($jams)) {
+
+            if ($jamm->lt($exh1) && $jams->gt($exh2)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->addMinutes(1380);
+                $ret+=60;
+            }
+
+            if ($jamm->lt($exh3) && $jams->gt($exh4)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=30;
+            }
+
+            if ($jamm->lt($exh5) && $jams->gt($exh6)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $jams->addMinutes(1380);
+            }
+
+            
+            if ($jamm->lt($exh7) && $jams->gt($exh8)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=30;
+            }
+        }
+        else {
+
+            if ($jamm->lt($exh1) || $jams->gt($exh2)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=60;
+            }
+
+            if ($jamm->lt($exh3) || $jams->gt($exh4)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=30;
+            }
+
+            
+            if ($jamm->lt($exh7) || $jams->gt($exh8)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=30;
+            }
+        $jams->addMinutes(1380);
+
+
         }
 
-        if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
-        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(30);
-        }
-
-        if ($exh5->between($jamm, $jams) && $exh6->between($jamm, $jams)) {
-        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(120);
-        }
-
-        if ($exh7->between($jamm, $jams) && $exh8->between($jamm, $jams)) {
-        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(30);
-        }
+        $jams->subMinutes($ret);
 
         $difference = $jamm->diff($jams);
 
@@ -317,36 +344,64 @@ class LaporanController extends Controller
         $exh3 = Carbon::createFromTimeString('18:00:00');
         $exh4 = Carbon::createFromTimeString('18:30:00');
 
-        $exh5 = Carbon::createFromTimeString('24:00:00');
+        $exh5 = Carbon::createFromTimeString('00:00:00');
         $exh6 = Carbon::createFromTimeString('01:00:00');
 
         $exh7 = Carbon::createFromTimeString('04:30:00');
         $exh8 = Carbon::createFromTimeString('05:00:00');
 
-        if ($exh1->between($jamm, $jams) && $exh2->between($jamm, $jams)) {
+        $ret=0;
+
+        if ($jamm->lt($jams)) {
+
+            if ($jamm->lt($exh1) && $jams->gt($exh2)) {
         // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->addMinutes(1380);
+                $ret+=60;
+            }
+
+            if ($jamm->lt($exh3) && $jams->gt($exh4)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=30;
+            }
+
+            if ($jamm->lt($exh5) && $jams->gt($exh6)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $jams->addMinutes(1380);
+            }
+
+            
+            if ($jamm->lt($exh7) && $jams->gt($exh8)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=30;
+            }
+        }
+        else {
+
+            if ($jamm->lt($exh1) || $jams->gt($exh2)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=60;
+            }
+
+            if ($jamm->lt($exh3) || $jams->gt($exh4)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=30;
+            }
+
+            
+            if ($jamm->lt($exh7) || $jams->gt($exh8)) {
+        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
+                $ret+=30;
+            }
+        $jams->addMinutes(1380);
+
+
         }
 
-        else if ($exh3->between($jamm, $jams) && $exh4->between($jamm, $jams)) {
-        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(30);
-        }
-
-        else if ($exh5->between($jamm, $jams) && $exh6->between($jamm, $jams)) {
-        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(120);
-        }
-
-        else if ($exh7->between($jamm, $jams) && $exh8->between($jamm, $jams)) {
-        // Kurangi 60 menit dari waktu selesai jika ada waktu pengecualian
-            $jams->subMinutes(30);
-        }
+        $jams->subMinutes($ret);
 
         $difference = $jamm->diff($jams);
 
         $selisih = $difference->format('%H:%I:%S');
-        
         $attributes['jumlah_jam']=$selisih;
         
         if ($attributes['id_proses']==1) {
