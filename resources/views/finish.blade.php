@@ -23,6 +23,7 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Pegawai</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Material</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Jumlah</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Customer</th>
@@ -43,9 +44,12 @@
                         <td>
                           <div class="d-flex px-2 py-1">
                             <div class="d-flex flex-column justify-content-center">
-                              <h6 class="mb-0 text-sm">{{ $fin->material->nama_barang }}</h6>
+                              <h6 class="mb-0 text-sm">{{ $fin->nama_pegawai }}</h6>
                             </div>
                           </div>
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                          {{ $fin->material->nama_barang}}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $fin->jumlah }}

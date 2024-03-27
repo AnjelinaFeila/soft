@@ -47,6 +47,7 @@ class FinishController extends Controller
     {
 
         $attributes = request()->validate([
+            'nama_pegawai'     => ['max:255'],
             'id_material'     => ['max:10'],
             'jumlah'     => ['max:10'],
             'id_customer' => ['max:10'],

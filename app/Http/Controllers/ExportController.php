@@ -300,11 +300,11 @@ class ExportController extends Controller
         $sheet->setCellValue('B1', 'Tanggal');
         $sheet->setCellValue('C1', 'Material');
         $sheet->setCellValue('D1', 'Proses');
-        $sheet->setCellValue('D1', 'Tonase');
-        $sheet->setCellValue('D1', 'Jumlah Sheet');
-        $sheet->setCellValue('D1', 'Jumlah OK');
-        $sheet->setCellValue('D1', 'Jumlah NG');
-        $sheet->setCellValue('D1', 'Keterangan');
+        $sheet->setCellValue('E1', 'Tonase');
+        $sheet->setCellValue('F1', 'Jumlah Sheet');
+        $sheet->setCellValue('G1', 'Jumlah OK');
+        $sheet->setCellValue('H1', 'Jumlah NG');
+        $sheet->setCellValue('I1', 'Keterangan');
 
      
         $row = 2;
@@ -313,11 +313,11 @@ class ExportController extends Controller
             $sheet->setCellValue('B' . $row, $item->tanggal);
             $sheet->setCellValue('C' . $row, $item->material->nama_barang);
             $sheet->setCellValue('D' . $row, $item->proses->nama_proses);
-            $sheet->setCellValue('D' . $row, $item->tonase->nama_tonase);
-            $sheet->setCellValue('D' . $row, $item->jumlah_sheet);
-            $sheet->setCellValue('D' . $row, $item->jumlah_ok);
-            $sheet->setCellValue('D' . $row, $item->jumlah_ng);
-            $sheet->setCellValue('D' . $row, $item->keterangan);
+            $sheet->setCellValue('E' . $row, $item->tonase->nama_tonase);
+            $sheet->setCellValue('F' . $row, $item->jumlah_sheet);
+            $sheet->setCellValue('G' . $row, $item->jumlah_ok);
+            $sheet->setCellValue('H' . $row, $item->jumlah_ng);
+            $sheet->setCellValue('I' . $row, $item->keterangan);
             $row++;
         }
 
