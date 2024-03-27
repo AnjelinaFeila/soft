@@ -49,7 +49,7 @@ class LaporanController extends Controller
             return view('laporan',compact('laporan'));
         }
         else{
-            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->paginate(5);
+            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->orderBy('id_material','asc')->paginate(5);
             return view('laporan',compact('laporan'));
     }
     }
@@ -406,31 +406,116 @@ class LaporanController extends Controller
         
         if ($attributes['id_proses']==1) {
 
-            $stockraw=Stockraw::where('id_material',$attributes['id_material'])->first();
-            $sheet=$stockraw->jumlah_sheet;
-            
+            $laporan=Laporan::find($id);
+            $sheet=$laporan->jumlah_sheet;
+            $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->first();
+
+
             if ($sheet<$attributes['jumlah_sheet']) {
                 return redirect('/showlaporan/'.$id)->with('success','Jumlah sheet melebihi stock yang tersisa');
             }
-            else{
-               $jumlah=$sheet-$attributes['jumlah_sheet'];
+            if ($sheet>$attributes['jumlah_sheet']){
+                $ngmat=$attributes['id_material'];
+                $ng=$attributes['jumlah_sheet'];
 
-                Stockraw::where('id_material',$attributes['id_material'])->update([
-                'jumlah_sheet'    => $jumlah,
-                ]); 
+                $stockraw=Stockraw::where('id_material',$ngmat)->first();
+                $laporan=Laporan::find($id);
+
+                if ($attributes['jumlah_sheet']<$laporan->jumlah_sheet) {
+                    $exng=$laporan->jumlah_sheet-$attributes['jumlah_sheet'];
+                    $jumlah=$stockraw->jumlah_sheet+$exng;
+                    Stockraw::where('id_material',$laporan->id_material)
+                ->update([
+                    'jumlah_sheet' => $jumlah,
+                    
+                ]);
+                }
+                if ($attributes['jumlah_sheet']>$laporan->jumlah_sheet) {
+                    $exng=$attributes['jumlah_sheet']-$laporan->jumlah_sheet;
+                    $jumlah=$stockraw->jumlah_sheet-$exng;
+
+                    if ($jumlah<0) {
+                        return redirect('/showlaporan/'.$id)->with('success','Jumlah Sheet melebihi stock yang tersisa');
+                    }
+
+                    Stockraw::where('id_material',$laporan->id_material)
+                    ->update([
+                        'jumlah_sheet' => $jumlah,
+                        
+                    ]);
+                }
             }
-            
+
+            if ($wip) {
+                $ngmat=$attributes['id_material'];
+                $ng=$attributes['jumlah_ok'];
+
+                $wip=Wip::where('id_material',$ngmat)->first();
+                $laporan=Laporan::find($id);
+
+                if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                    $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                    $jumlah=$wip->jumlah_part-$exng;
+
+                    Wip::where('id_wip',$wip->id_wip)
+                ->update([
+                    'jumlah_part' => $jumlah,
+                    
+                ]);
+                }
+                if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                    $exng=$attributes['jumlah_ok']+$laporan->jumlah_ok;
+                    $jumlah=$wip->jumlah+$exng;
+
+                    if ($jumlah<0) {
+                        return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
+                    }
+
+                    Wip::where('id_wip',$wip->id_wip)
+                    ->update([
+                        'jumlah_part' => $jumlah,
+                        
+                    ]);
+                }
+            }
+            else{
+               return redirect('/showlaporan'.$id)->with('success','Material Tersebut Tidak ada di WIP'); 
+            }            
         }
         else{
             $wip=Wip::where('id_material',$attributes['id_material'])->first();
             
             if ($wip) {
-                $part=$wip->jumlah_part;
-                $jumlah=$part+$attributes['jumlah_ok'];
+                $ngmat=$attributes['id_material'];
+                $ng=$attributes['jumlah_ok'];
 
-                Wip::where('id_material',$attributes['id_material'])->update([
-                'jumlah_part'    => $jumlah,
+                $wip=Wip::where('id_material',$ngmat)->first();
+                $laporan=Laporan::find($id);
+
+                if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                    $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                    $jumlah=$wip->jumlah_part-$exng;
+
+                    Wip::where('id_wip',$wip->id_wip)
+                ->update([
+                    'jumlah_part' => $jumlah,
+                    
                 ]);
+                }
+                if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                    $exng=$attributes['jumlah_ok']+$laporan->jumlah_ok;
+                    $jumlah=$wip->jumlah+$exng;
+
+                    if ($jumlah<0) {
+                        return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
+                    }
+
+                    Wip::where('id_wip',$wip->id_wip)
+                    ->update([
+                        'jumlah_part' => $jumlah,
+                        
+                    ]);
+                }
             }
             else{
                return redirect('/showlaporan/'.$id)->with('success','Material Tersebut Tidak ada di WIP'); 
