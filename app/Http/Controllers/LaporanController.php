@@ -49,7 +49,7 @@ class LaporanController extends Controller
             return view('laporan',compact('laporan'));
         }
         else{
-            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->orderBy('id_material','asc')->paginate(5);
+            $laporan = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->orderBy('id_material','asc')->orderBy('id_proses','asc')->paginate(5);
             return view('laporan',compact('laporan'));
     }
     }

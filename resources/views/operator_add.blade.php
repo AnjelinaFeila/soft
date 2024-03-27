@@ -45,7 +45,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Contact') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="tel" id="number" name="contact" value="">
+                                    <input class="form-control" type="number" id="number" name="contact" value="">
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror

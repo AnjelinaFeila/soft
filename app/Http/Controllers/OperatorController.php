@@ -48,6 +48,10 @@ class OperatorController extends Controller
         $laporan=Laporan::with('Operator')->where('id_operator',$id)->get();
         $op=Laporan::where('id_operator',$id)->first();
 
+        if (!$laporan || !$op) {
+            return redirect('/operator')->with('success','Operator tidak terdeteksi dalam laporan produksi');
+        }
+
         return view('peroperator', ['laporan' => $laporan,'op' => $op]);
     }
 

@@ -14,7 +14,7 @@ class DeliveryController extends Controller
 {
     public function index()
     {
-        $delivery = Delivery::with('Material','Customer')->get();
+        $delivery = Delivery::with('Material','Customer')->orderBy('id_delivery','asc')->get();
         return view('delivery',compact('delivery'));
     }
 

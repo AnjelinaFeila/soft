@@ -13,7 +13,7 @@ class NotgoodController extends Controller
 {
     public function index()
     {
-        $notgood = Notgood::with('Material')->get();
+        $notgood = Notgood::with('Material')->orderBy('id_material','asc')->get();
         return view('notgood',compact('notgood'));
     }
 

@@ -15,7 +15,7 @@ class FinishController extends Controller
 {
     public function index()
     {
-        $finish = Finish::with('Material','Customer')->get();
+        $finish = Finish::with('Material','Customer')->orderBy('id_material','asc')->get();
         return view('finish',compact('finish'));
     }
 
