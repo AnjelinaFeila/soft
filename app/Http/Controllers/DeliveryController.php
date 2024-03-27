@@ -48,6 +48,7 @@ class DeliveryController extends Controller
 
         $attributes = request()->validate([
             'no_surat_jalan'     => ['max:10'],
+            'no_preorder'     => ['max:10'],
             'id_material'     => ['max:10'],
             'kg_perpart'=> ['max:100'],
             'id_customer'     => ['max:100'],
@@ -69,6 +70,7 @@ class DeliveryController extends Controller
 
         $attributes = request()->validate([
             'no_surat_jalan'     => ['max:10'],
+            'no_preorder'     => ['max:10'],
             'id_material'     => ['max:10'],
             'kg_perpart'=> ['max:100'],
             'id_customer'     => ['max:100'],
@@ -82,6 +84,7 @@ class DeliveryController extends Controller
         Delivery::where('id_delivery',$id)
         ->update([
             'no_surat_jalan' => $attributes['no_surat_jalan'],
+            'no_preorder' => $attributes['no_preorder'],
             'id_material' => $attributes['id_material'],
             'kg_perpart' => $attributes['kg_perpart'],
             'id_customer' => $attributes['id_customer'],

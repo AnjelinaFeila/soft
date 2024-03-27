@@ -24,6 +24,7 @@ class Delivery extends Model
     protected $fillable = [
         'id_delivery',
         'no_surat_jalan',
+        'no_preorder',
         'id_material',
         'kg_perpart',
         'id_customer',

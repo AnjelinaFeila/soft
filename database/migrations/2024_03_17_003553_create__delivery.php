@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('delivery', function (Blueprint $table) {
             $table->increments('id_delivery');
             $table->string('no_surat_jalan')->nullable(false);
+            $table->string('no_preorder')->nullable(false);
             $table->integer('id_material')->nullable(false);
             $table->decimal('kg_perpart');
             $table->integer('id_customer');

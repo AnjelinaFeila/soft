@@ -210,25 +210,27 @@ class ExportController extends Controller
 
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'No Surat Jalan');
-        $sheet->setCellValue('B1', 'Nama Material');
-        $sheet->setCellValue('C1', 'Jumlah Part');
-        $sheet->setCellValue('D1', 'KG PerPart');
-        $sheet->setCellValue('E1', 'Customer');
-        $sheet->setCellValue('F1', 'Tanggal Produksi');
-        $sheet->setCellValue('G1', 'Tanggal Delivery');
-        $sheet->setCellValue('H1', 'Qc');
+        $sheet->setCellValue('B1', 'No Preorder');
+        $sheet->setCellValue('C1', 'Nama Material');
+        $sheet->setCellValue('D1', 'Jumlah Part');
+        $sheet->setCellValue('E1', 'KG PerPart');
+        $sheet->setCellValue('F1', 'Customer');
+        $sheet->setCellValue('G1', 'Tanggal Produksi');
+        $sheet->setCellValue('H1', 'Tanggal Delivery');
+        $sheet->setCellValue('I1', 'Qc');
 
      
         $row = 2;
         foreach ($data as $item) {
             $sheet->setCellValue('A' . $row, $item->no_surat_jalan);
-            $sheet->setCellValue('B' . $row, $item->material->nama_barang);
-            $sheet->setCellValue('C' . $row, $item->jumlah_part);
-            $sheet->setCellValue('D' . $row, $item->material->kg_perpart);
-            $sheet->setCellValue('E' . $row, $item->customer->nama_customer);
-            $sheet->setCellValue('F' . $row, $item->tanggal_produksi);
-            $sheet->setCellValue('G' . $row, $item->tanggal_delivery);
-            $sheet->setCellValue('H' . $row, $item->qc);
+            $sheet->setCellValue('B' . $row, $item->no_preorder);
+            $sheet->setCellValue('C' . $row, $item->material->nama_barang);
+            $sheet->setCellValue('D' . $row, $item->jumlah_part);
+            $sheet->setCellValue('E' . $row, $item->material->kg_perpart);
+            $sheet->setCellValue('F' . $row, $item->customer->nama_customer);
+            $sheet->setCellValue('G' . $row, $item->tanggal_produksi);
+            $sheet->setCellValue('H' . $row, $item->tanggal_delivery);
+            $sheet->setCellValue('I' . $row, $item->qc);
             $row++;
         }
 

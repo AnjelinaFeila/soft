@@ -14,6 +14,7 @@ class DeliverySeeder extends Seeder
     {
         DB::table('delivery')->insert([
             'no_surat_jalan' => 1,
+            'no_preorder' => 1,
             'id_material' => 1,
             'kg_perpart'=> 12,
             'id_customer'=>1,
@@ -27,6 +28,7 @@ class DeliverySeeder extends Seeder
 
         DB::table('delivery')->insert([
             'no_surat_jalan' => 1,
+            'no_preorder' => 1,
             'id_material' => 1,
             'kg_perpart'=> 7,
             'id_customer'=>2,

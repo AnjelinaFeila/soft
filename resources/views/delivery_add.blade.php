@@ -30,11 +30,24 @@
                         </div>
                     @endif
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('No Surat Jalan') }}</label>
                                 <div class="@error('email')border border-danger rounded-3 @enderror">
                                     <input class="form-control" name="no_surat_jalan" value="0" type="" id="number" value=" ">
+                                        @error('phone')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user-email" class="form-control-label">{{ __('No Preorder') }}</label>
+                                <div class="@error('email')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" name="no_preorder" value="0" type="" id="number" value=" ">
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
