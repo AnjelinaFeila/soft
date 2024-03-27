@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/export-wip', [ExportController::class, 'exportToExcel3'])->name('export-wip');
 	Route::get('/export-delivery', [ExportController::class, 'exportToExcel4'])->name('export-delivery');
 	Route::get('/export-finish', [ExportController::class, 'exportToExcel5'])->name('export-finish');
+	Route::get('/export-peroperator/{id}', [ExportController::class, 'exportToExcel6'])->name('export-peroperator');
 
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
 
@@ -171,7 +172,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/operator', [OperatorController::class, 'index']);
     Route::post('/operator', [OperatorController::class, 'store']);
     Route::get('/showoperator/{id}', [OperatorController::class, 'show'])->name('operator.showoperator');
-    Route::get('/peroperator', [OperatorController::class, 'show2'])->name('peroperator');
+    Route::get('/peroperator/{id}', [OperatorController::class, 'show2'])->name('peroperator');
     Route::post('/operator/{id}', [OperatorController::class, 'update'])->name('operator.update');
     Route::delete('/operator/{id}', [OperatorController::class, 'destroy'])->name('operator.destroy');
 

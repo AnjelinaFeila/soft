@@ -18,7 +18,7 @@ class HomeController extends Controller
         $material=Material::count();
         $customer=Customer::count();
         $supplier=Supplier::count();
-        $user=User::where('position','user')->count();
+        $user=User::where('position','superadmin')->count();
         $admin=User::where('position','admin')->count();
         $owner=User::where('position','owner')->count();
         $laporan = Laporan::orderBy('id_laporan_produksi', 'desc')->take(5)->get();
@@ -32,7 +32,7 @@ class HomeController extends Controller
         $material=Material::count();
         $customer=Customer::count();
         $supplier=Supplier::count();
-        $user=User::where('position','user')->count();
+        $user=User::where('position','superadmin')->count();
         $admin=User::where('position','admin')->count();
         $owner=User::where('position','owner')->count();
         $laporan = Laporan::orderBy('id_laporan_produksi', 'desc')->take(5)->get();

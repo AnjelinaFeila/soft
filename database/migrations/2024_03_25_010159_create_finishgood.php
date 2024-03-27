@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('finishgood', function (Blueprint $table) {
             $table->increments('id_finishgood');
+            $table->string('nama_pegawai');
             $table->integer('id_material')->nullable(false);
             $table->integer('jumlah')->nullable(false);
             $table->integer('id_customer');

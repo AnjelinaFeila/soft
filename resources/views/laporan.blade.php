@@ -120,9 +120,6 @@
                           {{ $lap->keterangan }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $lap->keterangan }}
-                        </td>
-                        <td class="align-middle text-center text-sm">
                           {{ $lap->updated_at }}
                         </td>
                         @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')

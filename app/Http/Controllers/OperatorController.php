@@ -43,16 +43,12 @@ class OperatorController extends Controller
         return view('/showoperator',['operator'=>$operator]);
     }
 
-    public function show2()
+    public function show2($id)
     {
-        $operators = Operator::all();
-        $reports = Laporan::with('Operator')->orderBy('tanggal', 'desc')
-            ->get()
-            ->groupBy(function ($report) {
-                return $report->Operator->nama_operator;
-            });
+        $laporan=Laporan::with('Operator')->where('id_operator',$id)->get();
+        $op=Laporan::where('id_operator',$id)->first();
 
-        return view('peroperator', ['operators' => $operators, 'reports' => $reports]);
+        return view('peroperator', ['laporan' => $laporan,'op' => $op]);
     }
 
     public function store(Request $request)

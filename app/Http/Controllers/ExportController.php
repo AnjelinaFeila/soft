@@ -286,4 +286,58 @@ class ExportController extends Controller
 
         return response()->download($tempFilePath, 'finish_good.xlsx', $headers);
     }
+
+    public function exportToExcel6($id)
+    {
+        $data = Laporan::with('Operator')->where('id_operator',$id)->get();
+        $nama = Laporan::with('Operator')->where('id_operator',$id)->first();
+
+        $spreadsheet = new Spreadsheet();
+
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Nama Operator');
+        $sheet->setCellValue('B1', 'Tanggal');
+        $sheet->setCellValue('C1', 'Material');
+        $sheet->setCellValue('D1', 'Proses');
+        $sheet->setCellValue('D1', 'Tonase');
+        $sheet->setCellValue('D1', 'Jumlah Sheet');
+        $sheet->setCellValue('D1', 'Jumlah OK');
+        $sheet->setCellValue('D1', 'Jumlah NG');
+        $sheet->setCellValue('D1', 'Keterangan');
+
+     
+        $row = 2;
+        foreach ($data as $item) {
+            $sheet->setCellValue('A' . $row, $item->operator->nama_operator);
+            $sheet->setCellValue('B' . $row, $item->tanggal);
+            $sheet->setCellValue('C' . $row, $item->material->nama_barang);
+            $sheet->setCellValue('D' . $row, $item->proses->nama_proses);
+            $sheet->setCellValue('D' . $row, $item->tonase->nama_tonase);
+            $sheet->setCellValue('D' . $row, $item->jumlah_sheet);
+            $sheet->setCellValue('D' . $row, $item->jumlah_ok);
+            $sheet->setCellValue('D' . $row, $item->jumlah_ng);
+            $sheet->setCellValue('D' . $row, $item->keterangan);
+            $row++;
+        }
+
+
+        foreach (range('A', 'Z') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'excel');
+        $writer->save($tempFilePath);
+
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="data.xlsx"',
+        ];
+
+        return response()->download($tempFilePath, $nama->operator->nama_operator.'.xlsx', $headers);
+    }
 }
+
+

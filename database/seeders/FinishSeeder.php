@@ -13,6 +13,7 @@ class FinishSeeder extends Seeder
     public function run()
     {
         DB::table('finishgood')->insert([
+            'nama_pegawai' => 'john doe',
             'id_material' => '1',
             'jumlah' => '10',
             'id_customer' => '1',
@@ -21,6 +22,7 @@ class FinishSeeder extends Seeder
             'updated_at' => now()
         ]);
         DB::table('finishgood')->insert([
+            'nama_pegawai' => 'jane doe',
             'id_material' => '2',
             'jumlah' => '20',
             'id_customer' => '2',

@@ -16,7 +16,10 @@
           @endif
           <div class="card mb-4">
             <div class="card-header">
-              <h6>Tabel Operator</h6>
+              <h6>Tabel {{$op->operator->nama_operator}}</h6>
+              @if(auth()->user()->position!='owner')
+              <a href="{{route('export-peroperator',$op->id_operator)}}" class="btn btn-primary btn-sm position-relative float-start mx-auto">Export to Excel</a>
+              @endif
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -35,13 +38,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($operators as $operator)
-                    @foreach ($reports[$operator->nama_operator] as $report)
+                    @foreach ($laporan as $report)
                       <tr>
                         <td>
                           <div class="d-flex px-2 py-1">
                             <div class="d-flex flex-column justify-content-center">
-                              <h6 class="mb-0 text-sm">{{ $operator->nama_operator }}</h6>
+                              <h6 class="mb-0 text-sm">{{ $report->operator->nama_operator }}</h6>
                             </div>
                           </div>
                         </td>
@@ -52,13 +54,13 @@
                           {{ $report->Material->nama_barang }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $report->jumlah_sheet }}
+                          {{ $report->Proses->nama_proses }}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $report->Tonase->nama_tonase }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                            {{ $report->Proses->nama_proses }}
+                            {{ $report->jumlah_sheet }}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $report->jumlah_ok }}
@@ -70,7 +72,6 @@
                           {{ $report->keterangan }}
                         </td>
                       </tr>
-                    @endforeach
                     @endforeach
                   </tbody>
                 </table>
