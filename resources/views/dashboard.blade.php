@@ -135,7 +135,7 @@
       new Chart(ctx, {
         type: "bar",
         data: {
-          labels: ["User", "Admin", "Owner"],
+          labels: ["Super Admin", "Admin", "Owner"],
           datasets: [{
             label: "Sales",
             tension: 0.5,

@@ -116,7 +116,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Jam Selesai') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="time" id="name" name="jam_selesai" value="{{$laporan->jam_mulai}}">
+                                    <input class="form-control" type="time" id="name" name="jam_selesai" value="{{$laporan->jam_selesai}}">
                                 </div>
                             </div>
                         </div>
