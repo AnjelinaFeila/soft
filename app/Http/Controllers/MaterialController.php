@@ -11,6 +11,7 @@ use App\Models\Delivery;
 use App\Models\Laporan;
 use App\Models\Finish;
 use App\Models\Notgood;
+use App\Models\Target;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,7 @@ class MaterialController extends Controller
         $delivery = Delivery::where('id_material', $id)->exists();
         $finish = Finish::where('id_material', $id)->exists();
         $notgood = Notgood::where('id_material', $id)->exists();
+        $target = Notgood::where('id_material', $id)->exists();
 
         if ($laporan) {
             return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Laporan Produksi');
@@ -61,6 +63,9 @@ class MaterialController extends Controller
         if ($notgood) {
             return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Not Good');
         }
+        if ($target) {
+            return redirect('/material')->with('success','Gagal Menghapus,Material Terhubung Dengan Target');
+        }
         else{
             $material->delete();
 
@@ -79,18 +84,24 @@ class MaterialController extends Controller
 
     public function store(Request $request)
     {
-       
+        $latestIdMaterial = Material::max('id_material');
+
+        // Increment the latest id_material value by 1 to get the next ID
+        $nextIdMaterial = $latestIdMaterial += 1;
+
+        // Validate the request data including the incremented id_material value
         $attributes = request()->validate([
+            'id_material' => 'integer',
             'nama_barang' => ['required', 'max:255'],
-            'kg_persheet'     => ['max:50'],
-            'kg_perpart'     => ['max:50'],
-            'jumlah_persheet'     => ['max:50'],
-            'ukuran'     => ['max:100'],
+            'kg_persheet' => ['max:50'],
+            'kg_perpart' => ['max:50'],
+            'jumlah_persheet' => ['max:50'],
+            'ukuran' => ['max:100'],
             'id_supplier' => ['max:255'],
             'id_customer' => ['max:255'],
         ]);
-        
-        
+        $attributes['id_material'] = $nextIdMaterial;
+        // Create a new record in the material table using the validated attributes
         Material::create($attributes);
 
 

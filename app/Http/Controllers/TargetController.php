@@ -16,6 +16,12 @@ class TargetController extends Controller
     public function index()
     {
         $target = Target::with('Material','proses')->orderBy('id_material','asc')->orderBy('id_proses','asc')->get();
+
+        foreach($target as $targ){
+            if (empty($targ->material->nama_barang)) {
+                 return redirect('/material')->with('success','Material yang di butuhkan tidak ada silahkan isi terlebih dahulu dengan urutan yang benar');
+            }
+        }
         return view('target',compact('target'));
     }
 
