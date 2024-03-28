@@ -344,10 +344,10 @@ class ExportController extends Controller
             $sheet->setCellValue('D' . $row, $item->proses->nama_proses);
             $sheet->setCellValue('E' . $row, $item->tonase->nama_tonase);
             $sheet->setCellValue('F' . $row, $item->target->minimal_target);
-            $sheet->setCellValue('G' . $row, $item->jumlah_sheet);
-            $sheet->setCellValue('H' . $row, $item->jam_mulai);
-            $sheet->setCellValue('I' . $row, $item->jam_selesai);
-            $sheet->setCellValue('J' . $row, $item->jumlah_jam);
+            $sheet->setCellValue('G' . $row, $item->jam_mulai);
+            $sheet->setCellValue('H' . $row, $item->jam_selesai);
+            $sheet->setCellValue('I' . $row, $item->jumlah_jam);
+            $sheet->setCellValue('J' . $row, $item->jumlah_sheet);
             $sheet->setCellValue('K' . $row, $item->jumlah_ok);
             $sheet->setCellValue('L' . $row, $item->jumlah_ng);
             $sheet->setCellValue('M' . $row, $target);

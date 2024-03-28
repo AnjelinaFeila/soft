@@ -19,7 +19,7 @@ class TargetController extends Controller
 
         foreach($target as $targ){
             if (empty($targ->material->nama_barang)) {
-                 return redirect('/material')->with('success','Material yang di butuhkan tidak ada silahkan isi terlebih dahulu dengan urutan yang benar');
+                 return redirect('/material')->with('success','Material yang di butuhkan tidak ada silahkan isi terlebih dahulu');
             }
         }
         return view('target',compact('target'));
