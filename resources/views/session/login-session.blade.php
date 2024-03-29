@@ -15,9 +15,9 @@
                 <div class="card-body">
                   <form role="form" method="POST" action="/session">
                     @csrf
-                    <label>ID Pegawai</label>
+                    <label>ID</label>
                     <div class="mb-3">
-                      <input type="text" class="form-control" name="id_pegawai" id="email" placeholder="Id Pegawai" value="" aria-label="Email" aria-describedby="email-addon">
+                      <input type="text" class="form-control" name="id_pegawai" id="email" placeholder="Masukkan ID" value="" aria-label="Email" aria-describedby="email-addon">
                     </div>
                     <label>Password</label>
                     <div class="mb-3">
