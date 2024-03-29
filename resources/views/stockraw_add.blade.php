@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('No Preorder') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="0" type="number" placeholder="" id="user-name" name="no_preorder">
+                                    <input class="form-control" value="0" type="number" placeholder="" id="user-name" name="no_preorder" required>
                                         @error('name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Jumlah Sheet') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" name="jumlah_sheet" type="number" id="number" value="0">
+                                    <input class="form-control" name="jumlah_sheet" type="number" id="number" value="0" required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -72,7 +72,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Kg PerSheet') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" step="0.01"  id="name" name="kg_persheet" value="0">
+                                    <input class="form-control" type="number" step="0.01"  id="name" name="kg_persheet" value="0" required>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Jumlah Nutt') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number"  id="name" name="jumlah_nutt" value="0">
+                                    <input class="form-control" type="number"  id="name" name="jumlah_nutt" value="0" required>
                                 </div>
                             </div>
                         </div>

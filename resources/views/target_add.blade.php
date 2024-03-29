@@ -56,7 +56,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Minimal Target') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" id="name" name="minimal_target" value="0">
+                                    <input class="form-control" type="number" id="name" name="minimal_target" value="0" required>
                                 </div>
                             </div>
                         </div>

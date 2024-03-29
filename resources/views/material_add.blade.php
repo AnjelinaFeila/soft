@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Nama Barang') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="" type="text" placeholder="" id="user-name" name="nama_barang">
+                                    <input class="form-control" value="" type="text" placeholder="" id="user-name" name="nama_barang" required>
                                         @error('name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -45,7 +45,7 @@
                             <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('Kg Persheet') }}</label>
                                 <div class="@error('email')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="0" type="number" step="0.01" placeholder="" id="user-email" name="kg_persheet">
+                                    <input class="form-control" value="0" type="number" step="0.01" placeholder="" id="user-email" name="kg_persheet" required>
                                         @error('email')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -58,7 +58,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Kg Perpart') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" id="number" step="0.01" name="kg_perpart" value="0">
+                                    <input class="form-control" type="number" id="number" step="0.01" name="kg_perpart" value="0" required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -69,7 +69,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Jumlah Persheet') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" id="name" name="jumlah_persheet" value="0">
+                                    <input class="form-control" type="number" id="name" name="jumlah_persheet" value="0" required>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Ukuran') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="text" id="name" name="ukuran" value="0">
+                                    <input class="form-control" type="text" id="name" name="ukuran" value="0" required>
                                 </div>
                             </div>
                         </div>

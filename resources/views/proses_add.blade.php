@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Nama Proses') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="" type="text" placeholder="" id="user-name" name="nama_proses">
+                                    <input class="form-control" value="" type="text" placeholder="" id="user-name" name="nama_proses" required>
                                         @error('name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror

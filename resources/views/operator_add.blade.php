@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Nama Operator') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="" type="text" placeholder="" id="user-name" name="nama_operator">
+                                    <input class="form-control" value="" type="text" placeholder="" id="user-name" name="nama_operator" required>
                                         @error('name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -45,7 +45,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Contact') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" id="number" name="contact" value="">
+                                    <input class="form-control" type="number" id="number" name="contact" value="" required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror

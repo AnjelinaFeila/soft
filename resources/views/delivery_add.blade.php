@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('No Surat Jalan') }}</label>
                                 <div class="@error('email')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" name="no_surat_jalan" value="0" type="" id="number" value=" ">
+                                    <input class="form-control" name="no_surat_jalan" value="0" type="" id="number" value=" " required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('No Preorder') }}</label>
                                 <div class="@error('email')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" name="no_preorder" value="0" type="" id="number" value=" ">
+                                    <input class="form-control" name="no_preorder" value="0" type="" id="number" value=" " required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -72,7 +72,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Jumlah Part') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" name="jumlah_part" value="0" type="number" id="number" value=" ">
+                                    <input class="form-control" name="jumlah_part" value="0" type="number" id="number" value=" " required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -97,7 +97,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Tanggal Produksi') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" name="tanggal_produksi" type="date" id="number" value="2024-01-01">
+                                    <input class="form-control" name="tanggal_produksi" type="date" id="number" value="2024-01-01" required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -108,7 +108,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Kg PerPart') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" step="0.01" value="0"  id="name" name="kg_perpart" value="">
+                                    <input class="form-control" type="number" step="0.01" value="0"  id="name" name="kg_perpart" value="" required>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Tanggal Delivery') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" name="tanggal_delivery" type="date" id="number" value="2024-01-01">
+                                    <input class="form-control" name="tanggal_delivery" type="date" id="number" value="2024-01-01" required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -129,7 +129,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Quality Control') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <select name="qc" class="form-control">
+                                    <select name="qc" class="form-control" required>
                                         <option value="&#10004;">&#10004;</option>
                                         <option value="&#10006;">&#10006;</option>
                                     </select>

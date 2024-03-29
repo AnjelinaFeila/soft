@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Tanggal') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="date" placeholder="" id="user-name" name="tanggal" value="2024-01-01">
+                                    <input class="form-control" type="date" placeholder="" id="user-name" name="tanggal" value="2024-01-01" required>
                                         @error('name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -81,7 +81,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Jumlah Sheet') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" value="0" id="number" name="jumlah_sheet">
+                                    <input class="form-control" type="number" value="0" id="number" name="jumlah_sheet" required>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Jam Mulai') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="time" id="number" name="jam_mulai" value="00:00">
+                                    <input class="form-control" type="time" id="number" name="jam_mulai" value="00:00" required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -112,7 +112,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Jam Selesai') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="time" id="name" name="jam_selesai" value="00:00">
+                                    <input class="form-control" type="time" id="name" name="jam_selesai" value="00:00" required>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Jumlah OK') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" id="number" name="jumlah_ok" value="0">
+                                    <input class="form-control" type="number" id="number" name="jumlah_ok" value="0" required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -133,7 +133,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Jumlah NG') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number" id="name" name="jumlah_ng" value="0">
+                                    <input class="form-control" type="number" id="name" name="jumlah_ng" value="0" required>
                                 </div>
                             </div>
                         </div>

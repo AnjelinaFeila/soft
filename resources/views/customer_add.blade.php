@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Nama Customer') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="" type="text" placeholder="" id="user-name" name="nama_customer">
+                                    <input class="form-control" value="" type="text" placeholder="" id="user-name" name="nama_customer" required>
                                         @error('name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -45,7 +45,7 @@
                             <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('Alamat') }}</label>
                                 <div class="@error('email')border border-danger rounded-3 @enderror">
-                                    <textarea class="form-control" name="alamat"></textarea>
+                                    <textarea class="form-control" name="alamat"></textarea required>
                                         @error('email')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -58,7 +58,7 @@
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('contact') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="tel" id="number" name="contact" value="">
+                                    <input class="form-control" type="tel" id="number" name="contact" value="" required>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -69,7 +69,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('email') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="text" id="name" name="email" value="">
+                                    <input class="form-control" type="text" id="name" name="email" value="" required>
                                 </div>
                             </div>
                         </div>
