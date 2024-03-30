@@ -65,21 +65,29 @@ class LaporanController extends Controller
     }
 
     public function destroy($id)
-    {
-        $laporan = Laporan::find($id);
-        $ng=Notgood::where('id_material',$laporan->id_material)->first();
-        $jumlah=$ng->jumlah_ng-$laporan->jumlah_ng;
+{
+    $laporan = Laporan::findOrFail($id);
 
-        $laporan->delete();
+    // Get the corresponding Notgood record for the material used in the Laporan
+    $notgood = Notgood::where('id_material', $laporan->id_material)->first();
 
-        Notgood::where('id_notgood',$ng->id_notgood)
-        ->update([
-            'jumlah_ng' => $jumlah,
-            
-        ]);
+    // Check if the Notgood record exists before trying to update its jumlah_ng property
+    if ($notgood) {
+        // Calculate the new value of jumlah_ng for the Notgood record
+        $jumlah = $notgood->jumlah_ng - $laporan->jumlah_ng;
 
-        return redirect('/laporan');
+        // Update the Notgood record with the new value of jumlah_ng
+        Notgood::where('id_notgood', $notgood->id_notgood)
+            ->update([
+                'jumlah_ng' => $jumlah,
+            ]);
     }
+
+    // Delete the Laporan record
+    $laporan->delete();
+
+    return redirect('/laporan');
+}
 
     public function show($id)
     {
