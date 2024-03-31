@@ -227,7 +227,9 @@ class LaporanController extends Controller
         
         $attributes['jumlah_jam']=$selisih;
 
-        if ($attributes['id_proses']==1) {
+        $proses=Proses::where('nama_proses','blanking')->first();
+
+        if ($attributes['id_proses']==$proses->id_proses) {
 
             $stockraw=Stockraw::where('id_material',$attributes['id_material'])->first();
             $sheet=$stockraw->jumlah_sheet;
@@ -412,7 +414,9 @@ class LaporanController extends Controller
         $selisih = $difference->format('%H:%I:%S');
         $attributes['jumlah_jam']=$selisih;
         
-        if ($attributes['id_proses']==1) {
+        $proses=Proses::where('nama_proses','blanking')->first();
+
+        if ($attributes['id_proses']==$proses->id_proses) {
 
             $laporan=Laporan::find($id);
             $sheet=$laporan->jumlah_sheet;
