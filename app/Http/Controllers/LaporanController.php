@@ -227,9 +227,12 @@ class LaporanController extends Controller
         
         $attributes['jumlah_jam']=$selisih;
 
-        $proses=Proses::where('nama_proses','blanking')->first();
+        $idproses="";
+        if ($proses=Proses::where('nama_proses','blanking')->first()) {
+            $idproses=$proses->id_proses;
+        }
 
-        if ($attributes['id_proses']==$proses->id_proses) {
+        if ($attributes['id_proses']==$idproses) {
 
             $stockraw=Stockraw::where('id_material',$attributes['id_material'])->first();
             $sheet=$stockraw->jumlah_sheet;
@@ -414,9 +417,12 @@ class LaporanController extends Controller
         $selisih = $difference->format('%H:%I:%S');
         $attributes['jumlah_jam']=$selisih;
         
-        $proses=Proses::where('nama_proses','blanking')->first();
+        $idproses="";
+        if ($proses=Proses::where('nama_proses','blanking')->first()) {
+            $idproses=$proses->id_proses;
+        }
 
-        if ($attributes['id_proses']==$proses->id_proses) {
+        if ($attributes['id_proses']==$idproses) {
 
             $laporan=Laporan::find($id);
             $sheet=$laporan->jumlah_sheet;
@@ -424,7 +430,35 @@ class LaporanController extends Controller
 
 
             if ($sheet<$attributes['jumlah_sheet']) {
-                return redirect('/showlaporan/'.$id)->with('success','Jumlah sheet melebihi stock yang tersisa');
+                $ngmat=$attributes['id_material'];
+                $ng=$attributes['jumlah_sheet'];
+
+                $stockraw=Stockraw::where('id_material',$ngmat)->first();
+                $laporan=Laporan::find($id);
+
+                if ($attributes['jumlah_sheet']<$laporan->jumlah_sheet) {
+                    $exng=$laporan->jumlah_sheet-$attributes['jumlah_sheet'];
+                    $jumlah=$stockraw->jumlah_sheet+$exng;
+                    Stockraw::where('id_material',$laporan->id_material)
+                ->update([
+                    'jumlah_sheet' => $jumlah,
+                    
+                ]);
+                }
+                if ($attributes['jumlah_sheet']>$laporan->jumlah_sheet) {
+                    $exng=$attributes['jumlah_sheet']-$laporan->jumlah_sheet;
+                    $jumlah=$stockraw->jumlah_sheet-$exng;
+
+                    if ($jumlah<0) {
+                        return redirect('/showlaporan/'.$id)->with('success','Jumlah Sheet melebihi stock yang tersisa');
+                    }
+
+                    Stockraw::where('id_material',$laporan->id_material)
+                    ->update([
+                        'jumlah_sheet' => $jumlah,
+                        
+                    ]);
+                }
             }
             if ($sheet>$attributes['jumlah_sheet']){
                 $ngmat=$attributes['id_material'];
