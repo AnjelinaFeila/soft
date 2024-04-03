@@ -239,7 +239,7 @@ class LaporanController extends Controller
 
         $nextproses=Proses::where('id_proses',$attributes['id_proses'])->first();
         
-        if ($attributes['id_proses']==4 || $attributes['id_proses']==8 || $attributes['id_proses']==9 || $attributes['id_proses']==11 || $attributes['id_proses']==15 || $attributes['id_proses']==16 || $attributes['id_proses']==17 || $attributes['id_proses']==27 || $attributes['id_proses']==28 || $attributes['id_proses']==25 || $attributes['id_proses']==29 || $attributes['id_proses']==30) {
+        if ($attributes['id_material']==4 || $attributes['id_material']==8 || $attributes['id_material']==9 || $attributes['id_material']==11 || $attributes['id_material']==15 || $attributes['id_material']==16 || $attributes['id_material']==17 || $attributes['id_material']==27 || $attributes['id_material']==28 || $attributes['id_material']==25 || $attributes['id_material']==29 || $attributes['id_material']==30) {
              if ($nextproses->nama_proses=='bending') {
                 if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
                     $jmlpart=$nextwip->jumlah_part;
@@ -254,7 +254,7 @@ class LaporanController extends Controller
                         'jumlah_part' => $nexttotal,
                     ]);
 
-                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                    if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
                         Wip::where('id_proses',$newwip->id_proses)
                         ->update([
@@ -291,7 +291,7 @@ class LaporanController extends Controller
                         'jumlah_part' => $nexttotal,
                     ]);
 
-                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                    if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
                         Wip::where('id_proses',$newwip->id_proses)
                         ->update([
@@ -328,7 +328,7 @@ class LaporanController extends Controller
                         'jumlah_part' => $nexttotal,
                     ]);
 
-                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                    if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
                         Wip::where('id_proses',$newwip->id_proses)
                         ->update([
@@ -404,19 +404,17 @@ class LaporanController extends Controller
         $idproses="";
         if ($proses=Proses::where('nama_proses','blanking')->first()) {
             $idproses=$proses->id_proses;
-
-            $persheet=Material::where('id_material',$attributes['id_material'])->first();
-            $valok=$persheet->jumlah_persheet*$attributes['jumlah_sheet'];
-
-            if ($attributes['jumlah_ok']>$valok) {
-                return redirect('/laporan_add')->with('success','Jumlah ok melebihi total sheet yang di kerjakan');
-            }
         }
 
         if ($attributes['id_proses']==$idproses) {
 
-            $stockraw=Stockraw::where('id_material',$attributes['id_material'])->first();
-            $sheet=$stockraw->jumlah_sheet;
+            if ($stockraw=Stockraw::where('id_material',$attributes['id_material'])->first()) {
+                $sheet=$stockraw->jumlah_sheet;
+            }
+            else{
+                return redirect('/laporan_add')->with('success','Material tidak terdata di stockraw');
+            }
+            
             
             if ($sheet<$attributes['jumlah_sheet']) {
                 return redirect('/laporan_add')->with('success','Jumlah sheet melebihi stock yang tersisa');
@@ -427,6 +425,13 @@ class LaporanController extends Controller
                 Stockraw::where('id_material',$attributes['id_material'])->update([
                 'jumlah_sheet'    => $jumlah,
                 ]); 
+            }
+
+            $persheet=Material::where('id_material',$attributes['id_material'])->first();
+            $valok=$persheet->jumlah_persheet*$attributes['jumlah_sheet'];
+
+            if ($attributes['jumlah_ok']>$valok) {
+                return redirect('/laporan_add')->with('success','Jumlah ok melebihi total sheet yang di kerjakan');
             }
             
         }
@@ -585,7 +590,7 @@ class LaporanController extends Controller
 
         $nextproses=Proses::where('id_proses',$attributes['id_proses'])->first();
         
-        if ($attributes['id_proses']==4 || $attributes['id_proses']==8 || $attributes['id_proses']==9 || $attributes['id_proses']==11 || $attributes['id_proses']==15 || $attributes['id_proses']==16 || $attributes['id_proses']==17 || $attributes['id_proses']==27 || $attributes['id_proses']==28 || $attributes['id_proses']==25 || $attributes['id_proses']==29 || $attributes['id_proses']==30) {
+        if ($attributes['id_material']==4 || $attributes['id_material']==8 || $attributes['id_material']==9 || $attributes['id_material']==11 || $attributes['id_material']==15 || $attributes['id_material']==16 || $attributes['id_material']==17 || $attributes['id_material']==27 || $attributes['id_material']==28 || $attributes['id_material']==25 || $attributes['id_material']==29 || $attributes['id_material']==30) {
              if ($nextproses->nama_proses=='bending') {
                 if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
                     $laporan=Laporan::find($id);
@@ -615,7 +620,7 @@ class LaporanController extends Controller
                         ]);
                     }
 
-                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                    if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
                             $work=$newwip->jumlah_part-$exng;
@@ -684,7 +689,7 @@ class LaporanController extends Controller
                         ]);
                     }
 
-                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                    if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
                             $work=$newwip->jumlah_part-$exng;
@@ -753,7 +758,7 @@ class LaporanController extends Controller
                         ]);
                     }
 
-                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                    if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
                             $work=$newwip->jumlah_part-$exng;
@@ -899,12 +904,7 @@ class LaporanController extends Controller
         if ($proses=Proses::where('nama_proses','blanking')->first()) {
             $idproses=$proses->id_proses;
 
-            $persheet=Material::where('id_material',$attributes['id_material'])->first();
-            $valok=$persheet->jumlah_persheet*$attributes['jumlah_sheet'];
-
-            if ($attributes['jumlah_ok']>$valok) {
-                return redirect('/laporan_add')->with('success','Jumlah ok melebihi total sheet yang di kerjakan');
-            }
+            
         }
 
         if ($attributes['id_proses']==$idproses) {
@@ -982,7 +982,15 @@ class LaporanController extends Controller
             }
             else{
                return redirect('/showlaporan'.$id)->with('success','Material Tersebut Tidak ada di WIP'); 
-            }            
+            }
+
+            $persheet=Material::where('id_material',$attributes['id_material'])->first();
+            $valok=$persheet->jumlah_persheet*$attributes['jumlah_sheet'];
+
+            if ($attributes['jumlah_ok']>$valok) {
+                return redirect('/laporan_add')->with('success','Jumlah ok melebihi total sheet yang di kerjakan');
+            } 
+
         }
         
         Laporan::where('id_laporan_produksi',$id)
