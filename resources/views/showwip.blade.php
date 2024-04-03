@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden>
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Kg PerPart') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="user.phone" class="form-control-label">{{ __('Jumlah Part') }}</label>
                                 <div class="@error('user.phone')border border-danger rounded-3 @enderror">

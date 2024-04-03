@@ -41,7 +41,7 @@
                           </div>
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $wip->kg_perpart }}
+                          {{ $wip->material->kg_perpart }}
                         </td>
                         <td class="align-middle text-center text-sm">
                           {{ $wip->jumlah_part }}

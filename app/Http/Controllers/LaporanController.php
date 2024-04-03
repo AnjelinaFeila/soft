@@ -227,16 +227,196 @@ class LaporanController extends Controller
         
         $attributes['jumlah_jam']=$selisih;
 
+        if ($blanking=Proses::where('nama_proses','blanking')->first()) {
+            $idblanking=$blanking->id_proses;
+        }
+        if ($bending=Proses::where('nama_proses','bending')->first()) {
+            $idbending=$bending->id_proses;
+        }
+        if ($bending2=Proses::where('nama_proses','bending2')->orWhere('nama_proses','bending 2')->first()) {
+            $idbending2=$bending2->id_proses;
+        }
+
+        $nextproses=Proses::where('id_proses',$attributes['id_proses'])->first();
+        
+        if ($attributes['id_proses']==4 || $attributes['id_proses']==8 || $attributes['id_proses']==9 || $attributes['id_proses']==11 || $attributes['id_proses']==15 || $attributes['id_proses']==16 || $attributes['id_proses']==17 || $attributes['id_proses']==27 || $attributes['id_proses']==28 || $attributes['id_proses']==25 || $attributes['id_proses']==29 || $attributes['id_proses']==30) {
+             if ($nextproses->nama_proses=='bending') {
+                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
+                    $jmlpart=$nextwip->jumlah_part;
+                    $nexttotal=$jmlpart-$attributes['jumlah_ok'];
+
+                    if ($nexttotal<0) {
+                         return redirect('/laporan_add')->with('success','Jumlah part melebihi stock blanking yang tersisa');
+                    }
+
+                    Wip::where('id_wip',$nextwip->id_wip)
+                    ->update([
+                        'jumlah_part' => $nexttotal,
+                    ]);
+
+                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                        $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
+                        Wip::where('id_proses',$newwip->id_proses)
+                        ->update([
+                            'jumlah_part' => $work,
+                        ]);
+                    }
+                    else{
+                       $nextwip = new Wip();
+                        $nextwip->id_material = $attributes['id_material'];
+                        $nextwip->kg_perpart = 0;
+                        $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                        $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                        $nextwip->id_proses = $attributes['id_proses'];
+
+                        $nextwip->save(); 
+                    }
+
+                }
+                else{
+                   return redirect('/laporan_add')->with('success','Material tersebut tidak dalam proses blanking'); 
+                }
+            }
+            else if ($nextproses->nama_proses=='bending2' || $nextproses->nama_proses=='bending 2') {
+                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending)->first()) {
+                    $jmlpart=$nextwip->jumlah_part;
+                    $nexttotal=$jmlpart-$attributes['jumlah_ok'];
+
+                    if ($nexttotal<0) {
+                         return redirect('/laporan_add')->with('success','Jumlah part melebihi stock bending yang tersisa');
+                    }
+
+                    Wip::where('id_wip',$nextwip->id_wip)
+                    ->update([
+                        'jumlah_part' => $nexttotal,
+                    ]);
+
+                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                        $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
+                        Wip::where('id_proses',$newwip->id_proses)
+                        ->update([
+                            'jumlah_part' => $work,
+                        ]);
+                    }
+                    else{
+                       $nextwip = new Wip();
+                        $nextwip->id_material = $attributes['id_material'];
+                        $nextwip->kg_perpart = 0;
+                        $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                        $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                        $nextwip->id_proses = $attributes['id_proses'];
+
+                        $nextwip->save(); 
+                    }
+
+                }
+                else{
+                   return redirect('/laporan_add')->with('success','Material tersebut tidak dalam proses bending'); 
+                }
+            }
+            else if ($nextproses->nama_proses=='spot nut') {
+                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending2)->first()) {
+                    $jmlpart=$nextwip->jumlah_part;
+                    $nexttotal=$jmlpart-$attributes['jumlah_ok'];
+
+                    if ($nexttotal<0) {
+                         return redirect('/laporan_add')->with('success','Jumlah part melebihi stock bending 2 yang tersisa');
+                    }
+
+                    Wip::where('id_wip',$nextwip->id_wip)
+                    ->update([
+                        'jumlah_part' => $nexttotal,
+                    ]);
+
+                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                        $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
+                        Wip::where('id_proses',$newwip->id_proses)
+                        ->update([
+                            'jumlah_part' => $work,
+                        ]);
+                    }
+                    else{
+                       $nextwip = new Wip();
+                        $nextwip->id_material = $attributes['id_material'];
+                        $nextwip->kg_perpart = 0;
+                        $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                        $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                        $nextwip->id_proses = $attributes['id_proses'];
+
+                        $nextwip->save(); 
+                    }
+
+                }
+                else{
+                   return redirect('/laporan_add')->with('success','Material tersebut tidak dalam proses bending 2'); 
+                }
+            }
+            else{
+                $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first();
+                
+                if ($wip) {
+                    $part=$wip->jumlah_part;
+                    $jumlah=$part+$attributes['jumlah_ok'];
+
+                    Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->update([
+                    'jumlah_part'    => $jumlah,
+                    ]);
+                }
+                else{
+                    $nextwip = new Wip();
+                    $nextwip->id_material = $attributes['id_material'];
+                    $nextwip->kg_perpart = 0;
+                    $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                    $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                    $nextwip->id_proses = $attributes['id_proses'];
+
+                    $nextwip->save();
+                }
+            }
+        }
+        else{
+            $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first();
+            
+            if ($wip) {
+                $part=$wip->jumlah_part;
+                $jumlah=$part+$attributes['jumlah_ok'];
+
+                Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->update([
+                'jumlah_part'    => $jumlah,
+                ]);
+            }
+            else{
+                $nextwip = new Wip();
+                $nextwip->id_material = $attributes['id_material'];
+                $nextwip->kg_perpart = 0;
+                $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                $nextwip->id_proses = $attributes['id_proses'];
+
+                $nextwip->save();
+            }
+        }
+
+
+
+
+
         $idproses="";
         if ($proses=Proses::where('nama_proses','blanking')->first()) {
             $idproses=$proses->id_proses;
+
+            $persheet=Material::where('id_material',$attributes['id_material'])->first();
+            $valok=$persheet->jumlah_persheet*$attributes['jumlah_sheet'];
+
+            if ($attributes['jumlah_ok']>$valok) {
+                return redirect('/laporan_add')->with('success','Jumlah ok melebihi total sheet yang di kerjakan');
+            }
         }
 
         if ($attributes['id_proses']==$idproses) {
 
             $stockraw=Stockraw::where('id_material',$attributes['id_material'])->first();
             $sheet=$stockraw->jumlah_sheet;
-            $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->first();
             
             if ($sheet<$attributes['jumlah_sheet']) {
                 return redirect('/laporan_add')->with('success','Jumlah sheet melebihi stock yang tersisa');
@@ -248,38 +428,10 @@ class LaporanController extends Controller
                 'jumlah_sheet'    => $jumlah,
                 ]); 
             }
-
-            if ($wip) {
-                $part=$wip->jumlah_part;
-                $jumlah=$part+$attributes['jumlah_ok'];
-
-                Wip::where('id_material',$attributes['id_material'])->update([
-                'jumlah_part'    => $jumlah,
-                ]);
-            }
-            else{
-               return redirect('/laporan_add')->with('success','Material Tersebut Tidak ada di WIP'); 
-            }
             
         }
-        else{
-            $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->first();
-            
-            if ($wip) {
-                $part=$wip->jumlah_part;
-                $jumlah=$part+$attributes['jumlah_ok'];
 
-                Wip::where('id_material',$attributes['id_material'])->update([
-                'jumlah_part'    => $jumlah,
-                ]);
-            }
-            else{
-               return redirect('/laporan_add')->with('success','Material Tersebut Tidak ada di WIP'); 
-            }
-
-             
-        }
-
+        
 
         
         Laporan::create($attributes);
@@ -321,9 +473,12 @@ class LaporanController extends Controller
 
         if ($ngd['jumlah_ng']<$ng_laporan->jumlah_ng) {
             $exng=$ng_laporan->jumlah_ng-$ngd['jumlah_ng'];
-            $jumlah=$notgood->jumlah_ng+$exng;
+            $jumlah=$notgood->jumlah_ng-$exng;
             if ($ngket=="") {
                 $ngd['keterangan']=$notgood->keterangan;
+            }
+            if ($jumlah<0) {
+                return redirect('/showlaporan/'.$id)->with('success','Jumlah NG tidak bisa minus');
             }
             Notgood::where('id_notgood',$notgood->id_notgood)
         ->update([
@@ -335,7 +490,7 @@ class LaporanController extends Controller
         }
         if ($ngd['jumlah_ng']>$ng_laporan->jumlah_ng) {
             $exng=$ngd['jumlah_ng']-$ng_laporan->jumlah_ng;
-            $jumlah=$notgood->jumlah_ng-$exng;
+            $jumlah=$notgood->jumlah_ng+$exng;
             if ($ngket=="") {
                 $ngd['keterangan']=$notgood->keterangan;
             }
@@ -416,17 +571,346 @@ class LaporanController extends Controller
 
         $selisih = $difference->format('%H:%I:%S');
         $attributes['jumlah_jam']=$selisih;
+
+
+         if ($blanking=Proses::where('nama_proses','blanking')->first()) {
+            $idblanking=$blanking->id_proses;
+        }
+        if ($bending=Proses::where('nama_proses','bending')->first()) {
+            $idbending=$bending->id_proses;
+        }
+        if ($bending2=Proses::where('nama_proses','bending2')->orWhere('nama_proses','bending 2')->first()) {
+            $idbending2=$bending2->id_proses;
+        }
+
+        $nextproses=Proses::where('id_proses',$attributes['id_proses'])->first();
+        
+        if ($attributes['id_proses']==4 || $attributes['id_proses']==8 || $attributes['id_proses']==9 || $attributes['id_proses']==11 || $attributes['id_proses']==15 || $attributes['id_proses']==16 || $attributes['id_proses']==17 || $attributes['id_proses']==27 || $attributes['id_proses']==28 || $attributes['id_proses']==25 || $attributes['id_proses']==29 || $attributes['id_proses']==30) {
+             if ($nextproses->nama_proses=='bending') {
+                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
+                    $laporan=Laporan::find($id);
+
+                    if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                        $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                        $jumlah=$nextwip->jumlah_part-$exng;
+
+                        if ($jumlah<0) {
+                            return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock bending 2 yang tersisa');
+                        }
+
+                        Wip::where('id_wip',$nextwip->id_wip)
+                    ->update([
+                        'jumlah_part' => $jumlah,
+                        
+                    ]);
+                    }
+                    if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                        $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
+                        $jumlah=$nextwip->jumlah_part+$exng;
+
+                        Wip::where('id_wip',$nextwip->id_wip)
+                        ->update([
+                            'jumlah_part' => $jumlah,
+                            
+                        ]);
+                    }
+
+                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                        if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                            $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                            $work=$newwip->jumlah_part-$exng;
+
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
+
+                            Wip::where('id_proses',$newwip->id_proses)
+                            ->update([
+                                'jumlah_part' => $work,
+                            ]);
+                        }
+                        if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                            $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
+                            $work=$newwip->jumlah_part+$exng;
+
+                            Wip::where('id_proses',$newwip->id_proses)
+                            ->update([
+                                'jumlah_part' => $work,
+                            ]);
+                        }
+                    }
+                    else{
+                       $nextwip = new Wip();
+                        $nextwip->id_material = $attributes['id_material'];
+                        $nextwip->kg_perpart = 0;
+                        $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                        $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                        $nextwip->id_proses = $attributes['id_proses'];
+
+                        $nextwip->save(); 
+                    }
+
+                }
+                else{
+                   return redirect('/showlaporan/'.$id)->with('success','Material tersebut tidak dalam proses blanking'); 
+                }
+            }
+            else if ($nextproses->nama_proses=='bending2' || $nextproses->nama_proses=='bending 2') {
+                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending)->first()) {
+                    $laporan=Laporan::find($id);
+
+                    if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                        $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                        $jumlah=$nextwip->jumlah_part-$exng;
+
+                        if ($jumlah<0) {
+                            return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock bending yang tersisa');
+                        }
+
+                        Wip::where('id_wip',$nextwip->id_wip)
+                    ->update([
+                        'jumlah_part' => $jumlah,
+                        
+                    ]);
+                    }
+                    if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                        $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
+                        $jumlah=$nextwip->jumlah_part+$exng;
+
+                        Wip::where('id_wip',$nextwip->id_wip)
+                        ->update([
+                            'jumlah_part' => $jumlah,
+                            
+                        ]);
+                    }
+
+                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                        if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                            $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                            $work=$newwip->jumlah_part-$exng;
+
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
+
+                            Wip::where('id_proses',$newwip->id_proses)
+                            ->update([
+                                'jumlah_part' => $work,
+                            ]);
+                        }
+                        if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                            $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
+                            $work=$newwip->jumlah_part+$exng;
+
+                            Wip::where('id_proses',$newwip->id_proses)
+                            ->update([
+                                'jumlah_part' => $work,
+                            ]);
+                        }
+                    }
+                    else{
+                       $nextwip = new Wip();
+                        $nextwip->id_material = $attributes['id_material'];
+                        $nextwip->kg_perpart = 0;
+                        $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                        $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                        $nextwip->id_proses = $attributes['id_proses'];
+
+                        $nextwip->save(); 
+                    }
+
+                }
+                else{
+                   return redirect('/showlaporan/'.$id)->with('success','Material tersebut tidak dalam proses bending'); 
+                }
+            }
+            else if ($nextproses->nama_proses=='spot nut') {
+                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending2)->first()) {
+                    $laporan=Laporan::find($id);
+
+                    if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                        $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                        $jumlah=$nextwip->jumlah_part-$exng;
+
+                        if ($jumlah<0) {
+                            return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock bending 2 yang tersisa');
+                        }
+
+                        Wip::where('id_wip',$nextwip->id_wip)
+                    ->update([
+                        'jumlah_part' => $jumlah,
+                        
+                    ]);
+                    }
+                    if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                        $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
+                        $jumlah=$nextwip->jumlah_part+$exng;
+
+                        Wip::where('id_wip',$nextwip->id_wip)
+                        ->update([
+                            'jumlah_part' => $jumlah,
+                            
+                        ]);
+                    }
+
+                    if ($newwip=Wip::where('id_proses',$attributes['id_proses'])->first()) {
+                        if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                            $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                            $work=$newwip->jumlah_part-$exng;
+
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
+
+                            Wip::where('id_proses',$newwip->id_proses)
+                            ->update([
+                                'jumlah_part' => $work,
+                            ]);
+                        }
+                        if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                            $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
+                            $work=$newwip->jumlah_part+$exng;
+
+                            Wip::where('id_proses',$newwip->id_proses)
+                            ->update([
+                                'jumlah_part' => $work,
+                            ]);
+                        }
+                        
+
+                            
+                    }
+                    else{
+                       $nextwip = new Wip();
+                        $nextwip->id_material = $attributes['id_material'];
+                        $nextwip->kg_perpart = 0;
+                        $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                        $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                        $nextwip->id_proses = $attributes['id_proses'];
+
+                        $nextwip->save(); 
+                    }
+
+                }
+                else{
+                   return redirect('/showlaporan/'.$id)->with('success','Material tersebut tidak dalam proses bending 2'); 
+                }
+            }
+            else{
+                $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first();
+                
+                if ($wip) {
+                    $laporan=Laporan::find($id);
+
+                    if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                        $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                        $jumlah=$wip->jumlah_part-$exng;
+
+                        if ($jumlah<0) {
+                            return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
+                        }
+
+                        Wip::where('id_wip',$wip->id_wip)
+                    ->update([
+                        'jumlah_part' => $jumlah,
+                        
+                    ]);
+                    }
+                    if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                        $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
+                        $jumlah=$wip->jumlah_part+$exng;
+
+
+                        Wip::where('id_wip',$wip->id_wip)
+                        ->update([
+                            'jumlah_part' => $jumlah,
+                            
+                        ]);
+                    }
+                }
+                else{
+                    $nextwip = new Wip();
+                    $nextwip->id_material = $attributes['id_material'];
+                    $nextwip->kg_perpart = 0;
+                    $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                    $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                    $nextwip->id_proses = $attributes['id_proses'];
+
+                    $nextwip->save();
+                }
+                
+                
+            }
+        }
+        else{
+            $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first();
+            
+            if ($wip) {
+                $laporan=Laporan::find($id);
+
+                if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
+                    $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
+                    $jumlah=$wip->jumlah_part-$exng;
+
+
+                    if ($jumlah<0) {
+                        return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
+                    }
+
+                    Wip::where('id_wip',$wip->id_wip)
+                ->update([
+                    'jumlah_part' => $jumlah,
+                    
+                ]);
+                }
+                if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
+                    $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
+                    $jumlah=$wip->jumlah_part+$exng;
+
+
+                    Wip::where('id_wip',$wip->id_wip)
+                    ->update([
+                        'jumlah_part' => $jumlah,
+                        
+                    ]);
+                }
+            }
+            else{
+                $nextwip = new Wip();
+                $nextwip->id_material = $attributes['id_material'];
+                $nextwip->kg_perpart = 0;
+                $nextwip->jumlah_part = $attributes['jumlah_ok'];
+                $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
+                $nextwip->id_proses = $attributes['id_proses'];
+
+                $nextwip->save();
+            }
+
+
+        }
+
+
+
+
+
+
         
         $idproses="";
         if ($proses=Proses::where('nama_proses','blanking')->first()) {
             $idproses=$proses->id_proses;
+
+            $persheet=Material::where('id_material',$attributes['id_material'])->first();
+            $valok=$persheet->jumlah_persheet*$attributes['jumlah_sheet'];
+
+            if ($attributes['jumlah_ok']>$valok) {
+                return redirect('/laporan_add')->with('success','Jumlah ok melebihi total sheet yang di kerjakan');
+            }
         }
 
         if ($attributes['id_proses']==$idproses) {
 
             $laporan=Laporan::find($id);
             $sheet=$laporan->jumlah_sheet;
-            $wip=Wip::with('Proses')->where('id_material',$attributes['id_material'])->first();
 
 
             if ($sheet<$attributes['jumlah_sheet']) {
@@ -439,6 +923,9 @@ class LaporanController extends Controller
                 if ($attributes['jumlah_sheet']<$laporan->jumlah_sheet) {
                     $exng=$laporan->jumlah_sheet-$attributes['jumlah_sheet'];
                     $jumlah=$stockraw->jumlah_sheet+$exng;
+                    
+
+
                     Stockraw::where('id_material',$laporan->id_material)
                 ->update([
                     'jumlah_sheet' => $jumlah,
@@ -470,6 +957,7 @@ class LaporanController extends Controller
                 if ($attributes['jumlah_sheet']<$laporan->jumlah_sheet) {
                     $exng=$laporan->jumlah_sheet-$attributes['jumlah_sheet'];
                     $jumlah=$stockraw->jumlah_sheet+$exng;
+                    
                     Stockraw::where('id_material',$laporan->id_material)
                 ->update([
                     'jumlah_sheet' => $jumlah,
@@ -483,6 +971,7 @@ class LaporanController extends Controller
                     if ($jumlah<0) {
                         return redirect('/showlaporan/'.$id)->with('success','Jumlah Sheet melebihi stock yang tersisa');
                     }
+                    
 
                     Stockraw::where('id_material',$laporan->id_material)
                     ->update([
@@ -491,83 +980,9 @@ class LaporanController extends Controller
                     ]);
                 }
             }
-
-            if ($wip) {
-                $ngmat=$attributes['id_material'];
-                $ng=$attributes['jumlah_ok'];
-
-                $wip=Wip::where('id_material',$ngmat)->first();
-                $laporan=Laporan::find($id);
-
-                if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
-                    $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                    $jumlah=$wip->jumlah_part-$exng;
-
-                    Wip::where('id_wip',$wip->id_wip)
-                ->update([
-                    'jumlah_part' => $jumlah,
-                    
-                ]);
-                }
-                if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
-                    $exng=$attributes['jumlah_ok']+$laporan->jumlah_ok;
-                    $jumlah=$wip->jumlah+$exng;
-
-                    if ($jumlah<0) {
-                        return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
-                    }
-
-                    Wip::where('id_wip',$wip->id_wip)
-                    ->update([
-                        'jumlah_part' => $jumlah,
-                        
-                    ]);
-                }
-            }
             else{
                return redirect('/showlaporan'.$id)->with('success','Material Tersebut Tidak ada di WIP'); 
             }            
-        }
-        else{
-            $wip=Wip::where('id_material',$attributes['id_material'])->first();
-            
-            if ($wip) {
-                $ngmat=$attributes['id_material'];
-                $ng=$attributes['jumlah_ok'];
-
-                $wip=Wip::where('id_material',$ngmat)->first();
-                $laporan=Laporan::find($id);
-
-                if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
-                    $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                    $jumlah=$wip->jumlah_part-$exng;
-
-                    Wip::where('id_wip',$wip->id_wip)
-                ->update([
-                    'jumlah_part' => $jumlah,
-                    
-                ]);
-                }
-                if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
-                    $exng=$attributes['jumlah_ok']+$laporan->jumlah_ok;
-                    $jumlah=$wip->jumlah+$exng;
-
-                    if ($jumlah<0) {
-                        return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
-                    }
-
-                    Wip::where('id_wip',$wip->id_wip)
-                    ->update([
-                        'jumlah_part' => $jumlah,
-                        
-                    ]);
-                }
-            }
-            else{
-               return redirect('/showlaporan/'.$id)->with('success','Material Tersebut Tidak ada di WIP'); 
-            }
-
-             
         }
         
         Laporan::where('id_laporan_produksi',$id)

@@ -45,7 +45,7 @@ class OperatorController extends Controller
 
     public function show2($id)
     {
-        $laporan=Laporan::with('Operator')->where('id_operator',$id)->get();
+        $laporan=Laporan::with('Operator')->where('id_operator',$id)->orderBy('tanggal','desc')->get();
         $op=Laporan::where('id_operator',$id)->first();
 
         if (!$laporan || !$op) {
