@@ -283,7 +283,17 @@ class LaporanController extends Controller
         
         if ($attributes['id_material']==4 || $attributes['id_material']==8 || $attributes['id_material']==9 || $attributes['id_material']==11 || $attributes['id_material']==15 || $attributes['id_material']==16 || $attributes['id_material']==17 || $attributes['id_material']==27 || $attributes['id_material']==28 || $attributes['id_material']==25 || $attributes['id_material']==29 || $attributes['id_material']==30) {
              if ($nextproses->nama_proses=='bending') {
-                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
+                $idmaterial=$attributes['id_material'];
+                if ($attributes['id_material']==8 || $attributes['id_material']==9) {
+                    $idmaterial=54;
+                }
+                else if ($attributes['id_material']==15 || $attributes['id_material']==16) {
+                    $idmaterial=39;
+                }
+                else if ($attributes['id_material']==27 || $attributes['id_material']==28) {
+                    $idmaterial=60;
+                }
+                if ($nextwip=Wip::where('id_material',$idmaterial)->where('id_proses',$idblanking)->first()) {
                     $jmlpart=$nextwip->jumlah_part;
                     $nexttotal=$jmlpart-$attributes['jumlah_ok'];
 
@@ -418,7 +428,17 @@ class LaporanController extends Controller
         }
         else if ($attributes['id_material']==22 || $attributes['id_material']==23 || $attributes['id_material']==57 || $attributes['id_material']==21 || $attributes['id_material']==18 || $attributes['id_material']==19 || $attributes['id_material']==10 || $attributes['id_material']==6 || $attributes['id_material']==7 || $attributes['id_material']==36 || $attributes['id_material']==37) {
              if ($nextproses->nama_proses=='bending') {
-                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
+                $idmaterial=$attributes['id_material'];
+                if ($attributes['id_material']==22 || $attributes['id_material']==23) {
+                    $idmaterial=58;
+                }
+                else if ($attributes['id_material']==18 || $attributes['id_material']==19) {
+                    $idmaterial=56;
+                }
+                else if ($attributes['id_material']==6 || $attributes['id_material']==7) {
+                    $idmaterial=55;
+                }
+                if ($nextwip=Wip::where('id_material',$idmaterial)->where('id_proses',$idblanking)->first()) {
                     $jmlpart=$nextwip->jumlah_part;
                     $nexttotal=$jmlpart-$attributes['jumlah_ok'];
 
@@ -515,7 +535,14 @@ class LaporanController extends Controller
             }
         }
         else if ($nextproses->nama_proses=='bending') {
-            if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
+            $idmaterial=$attributes['id_material'];
+            if ($attributes['id_material']==13 || $attributes['id_material']==14) {
+                $idmaterial=38;
+            }
+            else if ($attributes['id_material']==33 || $attributes['id_material']==34) {
+                $idmaterial=59;
+            }
+            if ($nextwip=Wip::where('id_material',$idmaterial)->where('id_proses',$idblanking)->first()) {
                 $jmlpart=$nextwip->jumlah_part;
                 $nexttotal=$jmlpart-$attributes['jumlah_ok'];
 
@@ -826,7 +853,17 @@ class LaporanController extends Controller
         
         if ($attributes['id_material']==4 || $attributes['id_material']==8 || $attributes['id_material']==9 || $attributes['id_material']==11 || $attributes['id_material']==15 || $attributes['id_material']==16 || $attributes['id_material']==17 || $attributes['id_material']==27 || $attributes['id_material']==28 || $attributes['id_material']==25 || $attributes['id_material']==29 || $attributes['id_material']==30) {
              if ($nextproses->nama_proses=='bending') {
-                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
+                $idmaterial=$attributes['id_material'];
+                if ($attributes['id_material']==8 || $attributes['id_material']==9) {
+                    $idmaterial=54;
+                }
+                else if ($attributes['id_material']==15 || $attributes['id_material']==16) {
+                    $idmaterial=39;
+                }
+                else if ($attributes['id_material']==27 || $attributes['id_material']==28) {
+                    $idmaterial=60;
+                }
+                if ($nextwip=Wip::where('id_material',$idmaterial)->where('id_proses',$idblanking)->first()) {
                     $laporan=Laporan::find($id);
 
                     if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
@@ -1095,7 +1132,17 @@ class LaporanController extends Controller
         }
         else if ($attributes['id_material']==22 || $attributes['id_material']==23 || $attributes['id_material']==57 || $attributes['id_material']==21 || $attributes['id_material']==18 || $attributes['id_material']==19 || $attributes['id_material']==10 || $attributes['id_material']==6 || $attributes['id_material']==7 || $attributes['id_material']==36 || $attributes['id_material']==37) {
              if ($nextproses->nama_proses=='bending') {
-                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
+                $idmaterial=$attributes['id_material'];
+                if ($attributes['id_material']==22 || $attributes['id_material']==23) {
+                    $idmaterial=58;
+                }
+                else if ($attributes['id_material']==18 || $attributes['id_material']==19) {
+                    $idmaterial=56;
+                }
+                else if ($attributes['id_material']==6 || $attributes['id_material']==7) {
+                    $idmaterial=55;
+                }
+                if ($nextwip=Wip::where('id_material',$idmaterial)->where('id_proses',$idblanking)->first()) {
                     $laporan=Laporan::find($id);
 
                     if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
@@ -1287,7 +1334,14 @@ class LaporanController extends Controller
             }
         }
         else if ($nextproses->nama_proses=='bending') {
-                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idblanking)->first()) {
+                $idmaterial=$attributes['id_material'];
+                if ($attributes['id_material']==13 || $attributes['id_material']==14) {
+                    $idmaterial=38;
+                }
+                else if ($attributes['id_material']==33 || $attributes['id_material']==34) {
+                    $idmaterial=59;
+                }
+                if ($nextwip=Wip::where('id_material',$idmaterial)->where('id_proses',$idblanking)->first()) {
                     $laporan=Laporan::find($id);
 
                     if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
