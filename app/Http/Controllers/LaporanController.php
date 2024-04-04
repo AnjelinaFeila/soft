@@ -861,9 +861,11 @@ class LaporanController extends Controller
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                            $work=$newwip->jumlah_part+$exng;
+                            $work=$newwip->jumlah_part-$exng;
 
-                            
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -872,11 +874,9 @@ class LaporanController extends Controller
                         }
                         if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
                             $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
-                            $work=$newwip->jumlah_part-$exng;
+                            $work=$newwip->jumlah_part+$exng;
 
-                            if ($work<0) {
-                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
-                            }
+                            
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -934,9 +934,11 @@ class LaporanController extends Controller
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                            $work=$newwip->jumlah_part+$exng;
+                            $work=$newwip->jumlah_part-$exng;
 
-                            
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -945,11 +947,9 @@ class LaporanController extends Controller
                         }
                         if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
                             $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
-                            $work=$newwip->jumlah_part-$exng;
+                            $work=$newwip->jumlah_part+$exng;
 
-                            if ($work<0) {
-                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
-                            }
+                            
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -1007,9 +1007,11 @@ class LaporanController extends Controller
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                            $work=$newwip->jumlah_part+$exng;
+                            $work=$newwip->jumlah_part-$exng;
 
-                            
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -1018,11 +1020,9 @@ class LaporanController extends Controller
                         }
                         if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
                             $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
-                            $work=$newwip->jumlah_part-$exng;
+                            $work=$newwip->jumlah_part+$exng;
 
-                            if ($work<0) {
-                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
-                            }
+                            
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -1057,9 +1057,11 @@ class LaporanController extends Controller
 
                     if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                         $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                        $jumlah=$wip->jumlah_part+$exng;
+                        $jumlah=$wip->jumlah_part-$exng;
 
-                        
+                        if ($jumlah<0) {
+                            return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
+                        }
 
                         Wip::where('id_wip',$wip->id_wip)
                     ->update([
@@ -1069,11 +1071,9 @@ class LaporanController extends Controller
                     }
                     if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
                         $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
-                        $jumlah=$wip->jumlah_part-$exng;
+                        $jumlah=$wip->jumlah_part+$exng;
 
-                        if ($jumlah<0) {
-                            return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
-                        }
+                        
 
                         Wip::where('id_wip',$wip->id_wip)
                         ->update([
@@ -1131,9 +1131,11 @@ class LaporanController extends Controller
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                            $work=$newwip->jumlah_part+$exng;
+                            $work=$newwip->jumlah_part-$exng;
 
-                            
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -1142,11 +1144,9 @@ class LaporanController extends Controller
                         }
                         if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
                             $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
-                            $work=$newwip->jumlah_part-$exng;
+                            $work=$newwip->jumlah_part+$exng;
 
-                            if ($work<0) {
-                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
-                            }
+                            
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -1202,8 +1202,11 @@ class LaporanController extends Controller
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                            $work=$newwip->jumlah_part+$exng;
+                            $work=$newwip->jumlah_part-$exng;
 
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
                             
 
                             Wip::where('id_proses',$newwip->id_proses)
@@ -1213,11 +1216,9 @@ class LaporanController extends Controller
                         }
                         if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
                             $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
-                            $work=$newwip->jumlah_part-$exng;
+                            $work=$newwip->jumlah_part+$exng;
 
-                            if ($work<0) {
-                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
-                            }
+                            
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
@@ -1296,8 +1297,6 @@ class LaporanController extends Controller
                         $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
                         $jumlah=$nextwip->jumlah_part+$exng;
 
-                        
-
                         Wip::where('id_wip',$nextwip->id_wip)
                     ->update([
                         'jumlah_part' => $jumlah,
@@ -1322,8 +1321,11 @@ class LaporanController extends Controller
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
                             $exng=$laporan->jumlah_ok-$attributes['jumlah_ok'];
-                            $work=$newwip->jumlah_part+$exng;
+                            $work=$newwip->jumlah_part-$exng;
 
+                            if ($work<0) {
+                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
+                            }
                             
 
                             Wip::where('id_proses',$newwip->id_proses)
@@ -1333,11 +1335,9 @@ class LaporanController extends Controller
                         }
                         if ($attributes['jumlah_ok']>$laporan->jumlah_ok) {
                             $exng=$attributes['jumlah_ok']-$laporan->jumlah_ok;
-                            $work=$newwip->jumlah_part-$exng;
+                            $work=$newwip->jumlah_part+$exng;
 
-                            if ($work<0) {
-                                return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
-                            }
+                            
 
                             Wip::where('id_proses',$newwip->id_proses)
                             ->update([
