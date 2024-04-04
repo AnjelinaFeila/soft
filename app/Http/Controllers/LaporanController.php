@@ -242,8 +242,6 @@ class LaporanController extends Controller
                 return redirect('/laporan_add')->with('success','Jumlah ok melebihi total sheet yang di kerjakan');
             }
 
-
-
             if ($stockraw=Stockraw::where('id_material',$attributes['id_material'])->first()) {
                 $sheet=$stockraw->jumlah_sheet;
             }
@@ -300,7 +298,7 @@ class LaporanController extends Controller
 
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
-                        Wip::where('id_proses',$newwip->id_proses)
+                        Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                         ->update([
                             'jumlah_part' => $work,
                         ]);
@@ -337,7 +335,7 @@ class LaporanController extends Controller
 
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
-                        Wip::where('id_proses',$newwip->id_proses)
+                        Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                         ->update([
                             'jumlah_part' => $work,
                         ]);
@@ -374,7 +372,7 @@ class LaporanController extends Controller
 
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
-                        Wip::where('id_proses',$newwip->id_proses)
+                        Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                         ->update([
                             'jumlah_part' => $work,
                         ]);
@@ -435,7 +433,7 @@ class LaporanController extends Controller
 
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
-                        Wip::where('id_proses',$newwip->id_proses)
+                        Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                         ->update([
                             'jumlah_part' => $work,
                         ]);
@@ -472,7 +470,7 @@ class LaporanController extends Controller
 
                     if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                         $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
-                        Wip::where('id_proses',$newwip->id_proses)
+                        Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                         ->update([
                             'jumlah_part' => $work,
                         ]);
@@ -532,7 +530,7 @@ class LaporanController extends Controller
 
                 if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
                     $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
-                    Wip::where('id_proses',$newwip->id_proses)
+                    Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                     ->update([
                         'jumlah_part' => $work,
                     ]);
@@ -836,7 +834,6 @@ class LaporanController extends Controller
                         $jumlah=$nextwip->jumlah_part+$exng;
 
                         
-
                         Wip::where('id_wip',$nextwip->id_wip)
                     ->update([
                         'jumlah_part' => $jumlah,
@@ -867,7 +864,7 @@ class LaporanController extends Controller
                                 return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
                             }
 
-                            Wip::where('id_proses',$newwip->id_proses)
+                            Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                             ->update([
                                 'jumlah_part' => $work,
                             ]);
@@ -940,7 +937,7 @@ class LaporanController extends Controller
                                 return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
                             }
 
-                            Wip::where('id_proses',$newwip->id_proses)
+                            Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                             ->update([
                                 'jumlah_part' => $work,
                             ]);
@@ -1013,7 +1010,7 @@ class LaporanController extends Controller
                                 return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
                             }
 
-                            Wip::where('id_proses',$newwip->id_proses)
+                            Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                             ->update([
                                 'jumlah_part' => $work,
                             ]);
@@ -1137,7 +1134,7 @@ class LaporanController extends Controller
                                 return redirect('/showlaporan/'.$id)->with('success','Jumlah ok tidak bisa minus');
                             }
 
-                            Wip::where('id_proses',$newwip->id_proses)
+                            Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                             ->update([
                                 'jumlah_part' => $work,
                             ]);
@@ -1209,7 +1206,7 @@ class LaporanController extends Controller
                             }
                             
 
-                            Wip::where('id_proses',$newwip->id_proses)
+                            Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                             ->update([
                                 'jumlah_part' => $work,
                             ]);
@@ -1328,7 +1325,7 @@ class LaporanController extends Controller
                             }
                             
 
-                            Wip::where('id_proses',$newwip->id_proses)
+                            Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
                             ->update([
                                 'jumlah_part' => $work,
                             ]);
