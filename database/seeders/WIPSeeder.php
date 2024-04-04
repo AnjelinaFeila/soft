@@ -18,7 +18,7 @@ class WIPSeeder extends Seeder
             'kg_perpart' => 5,
             'jumlah_part'=>500,
             'last_produksi'=>now(),
-            'id_proses'=>2,
+            'id_proses'=>1,
             'created_at' => now(),
             'updated_at' => now()
         ]);

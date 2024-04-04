@@ -59,5 +59,29 @@ class MaterialSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        DB::table('material')->insert([
+            'nama_barang' => 'build in 0005',
+            'kg_persheet' => 3.13,
+            'kg_perpart' => 10,
+            'jumlah_persheet' => 20,
+            'ukuran' => '1219X110X1.2',
+            'id_supplier' => '2',
+            'id_customer' => '1',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('material')->insert([
+            'nama_barang' => 'build in 0006',
+            'kg_persheet' => 4.13,
+            'kg_perpart' => 15,
+            'jumlah_persheet' => 40,
+            'ukuran' => '1219X110X1.2',
+            'id_supplier' => '2',
+            'id_customer' => '1',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
     }
 }
