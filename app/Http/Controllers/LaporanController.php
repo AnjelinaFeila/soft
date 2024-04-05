@@ -76,6 +76,10 @@ class LaporanController extends Controller
         // Calculate the new value of jumlah_ng for the Notgood record
         $jumlah = $notgood->jumlah_ng - $laporan->jumlah_ng;
 
+        if ($jumlah < 0) {
+            $jumlah=0;
+        }
+
         // Update the Notgood record with the new value of jumlah_ng
         Notgood::where('id_notgood', $notgood->id_notgood)
             ->update([
@@ -649,7 +653,7 @@ class LaporanController extends Controller
                 $ngd['keterangan']=$notgood->keterangan;
             }
             if ($jumlah<0) {
-                return redirect('/showlaporan/'.$id)->with('success','Jumlah NG tidak bisa minus');
+               $jumlah=0;
             }
             Notgood::where('id_notgood',$notgood->id_notgood)
         ->update([
@@ -829,9 +833,6 @@ class LaporanController extends Controller
                         
                     ]);
                 }
-            }
-            else{
-               return redirect('/showlaporan'.$id)->with('success','Material Tersebut Tidak ada di WIP'); 
             }
 
             
