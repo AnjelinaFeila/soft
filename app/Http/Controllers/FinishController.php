@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Finish;
 use App\Models\Material;
 use App\Models\Customer;
+use App\Models\Proses;
 use App\Models\Wip;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -55,24 +56,36 @@ class FinishController extends Controller
             'qc' => ['max:100'],
         ]);
 
+        $bending=Proses::where('nama_proses','bending')->first();
+        $spot_nut=Proses::where('nama_proses','spot nut')->first();
+
+        $wip = Wip::where('id_material', $attributes['id_material'])
+            ->where('id_proses', $spot_nut->id_proses)
+            ->first();
+
+        if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $bending->id_proses)
+                ->first();
+        }
+
         
-        $wip=Wip::where('id_material',$attributes['id_material'])->first();
-        $sheet=$wip->jumlah_part;
             
         if ($wip) {
+            $sheet=$wip->jumlah_part;
             if ($sheet<$attributes['jumlah']) {
                 return redirect('/finish_add')->with('success','Jumlah part melebihi stock yang tersisa');
             }
             else{
                $jumlah=$sheet-$attributes['jumlah'];
 
-                Wip::where('id_material',$attributes['id_material'])->update([
+                Wip::where('id_material',$attributes['id_material'])->where('id_proses',$wip->id_proses)->update([
                 'jumlah_part'    => $jumlah,
                 ]); 
             }
         }
         else{
-             return redirect('/finish_add')->with('success','Material Tersebut Tidak ada di WIP'); 
+             return redirect('/finish_add')->with('success','Tidak Ada Stock Dari WIP'); 
         }
             
         
@@ -102,12 +115,23 @@ class FinishController extends Controller
         $ngmat=$ngd['id_material'];
         $ng=$ngd['jumlah'];
 
-        $wip=Wip::where('id_material',$ngmat)->first();
+        $bending=Proses::where('nama_proses','bending')->first();
+        $spot_nut=Proses::where('nama_proses','spot nut')->first();
+
+        $wip = Wip::where('id_material', $attributes['id_material'])
+            ->where('id_proses', $spot_nut->id_proses)
+            ->first();
+
+        if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $bending->id_proses)
+                ->first();
+        }
         $finished=Finish::find($id);
 
         if ($ngd['jumlah']<$finished->jumlah) {
             $exng=$finished->jumlah-$ngd['jumlah'];
-            $jumlah=$wip->jumlah+$exng;
+            $jumlah=$wip->jumlah_part+$exng;
             Wip::where('id_wip',$wip->id_wip)
         ->update([
             'jumlah_part' => $jumlah,
@@ -116,8 +140,7 @@ class FinishController extends Controller
         }
         if ($ngd['jumlah']>$finished->jumlah) {
             $exng=$ngd['jumlah']-$finished->jumlah;
-            $jumlah=$wip->jumlah-$exng;
-
+            $jumlah=$wip->jumlah_part-$exng;
             if ($jumlah<0) {
                 return redirect('/showfinish/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
             }
