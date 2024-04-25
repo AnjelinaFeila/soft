@@ -6,14 +6,22 @@ Installation
  1.extract if you use compressed format like ZIP or RAR  
  2.use terminal or command prompt  
  3.navigate to your project directory  
- 4.install composer dependencies using  
-   composer install  
+ 4.install composer dependencies using
+ ```bash 
+ composer install
+ ```  
  5.set .env file for database connection  
- 6.migrate and seed the database using  
+ 6.migrate and seed the database using
+ ```bash  
    php artisan migrate  
+ ```  
+ ```bash 
    php artisan db:seed  
- 7.run system  
-   php artisan serve   
+ ```  
+ 7.run system
+ ```bash   
+   php artisan serve
+ ```     
  8.access program  
    open web browser and open http://localhost:8000  
 
