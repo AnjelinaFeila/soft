@@ -1,6 +1,47 @@
-created using laravel 9
 
-account id password
 
-superadmin: id=22222 pass=22222
-owner     : id=11111 pass=11111
+Introduction
+Laravel production management system
+Created using laravel 10
+
+Installation
+ 1.extract if you use compressed format like ZIP or RAR
+ 2.use terminal or command prompt
+ 3.navigate to your project directory
+ 4.install composer dependencies using
+   composer install
+ 5.set .env file for database connection
+ 6.migrate and seed the database using
+   php artisan migrate
+   php artisan db:seed
+ 7.run system
+   php artisan serve
+ 8.access program
+   open web browser and open http://localhost:8000
+
+whats included
+
+-dashboard
+-user profile
+-material stock
+-work in progress material
+-operator
+-customer
+-supplier
+-progress
+-report
+-export to excel
+-data calculating
+-7 different account with different usage
+
+Account list
+
+Position		Username 		Password	
+owner 			00000			00000			
+owner			11111			11111			
+superadmin		22222			22222			
+admin 			33333			33333			
+ppic 			44444			44444		
+supervisor 		55555			55555		
+leader 			66666			66666		
+processing 		77777			77777	
