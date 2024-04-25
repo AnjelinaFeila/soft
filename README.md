@@ -1,8 +1,8 @@
-Introduction  
+##Introduction##  
 Laravel production management system  
 Created using laravel 10  
 
-Installation  
+##Installation##  
  1.extract if you use compressed format like ZIP or RAR  
  2.use terminal or command prompt  
  3.navigate to your project directory  
@@ -25,7 +25,7 @@ Installation
  8.access program  
    open web browser and open http://localhost:8000  
 
-Whats included  
+##Whats included##  
 
 - dashboard  
 - user profile  
@@ -40,7 +40,7 @@ Whats included
 - data calculating  
 - 7 different account with different usage  
 
-Account list
+##Account list##
 
 | Position   | Username    | Password     |
 |------------|-------------|--------------|
