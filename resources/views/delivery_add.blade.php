@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="user-email" class="form-control-label">{{ __('No Surat Jalan') }}</label>
+                                <label for="user-email" class="form-control-label">{{ __('No Surat Jalan/DO') }}</label>
                                 <div class="@error('email')border border-danger rounded-3 @enderror">
                                     <input class="form-control" name="no_surat_jalan" value="0" type="" id="number" value=" " required>
                                         @error('phone')

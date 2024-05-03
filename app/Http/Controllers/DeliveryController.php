@@ -47,7 +47,7 @@ class DeliveryController extends Controller
     {
 
         $attributes = request()->validate([
-            'no_surat_jalan'     => ['max:10'],
+            'no_surat_jalan'     => ['max:30'],
             'no_preorder'     => ['max:10'],
             'id_material'     => ['max:10'],
             'kg_perpart'=> ['max:100'],

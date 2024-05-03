@@ -371,7 +371,7 @@ class LaporanController extends Controller
                 }
             }
             else if ($nextproses->nama_proses=='spot nut') {
-                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending2)->first()) {
+                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending)->first()) {
                     $jmlpart=$nextwip->jumlah_part;
                     $nexttotal=$jmlpart-$attributes['jumlah_ok'];
 
@@ -1009,7 +1009,7 @@ class LaporanController extends Controller
                 }
             }
             else if ($nextproses->nama_proses=='spot nut') {
-                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending2)->first()) {
+                if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending)->first()) {
                     $laporan=Laporan::find($id);
 
                     if ($attributes['jumlah_ok']<$laporan->jumlah_ok) {
@@ -1029,7 +1029,7 @@ class LaporanController extends Controller
                         $jumlah=$nextwip->jumlah_part-$exng;
 
                         if ($jumlah<0) {
-                            return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock bending 2 yang tersisa');
+                            return redirect('/showlaporan/'.$id)->with('success','Jumlah part melebihi stock bending yang tersisa');
                         }
 
                         Wip::where('id_wip',$nextwip->id_wip)

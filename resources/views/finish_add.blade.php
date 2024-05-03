@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Nama Pegawai') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="text" id="name" name="nama_pegawai" value="." required>
+                                    <input class="form-control" type="text" id="name" name="nama_pegawai" value="" required>
                                 </div>
                             </div>
                         </div>
