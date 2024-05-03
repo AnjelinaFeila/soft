@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Delivery;
 use App\Models\Material;
 use App\Models\Customer;
+use App\Models\Finish;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +45,8 @@ class DeliveryController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {  
+
 
         $attributes = request()->validate([
             'no_surat_jalan'     => ['max:30'],
@@ -57,8 +59,16 @@ class DeliveryController extends Controller
             'tanggal_delivery'     => ['max:100'],
             'qc'     => ['max:100'],
         ]);
+
+        $finish = Finish::where('id_material',$attributes['id_material'])->first();
         
-        
+        if($attributes['jumlah_part']>$finish->jumlah){
+            return redirect('/delivery_add')->with('success','Jumlah part melebihi stock finish yang tersisa');
+        }
+        else{
+            $finish->jumlah = $finish->jumlah - $attributes['jumlah_part'];
+            $finish->save();
+        }
         Delivery::create($attributes);
 
 
@@ -79,6 +89,34 @@ class DeliveryController extends Controller
             'tanggal_delivery'     => ['max:100'],
             'qc'     => ['max:100'],
         ]);
+
+        
+        $finish = Finish::where('id_material', $attributes['id_material'])->first();
+
+        $delivered=Delivery::find($id);
+
+        if ($attributes['jumlah_part']<$delivered->jumlah_part) {
+            $update_deliver=$delivered->jumlah_part-$attributes['jumlah_part'];
+            $jumlah=$finish->jumlah+$update_deliver;
+            Finish::where('id_finishgood',$finish->id_finishgood)
+        ->update([
+            'jumlah' => $jumlah,
+            
+        ]);
+        }
+        if ($attributes['jumlah_part']>$delivered->jumlah_part) {
+            $update_deliver=$attributes['jumlah_part']-$delivered->jumlah_part;
+            $jumlah=$finish->jumlah-$update_deliver;
+            if ($jumlah<0) {
+                return redirect('/showdelivery/'.$id)->with('success','Jumlah part melebihi stock yang tersisa');
+            }
+
+            Finish::where('id_finishgood',$finish->id_finishgood)
+            ->update([
+                'jumlah' => $jumlah,
+                
+            ]);
+        }
         
         
         Delivery::where('id_delivery',$id)

@@ -115,6 +115,7 @@ class FinishController extends Controller
         $ngmat=$ngd['id_material'];
         $ng=$ngd['jumlah'];
 
+        $blanking=Proses::where('nama_proses','blanking')->first();
         $bending=Proses::where('nama_proses','bending')->first();
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
 
@@ -126,6 +127,14 @@ class FinishController extends Controller
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending->id_proses)
                 ->first();
+        }
+        if(!$wip){
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $blanking->id_proses)
+                ->first();
+        }
+        else{
+            return redirect('/showfinish/'.$id)->with('success','Material dengan proses yang di butuhkan tidak di temukan di WIP');
         }
         $finished=Finish::find($id);
 
@@ -139,6 +148,7 @@ class FinishController extends Controller
         ]);
         }
         if ($ngd['jumlah']>$finished->jumlah) {
+            
             $exng=$ngd['jumlah']-$finished->jumlah;
             $jumlah=$wip->jumlah_part-$exng;
             if ($jumlah<0) {
