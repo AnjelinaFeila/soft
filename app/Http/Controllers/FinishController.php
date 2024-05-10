@@ -57,13 +57,37 @@ class FinishController extends Controller
         ]);
         $blanking=Proses::where('nama_proses','blanking')->first();
         $bending=Proses::where('nama_proses','bending')->first();
+        $bending2=Proses::where('nama_proses','bending2')->orWhere('nama_proses','bending 2')->first();
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
-
+        $piercing=Proses::where('nama_proses','piercing')->first();
+        $spot_assy=Proses::where('nama_proses','spot assy')->first();
+        $robot_welding=Proses::where('nama_proses','robot welding')->first();
+        
         $wip = Wip::where('id_material', $attributes['id_material'])
             ->where('id_proses', $spot_nut->id_proses)
             ->first();
         
         if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $robot_welding->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $piercing->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $spot_assy->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $bending2->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending->id_proses)
                 ->first();
@@ -122,13 +146,37 @@ class FinishController extends Controller
 
         $blanking=Proses::where('nama_proses','blanking')->first();
         $bending=Proses::where('nama_proses','bending')->first();
+        $bending2=Proses::where('nama_proses','bending2')->orWhere('nama_proses','bending 2')->first();
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
+        $piercing=Proses::where('nama_proses','piercing')->first();
+        $spot_assy=Proses::where('nama_proses','spot assy')->first();
+        $robot_welding=Proses::where('nama_proses','robot welding')->first();
         
         $wip = Wip::where('id_material', $attributes['id_material'])
             ->where('id_proses', $spot_nut->id_proses)
             ->first();
         
         if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $robot_welding->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $piercing->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $spot_assy->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $bending2->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending->id_proses)
                 ->first();
@@ -138,6 +186,7 @@ class FinishController extends Controller
                 ->where('id_proses', $blanking->id_proses)
                 ->first();
         }
+
         $finished=Finish::find($id);
 
         if ($ngd['jumlah']<$finished->jumlah) {
