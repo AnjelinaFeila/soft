@@ -58,6 +58,7 @@ class FinishController extends Controller
         $blanking=Proses::where('nama_proses','blanking')->first();
         $bending=Proses::where('nama_proses','bending')->first();
         $bending2=Proses::where('nama_proses','bending2')->orWhere('nama_proses','bending 2')->first();
+        $no_proses=Proses::where('nama_proses','no proses')->orWhere('nama_proses','non proses')->first();
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
         $piercing=Proses::where('nama_proses','piercing')->first();
         $spot_assy=Proses::where('nama_proses','spot assy')->first();
@@ -70,6 +71,11 @@ class FinishController extends Controller
         if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $robot_welding->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $no_proses->id_proses)
                 ->first();
         }
         else if (!$wip) {
@@ -147,6 +153,7 @@ class FinishController extends Controller
         $blanking=Proses::where('nama_proses','blanking')->first();
         $bending=Proses::where('nama_proses','bending')->first();
         $bending2=Proses::where('nama_proses','bending2')->orWhere('nama_proses','bending 2')->first();
+        $no_proses=Proses::where('nama_proses','no proses')->orWhere('nama_proses','non proses')->first();
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
         $piercing=Proses::where('nama_proses','piercing')->first();
         $spot_assy=Proses::where('nama_proses','spot assy')->first();
@@ -159,6 +166,11 @@ class FinishController extends Controller
         if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $robot_welding->id_proses)
+                ->first();
+        }
+        else if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $no_proses->id_proses)
                 ->first();
         }
         else if (!$wip) {
