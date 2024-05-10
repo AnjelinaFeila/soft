@@ -77,7 +77,6 @@ class DeliveryController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $attributes = request()->validate([
             'no_surat_jalan'     => ['max:10'],
             'no_preorder'     => ['max:10'],

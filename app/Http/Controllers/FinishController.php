@@ -55,17 +55,22 @@ class FinishController extends Controller
             'id_customer' => ['max:10'],
             'qc' => ['max:100'],
         ]);
-
+        $blanking=Proses::where('nama_proses','blanking')->first();
         $bending=Proses::where('nama_proses','bending')->first();
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
 
         $wip = Wip::where('id_material', $attributes['id_material'])
             ->where('id_proses', $spot_nut->id_proses)
             ->first();
-
+        
         if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending->id_proses)
+                ->first();
+        }
+        else if(!$wip){
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $blanking->id_proses)
                 ->first();
         }
 
@@ -122,13 +127,13 @@ class FinishController extends Controller
         $wip = Wip::where('id_material', $attributes['id_material'])
             ->where('id_proses', $spot_nut->id_proses)
             ->first();
-
+        
         if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending->id_proses)
                 ->first();
         }
-        if(!$wip){
+        else if(!$wip){
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $blanking->id_proses)
                 ->first();
