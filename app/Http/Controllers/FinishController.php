@@ -73,32 +73,32 @@ class FinishController extends Controller
                 ->where('id_proses', $robot_welding->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $no_proses->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $piercing->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $spot_assy->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending2->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending->id_proses)
                 ->first();
         }
-        else if(!$wip){
+        if(!$wip){
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $blanking->id_proses)
                 ->first();
@@ -168,37 +168,36 @@ class FinishController extends Controller
                 ->where('id_proses', $robot_welding->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $no_proses->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $piercing->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $spot_assy->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending2->id_proses)
                 ->first();
         }
-        else if (!$wip) {
+        if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $bending->id_proses)
                 ->first();
         }
-        else if(!$wip){
+        if(!$wip){
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $blanking->id_proses)
                 ->first();
         }
-
         $finished=Finish::find($id);
 
         if ($ngd['jumlah']<$finished->jumlah) {
