@@ -18,6 +18,14 @@
                     </div>
                   </form>
                   </div>
+                  @if(session('success'))
+                    <div class="m-3  alert alert-danger alert-dismissible fade show" id="alert-success" role="alert">
+                      <span class="alert-text text-white">{{ session('success') }}</span>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <i class="fa fa-close" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  @endif
                 </div>
                 @if(auth()->user()->position=='admin'||auth()->user()->position=='superadmin')
                    <div class="col-md-6">
@@ -25,7 +33,10 @@
                    </div>
                   @endif
                   @if(auth()->user()->position!='owner')
-                   <a href="{{ route('export-laporan') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
+                   <form id="export-form" class="position-relative float-end mx-auto" action="{{ route('export-laporan') }}" method="GET">
+                      <input type="month" class="form-control" style="width:100%;" name="date_filter">
+                      <button type="submit" class="btn btn-primary mt-2">Export to Excel</button>
+                    </form>
                   @endif
 
             </div>

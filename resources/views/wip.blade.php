@@ -9,8 +9,13 @@
           <div class="card mb-4">
             <div class="card-header">
               <h6>Tabel Work In Progress</h6>
-              @if(auth()->user()->position!='owner')
-              <a href="{{ route('export-wip') }}" class="btn btn-primary btn-sm position-relative float-end mx-auto">Export to Excel</a>
+              @if(session('success'))
+                <div class="m-3  alert alert-danger alert-dismissible fade show" id="alert-success" role="alert">
+                  <span class="alert-text text-white">{{ session('success') }}</span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                  </button>
+                </div>
               @endif
             </div>
             <div class="card-body px-0 pt-0 pb-2">
@@ -27,6 +32,12 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
                       @if(auth()->user()->position!='owner')
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('wip_add') }}"><i class="fa fa-plus"></i></a></th>
+                      @endif
+                      @if(auth()->user()->position!='owner')
+                        <form id="export-form" action="{{ route('export-wip') }}" method="GET">
+                          <input type="month" class="form-control" style="width:20%;" name="date_filter">
+                          <button type="submit" class="btn btn-primary mt-2">Export to Excel</button>
+                        </form>
                       @endif
                     </tr>
                   </thead>

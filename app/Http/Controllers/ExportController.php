@@ -23,9 +23,20 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExportController extends Controller
 {
-    public function exportToExcel1()
+    public function exportToExcel1(Request $request)
     {
-        $data = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->get();
+        $date = $request->input('date_filter');
+        if ($date) {
+            $year = date('Y', strtotime($date));
+            $month = date('m', strtotime($date));
+            $data = Laporan::with('Material','Proses','Tonase','Operator','Target')->whereYear('tanggal',$year)->whereMonth('tanggal',$month)->orderBy('tanggal','desc')->get();
+            if ($data->isEmpty()) {
+                return redirect('/laporan')->with('success','Tidak ada data dengan bulan yang dipilih');
+            }
+        }
+        else{
+            $data = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->get();
+        }
 
         $spreadsheet = new Spreadsheet();
 
@@ -103,9 +114,21 @@ class ExportController extends Controller
 
     }
 
-    public function exportToExcel2()
+    public function exportToExcel2(Request $request)
     {
-        $data = Stockraw::with('Material','Customer','Supplier')->orderBy('id_material','asc')->get();
+        $date = $request->input('date_filter');
+        if ($date) {
+            $year = date('Y', strtotime($date));
+            $month = date('m', strtotime($date));
+            $data = Stockraw::with('Material','Customer','Supplier')->whereYear('updated_at',$year)->whereMonth('updated_at',$month)->orderBy('id_material','asc')->get();
+            if ($data->isEmpty()) {
+                return redirect('/stockraw')->with('success','Tidak ada data dengan bulan yang dipilih');
+            }
+        }
+        else{
+            $data = Stockraw::with('Material','Customer','Supplier')->orderBy('id_material','asc')->get();
+        }
+        
 
         $spreadsheet = new Spreadsheet();
 
@@ -156,9 +179,21 @@ class ExportController extends Controller
         return response()->download($tempFilePath, 'stockraw.xlsx', $headers);
     }
 
-    public function exportToExcel3()
+    public function exportToExcel3(Request $request)
     {
-        $data = Wip::with('Material','Proses')->orderBy('id_material','asc')->get();
+        $date = $request->input('date_filter');
+        if ($date) {
+            $year = date('Y', strtotime($date));
+            $month = date('m', strtotime($date));
+            $data = Wip::with('Material','Proses')->whereYear('last_produksi',$year)->whereMonth('last_produksi',$month)->orderBy('id_material','asc')->get();
+            if ($data->isEmpty()) {
+                return redirect('/wip')->with('success','Tidak ada data last produksi dengan bulan yang dipilih');
+            }
+        }
+        else{
+            $data = Wip::with('Material','Proses')->orderBy('id_material','asc')->get();
+        }
+        
 
         $spreadsheet = new Spreadsheet();
 
@@ -201,9 +236,20 @@ class ExportController extends Controller
         return response()->download($tempFilePath, 'wip.xlsx', $headers);
     }
 
-    public function exportToExcel4()
+    public function exportToExcel4(Request $request)
     {
-        $data = Delivery::with('Material','Customer')->orderBy('id_material','asc')->get();
+        $date = $request->input('date_filter');
+        if ($date) {
+            $year = date('Y', strtotime($date));
+            $month = date('m', strtotime($date));
+            $data = Delivery::with('Material','Customer')->whereYear('tanggal_delivery',$year)->whereMonth('tanggal_delivery',$month)->orderBy('id_material','asc')->get();
+            if ($data->isEmpty()) {
+                return redirect('/delivery')->with('success','Tidak ada data dengan bulan yang dipilih');
+            }
+        }
+        else{
+            $data = Delivery::with('Material','Customer')->orderBy('id_material','asc')->get();
+        }
 
         $spreadsheet = new Spreadsheet();
 
@@ -252,9 +298,21 @@ class ExportController extends Controller
         return response()->download($tempFilePath, 'delivery.xlsx', $headers);
     }
 
-    public function exportToExcel5()
+    public function exportToExcel5(Request $request)
     {
-        $data = Finish::with('Material','Customer')->orderBy('id_material','asc')->get();
+        $date = $request->input('date_filter');
+        if ($date) {
+            $year = date('Y', strtotime($date));
+            $month = date('m', strtotime($date));
+            $data = Finish::with('Material','Customer')->whereYear('updated_at',$year)->whereMonth('updated_at',$month)->orderBy('id_material','asc')->get();
+            if ($data->isEmpty()) {
+                return redirect('/finish')->with('success','Tidak ada data dengan bulan yang dipilih');
+            }
+        }
+        else{
+           $data = Finish::with('Material','Customer')->orderBy('id_material','asc')->get();
+        }
+        
 
         $spreadsheet = new Spreadsheet();
 

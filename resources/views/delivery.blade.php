@@ -9,6 +9,14 @@
           <div class="card mb-4">
             <div class="card-header">
               <h6>Tabel Delivery</h6>
+              @if(session('success'))
+                <div class="m-3  alert alert-danger alert-dismissible fade show" id="alert-success" role="alert">
+                  <span class="alert-text text-white">{{ session('success') }}</span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                  </button>
+                </div>
+              @endif
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -30,7 +38,10 @@
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('delivery_add') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
                       @if(auth()->user()->position!='owner')
-                        <a href="{{ route('export-delivery') }}" class="btn btn-primary btn-sm position-relative float-start mx-auto">Export to Excel</a>
+                        <form id="export-form" action="{{ route('export-delivery') }}" method="GET">
+                          <input type="month" class="form-control" style="width:20%;" name="date_filter">
+                          <button type="submit" class="btn btn-primary mt-2">Export to Excel</button>
+                        </form>
                       @endif
                     </tr>
                   </thead>

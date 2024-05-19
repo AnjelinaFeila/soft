@@ -34,7 +34,10 @@
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('finish_add') }}"><i class="fa fa-plus"></i></a></th>
                       @endif
                       @if(auth()->user()->position!='owner')
-                        <a href="{{ route('export-finish') }}" class="btn btn-primary btn-sm position-relative float-start mx-auto">Export to Excel</a>
+                        <form id="export-form" action="{{ route('export-finish') }}" method="GET">
+                          <input type="month" class="form-control" style="width:20%;" name="date_filter">
+                          <button type="submit" class="btn btn-primary mt-2">Export to Excel</button>
+                        </form>
                       @endif
                     </tr>
                   </thead>
