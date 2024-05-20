@@ -353,9 +353,22 @@ class ExportController extends Controller
         return response()->download($tempFilePath, 'finish_good.xlsx', $headers);
     }
 
-    public function exportToExcel6($id)
+    public function exportToExcel6($id, Request $request)
     {
-        $data = Laporan::with('Operator')->where('id_operator',$id)->get();
+        $date = $request->input('date_filter');
+        if ($date) {
+            $year = date('Y', strtotime($date));
+            $month = date('m', strtotime($date));
+            $data = Laporan::with('Operator')->whereYear('tanggal',$year)->whereMonth('tanggal',$month)->where('id_operator',$id)->get();
+            if ($data->isEmpty()) {
+                return redirect('/operator')->with('success','Tidak ada data dengan bulan yang dipilih');
+            }
+        }
+        else{
+           $data = Laporan::with('Operator')->where('id_operator',$id)->get();
+        }
+
+        
         $nama = Laporan::with('Operator')->where('id_operator',$id)->first();
 
         $spreadsheet = new Spreadsheet();

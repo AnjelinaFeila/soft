@@ -18,7 +18,10 @@
             <div class="card-header">
               <h6>Tabel {{$op->operator->nama_operator}}</h6>
               @if(auth()->user()->position!='owner')
-              <a href="{{route('export-peroperator',$op->id_operator)}}" class="btn btn-primary btn-sm position-relative float-start mx-auto">Export to Excel</a>
+              <form id="export-form" class="position-relative float-end mx-auto" action="{{ route('export-peroperator',$op->id_operator) }}" method="GET">
+                <input type="month" class="form-control" style="width:100%;" name="date_filter">
+                <button type="submit" class="btn btn-primary mt-2">Export to Excel</button>
+              </form>
               @endif
             </div>
             <div class="card-body px-0 pt-0 pb-2">
