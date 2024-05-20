@@ -359,13 +359,13 @@ class ExportController extends Controller
         if ($date) {
             $year = date('Y', strtotime($date));
             $month = date('m', strtotime($date));
-            $data = Laporan::with('Operator')->whereYear('tanggal',$year)->whereMonth('tanggal',$month)->where('id_operator',$id)->get();
+            $data = Laporan::with('Operator')->whereYear('tanggal',$year)->whereMonth('tanggal',$month)->where('id_operator',$id)->orderBy('tanggal','desc')->get();
             if ($data->isEmpty()) {
                 return redirect('/operator')->with('success','Tidak ada data dengan bulan yang dipilih');
             }
         }
         else{
-           $data = Laporan::with('Operator')->where('id_operator',$id)->get();
+           $data = Laporan::with('Operator')->where('id_operator',$id)->orderBy('tanggal','desc')->get();
         }
 
         
