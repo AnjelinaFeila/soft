@@ -29,13 +29,13 @@ class ExportController extends Controller
         if ($date) {
             $year = date('Y', strtotime($date));
             $month = date('m', strtotime($date));
-            $data = Laporan::with('Material','Proses','Tonase','Operator','Target')->whereYear('tanggal',$year)->whereMonth('tanggal',$month)->orderBy('tanggal','desc')->get();
+            $data = Laporan::with('Material','Proses','Tonase','Operator','Target')->whereYear('tanggal',$year)->whereMonth('tanggal',$month)->orderBy('tanggal','asc')->get();
             if ($data->isEmpty()) {
                 return redirect('/laporan')->with('success','Tidak ada data dengan bulan yang dipilih');
             }
         }
         else{
-            $data = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','desc')->get();
+            $data = Laporan::with('Material','Proses','Tonase','Operator','Target')->orderBy('tanggal','asc')->get();
         }
 
         $spreadsheet = new Spreadsheet();
@@ -359,13 +359,13 @@ class ExportController extends Controller
         if ($date) {
             $year = date('Y', strtotime($date));
             $month = date('m', strtotime($date));
-            $data = Laporan::with('Operator')->whereYear('tanggal',$year)->whereMonth('tanggal',$month)->where('id_operator',$id)->orderBy('tanggal','desc')->get();
+            $data = Laporan::with('Operator')->whereYear('tanggal',$year)->whereMonth('tanggal',$month)->where('id_operator',$id)->orderBy('tanggal','asc')->get();
             if ($data->isEmpty()) {
                 return redirect('/operator')->with('success','Tidak ada data dengan bulan yang dipilih');
             }
         }
         else{
-           $data = Laporan::with('Operator')->where('id_operator',$id)->orderBy('tanggal','desc')->get();
+           $data = Laporan::with('Operator')->where('id_operator',$id)->orderBy('tanggal','asc')->get();
         }
 
         
