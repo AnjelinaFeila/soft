@@ -242,13 +242,13 @@ class ExportController extends Controller
         if ($date) {
             $year = date('Y', strtotime($date));
             $month = date('m', strtotime($date));
-            $data = Delivery::with('Material','Customer')->whereYear('tanggal_delivery',$year)->whereMonth('tanggal_delivery',$month)->orderBy('id_material','asc')->get();
+            $data = Delivery::with('Material','Customer')->whereYear('tanggal_delivery',$year)->whereMonth('tanggal_delivery',$month)->orderBy('tanggal_delivery','asc')->get();
             if ($data->isEmpty()) {
                 return redirect('/delivery')->with('success','Tidak ada data dengan bulan yang dipilih');
             }
         }
         else{
-            $data = Delivery::with('Material','Customer')->orderBy('id_material','asc')->get();
+            $data = Delivery::with('Material','Customer')->orderBy('tanggal_delivery','asc')->get();
         }
 
         $spreadsheet = new Spreadsheet();
