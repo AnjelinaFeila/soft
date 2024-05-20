@@ -289,42 +289,6 @@ class LaporanController extends Controller
         $nextproses=Proses::where('id_proses',$attributes['id_proses'])->first();
         
         if ($attributes['id_material']==4 || $attributes['id_material']==8 || $attributes['id_material']==9 || $attributes['id_material']==11 || $attributes['id_material']==15 || $attributes['id_material']==16 || $attributes['id_material']==17 || $attributes['id_material']==27 || $attributes['id_material']==28 || $attributes['id_material']==25 || $attributes['id_material']==29 || $attributes['id_material']==30) {
-            if ($attributes['id_material']==25) {
-                if ($nextwip=Wip::where('id_material',$idmaterial)->where('id_proses',$idbending)->first()) {
-                    $jmlpart=$nextwip->jumlah_part;
-                    $nexttotal=$jmlpart-$attributes['jumlah_ok'];
-
-                    if ($nexttotal<0) {
-                         return redirect('/laporan_add')->with('success','Jumlah part melebihi stock bending yang tersisa');
-                    }
-
-                    Wip::where('id_wip',$nextwip->id_wip)
-                    ->update([
-                        'jumlah_part' => $nexttotal,
-                    ]);
-
-                    if ($newwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$attributes['id_proses'])->first()) {
-                        $work=$newwip->jumlah_part+$attributes['jumlah_ok'];
-                        Wip::where('id_proses',$newwip->id_proses)->where('id_material',$newwip->id_material)
-                        ->update([
-                            'jumlah_part' => $work,
-                        ]);
-                    }
-                    else{
-                       $nextwip = new Wip();
-                        $nextwip->id_material = $attributes['id_material'];
-                        $nextwip->kg_perpart = 0;
-                        $nextwip->jumlah_part = $attributes['jumlah_ok'];
-                        $nextwip->last_produksi = now(); // Assuming 'last_produksi' is a timestamp field
-                        $nextwip->id_proses = $attributes['id_proses'];
-
-                        $nextwip->save(); 
-                    }
-                }
-                else{
-                   return redirect('/laporan_add')->with('success','Material tersebut tidak dalam proses bending'); 
-                }
-            }
             if ($nextproses->nama_proses=='bending') {
                 $idmaterial=$attributes['id_material'];
                 if ($attributes['id_material']==8 || $attributes['id_material']==9) {
