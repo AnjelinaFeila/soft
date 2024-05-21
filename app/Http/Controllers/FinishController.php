@@ -62,12 +62,18 @@ class FinishController extends Controller
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
         $piercing=Proses::where('nama_proses','piercing')->first();
         $spot_assy=Proses::where('nama_proses','spot assy')->first();
+        $spot_bolt=Proses::where('nama_proses','spot bolt')->first();
         $robot_welding=Proses::where('nama_proses','robot welding')->first();
         
         $wip = Wip::where('id_material', $attributes['id_material'])
             ->where('id_proses', $spot_nut->id_proses)
             ->first();
         
+        if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $spot_bolt->id_proses)
+                ->first();
+        }
         if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $robot_welding->id_proses)
@@ -157,12 +163,18 @@ class FinishController extends Controller
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
         $piercing=Proses::where('nama_proses','piercing')->first();
         $spot_assy=Proses::where('nama_proses','spot assy')->first();
+        $spot_bolt=Proses::where('nama_proses','spot bolt')->first();
         $robot_welding=Proses::where('nama_proses','robot welding')->first();
         
         $wip = Wip::where('id_material', $attributes['id_material'])
             ->where('id_proses', $spot_nut->id_proses)
             ->first();
         
+        if (!$wip) {
+            $wip = Wip::where('id_material', $attributes['id_material'])
+                ->where('id_proses', $sopt_bolt->id_proses)
+                ->first();
+        }
         if (!$wip) {
             $wip = Wip::where('id_material', $attributes['id_material'])
                 ->where('id_proses', $robot_welding->id_proses)
