@@ -17,6 +17,7 @@ use App\Http\Controllers\UserManageController;
 use App\Http\Controllers\FinishController;
 use App\Http\Controllers\NotgoodController;
 use App\Http\Controllers\TargetController;
+use App\Http\Controllers\RiwayatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/export-delivery', [ExportController::class, 'exportToExcel4'])->name('export-delivery');
 	Route::get('/export-finish', [ExportController::class, 'exportToExcel5'])->name('export-finish');
 	Route::get('/export-peroperator/{id}', [ExportController::class, 'exportToExcel6'])->name('export-peroperator');
+	Route::get('/export-riwayat', [ExportController::class, 'exportToExcel7'])->name('export-riwayat');
 
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
 
@@ -67,6 +69,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('stockraw_add', function () {
 		return view('stockraw_add');
 	})->name('stockraw_add');
+
+	Route::get('riwayat', function () {
+		return view('riwayat');
+	})->name('riwayat');
+
+	Route::get('riwayat_add', function () {
+		return view('riwayat_add');
+	})->name('riwayat_add');
 
 	Route::get('customer', function () {
 		return view('customer');
@@ -168,6 +178,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/showtonase/{id}', [TonaseController::class, 'show'])->name('tonase.showtonase');
     Route::post('/tonase/{id}', [TonaseController::class, 'update'])->name('tonase.update');
     Route::delete('/tonase/{id}', [TonaseController::class, 'destroy'])->name('tonase.destroy');
+
+	Route::get('/riwayat', [RiwayatController::class, 'index']);
+	Route::get('/riwayat_add', [RiwayatController::class, 'index2']);
+	Route::get('/riwayatshow/{id}', [RiwayatController::class, 'index3'])->name('riwayat.riwayatshow');;
+    Route::post('/riwayat', [RiwayatController::class, 'store']);
+    Route::get('/showriwayat/{id}', [RiwayatController::class, 'show'])->name('riwayat.showriwayat');
+    Route::post('/riwayat/{id}', [RiwayatController::class, 'update'])->name('riwayat.update');
+    Route::delete('/riwayat/{id}', [RiwayatController::class, 'destroy'])->name('riwayat.destroy');
 
     Route::get('/operator', [OperatorController::class, 'index']);
     Route::post('/operator', [OperatorController::class, 'store']);

@@ -14,6 +14,7 @@ use App\Models\Laporan;
 use App\Models\Finish;
 use App\Models\Notgood;
 use App\Models\Target;
+use App\Models\Riwayat;
 
 class Material extends Model
 {
@@ -39,6 +40,9 @@ class Material extends Model
     }
     public function laporan(){
         return $this->hasOne(Laporan::class,'id_material');
+    }
+    public function riwayat(){
+        return $this->hasOne(Riwayat::class,'id_material');
     }
     public function customer(){
         return $this->belongsTo(Customer::class,'id_customer');

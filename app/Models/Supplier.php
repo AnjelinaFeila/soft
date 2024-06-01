@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Stockraw;
 use App\Models\Wip;
 use App\Models\Material;
+use App\Models\Riwayat;
 
 class Supplier extends Model
 {
@@ -16,9 +17,15 @@ class Supplier extends Model
     public function stockraw(){
         return $this->hasOne(Stockraw::class,'id_supplier');
     }
+
     public function wip(){
         return $this->hasOne(Wip::class,'id_supplier');
     }
+
+    public function riwayat(){
+        return $this->hasOne(Riwayat::class,'id_supplier');
+    }
+
     public function material(){
         return $this->hasOne(Material::class,'id_supplier');
     }

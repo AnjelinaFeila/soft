@@ -14,6 +14,7 @@ use App\Models\Wip;
 use App\Models\Target;
 use App\Models\Delivery;
 use App\Models\Finish;
+use App\Models\Riwayat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -443,6 +444,91 @@ class ExportController extends Controller
         ];
 
         return response()->download($tempFilePath, $nama->operator->nama_operator.'.xlsx', $headers);
+    }
+
+    public function exportToExcel7(Request $request)
+    {
+        $date = $request->input('date_filter');
+        if ($date) {
+            $year = date('Y', strtotime($date));
+            $month = date('m', strtotime($date));
+            $data = Riwayat::with('Material','Supplier')->whereYear('tanggal_terima',$year)->whereMonth('tanggal_terima',$month)->orderBy('id_riwayat','asc')->get();
+            if ($data->isEmpty()) {
+                return redirect('/riwayat')->with('success','Tidak ada data dengan bulan yang dipilih');
+            }
+        }
+        else{
+           $data = Riwayat::with('Material','Supplier')->orderBy('id_riwayat','asc')->get();
+        }
+        
+
+        $spreadsheet = new Spreadsheet();
+
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Nama Supplier');
+        $sheet->setCellValue('B1', 'Nomor');
+        $sheet->setCellValue('C1', 'Nomor SO');
+        $sheet->setCellValue('D1', 'Tanggal Terima');
+        $sheet->setCellValue('E1', 'Nomor Preorder');
+        $sheet->setCellValue('F1', 'Kode Part');
+        $sheet->setCellValue('G1', 'Nama Material');
+        $sheet->setCellValue('H1', 'Part Number');
+        $sheet->setCellValue('I1', 'Jumlah Part');
+
+     
+        $row = 2;
+        $previous_materials = [];
+
+        foreach ($data as $item) {
+            $id_materials = explode(',', $item->id_material);
+
+            $material_names = [];
+            foreach ($id_materials as $id) {
+                $material = Material::find($id);
+
+                if ($material) {
+                    $material_names[] = $material->nama_barang;
+                }
+            }
+
+            // Gabungkan nama material menjadi satu string dengan baris baru
+            $merged_materials = implode("\n", $material_names);
+
+            // Tampilkan data lainnya dengan nama material yang sudah digabungkan
+            $sheet->setCellValue('A' . $row, $item->supplier->nama_supplier);
+            $sheet->setCellValue('B' . $row, $item->nomor);
+            $sheet->setCellValue('C' . $row, $item->nomor_so);
+            $sheet->setCellValue('D' . $row, $item->tanggal_terima);
+            $sheet->setCellValue('E' . $row, $item->nomor_preorder);
+            $sheet->setCellValue('F' . $row, $item->kode_part);
+            $sheet->setCellValue('G' . $row, $merged_materials); // Nama Material dengan baris baru
+
+            // Set wrap text untuk sel G
+            $sheet->getStyle('G' . $row)->getAlignment()->setWrapText(true);
+
+            $sheet->setCellValue('H' . $row, $item->part_number);
+            $sheet->setCellValue('I' . $row, $item->jumlah_part);
+
+            $row++;
+        }
+
+
+        foreach (range('A', 'Z') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'excel');
+        $writer->save($tempFilePath);
+
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="data.xlsx"',
+        ];
+
+        return response()->download($tempFilePath, 'riwayat.xlsx', $headers);
     }
 }
 

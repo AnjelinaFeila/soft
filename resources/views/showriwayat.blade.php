@@ -1,0 +1,167 @@
+@extends('layouts.user_type.auth')
+
+@section('content')
+
+<div>
+    <div class="container-fluid py-4">
+        <div class="card">
+            <div class="card-header pb-0 px-3">
+                <h6 class="mb-0">{{ ('Edit Riwayat Barang') }}</h6>
+            </div>
+            <div class="card-body pt-4 p-3">
+                <form action="{{route ('riwayat.update',$riwayat->id_riwayat)}}" method="POST" role="form text-left">
+                    @csrf
+                    @if($errors->any())
+                        <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
+                            <span class="alert-text text-white">
+                            {{$errors->first()}}</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    @endif
+                    @if(session('success'))
+                        <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success" role="alert">
+                            <span class="alert-text text-white">
+                            {{ session('success') }}</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    @endif
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user-email" class="form-control-label">{{ __('Nomor Preorder') }}</label>
+                                <div class="@error('email')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" name="nomor_preorder" value="{{$riwayat->nomor_preorder}}" type="" id="number" required>
+                                        @error('phone')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user-email" class="form-control-label">{{ __('Nama Supplier') }}</label>
+                                <div class="@error('email')border border-danger rounded-3 @enderror">
+                                    <select name="id_supplier" class="form-control">
+                                            <option value="{{$riwayat->supplier->id_supplier}}">{{$riwayat->supplier->nama_supplier}}</option>
+                                        @foreach($supplier as $sup)
+                                            <option value="{{$sup->id_supplier}}">{{$sup->nama_supplier}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user.phone" class="form-control-label">{{ __('Nomor') }}</label>
+                                <div class="@error('user.phone')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" name="nomor" value="{{$riwayat->nomor}}" type="number" id="number" required>
+                                        @error('phone')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user.phone" class="form-control-label">{{ __('Nomor SO') }}</label>
+                                <div class="@error('user.phone')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" name="nomor_so" value="{{$riwayat->nomomr_so}}" type="number" id="number">
+                                        @error('phone')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user.phone" class="form-control-label">{{ __('Tanggal Terima') }}</label>
+                                <div class="@error('user.phone')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" name="tanggal_terima" type="date" id="number" value="{{$riwayat->tanggal_terima}}" required>
+                                        @error('phone')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user.location" class="form-control-label">{{ __('Kode Part') }}</label>
+                                <div class="@error('user.location') border border-danger rounded-3 @enderror">
+                                    <input class="form-control" type="number"  value="{{$riwayat->kode_part}}"  id="name" name="kode_part" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user.location" class="form-control-label">{{ __('Part Number') }}</label>
+                                <div class="@error('user.location') border border-danger rounded-3 @enderror">
+                                    <input class="form-control" type="number"  value="{{$riwayat->part_number}}"  id="name" name="part_number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user.location" class="form-control-label">{{ __('Jumlah Part') }}</label>
+                                <div class="@error('user.location') border border-danger rounded-3 @enderror">
+                                    <input class="form-control" type="number"  value="{{$riwayat->jumlah_part}}"  id="name" name="jumlah_part" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="user-email" class="form-control-label">{{ __('Nama Material') }}</label>
+                                 
+                                <div id="material-selects">
+                                    <div class="material-select">
+                                    @foreach($materialIds as $index => $materialId)
+                                        <select name="id_materials[]" class="form-control">
+                                            @foreach($material as $mat)
+                                                <option value="{{ $mat->id_material }}" {{ $mat->id_material == $materialId ? 'selected' : '' }}>
+                                                    {{ $mat->nama_barang }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    @endforeach
+                                    </div>
+                                </div>
+                                
+                                <button type="button" id="add-material" class="btn btn-success mt-2"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn bg-gradient-dark btn-md mt-4 mb-4">{{ 'Save' }}</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('add-material').addEventListener('click', function() {
+        var materialSelects = document.getElementById('material-selects');
+        var newSelect = document.createElement('div');
+        newSelect.classList.add('material-select', 'mt-2');
+        newSelect.innerHTML = `
+            <select name="id_materials[]" class="form-control">
+                @foreach($material as $mat)
+                    <option value="{{$mat->id_material}}">{{$mat->nama_barang}}</option>
+                @endforeach
+            </select>`;
+        materialSelects.appendChild(newSelect);
+    });
+</script>
+@endsection
