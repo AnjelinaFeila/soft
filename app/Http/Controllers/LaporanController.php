@@ -409,7 +409,7 @@ class LaporanController extends Controller
                    return redirect('/laporan_add')->with('success','Material tersebut tidak dalam proses bending 2'); 
                 }
             }
-            else if ($nextproses->nama_proses=='spot bolt' && $attributes['id_material']==25) {
+            else if ($nextproses->nama_proses=='Spot Bolt' && $attributes['id_material']==25) {
                 if ($nextwip=Wip::where('id_material',$attributes['id_material'])->where('id_proses',$idbending)->first()) {
                     $jmlpart=$nextwip->jumlah_part;
                     $nexttotal=$jmlpart-$attributes['jumlah_ok'];
