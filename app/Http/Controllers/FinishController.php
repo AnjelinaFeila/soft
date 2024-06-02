@@ -62,7 +62,7 @@ class FinishController extends Controller
         $spot_nut=Proses::where('nama_proses','spot nut')->first();
         $piercing=Proses::where('nama_proses','piercing')->first();
         $spot_assy=Proses::where('nama_proses','spot assy')->first();
-        $spot_bolt=Proses::where('nama_proses','spot bolt')->first();
+        $spot_bolt=Proses::where('nama_proses','Spot Bolt')->first();
         $robot_welding=Proses::where('nama_proses','robot welding')->first();
         
         $wip = Wip::where('id_material', $attributes['id_material'])

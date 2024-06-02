@@ -282,7 +282,7 @@ class LaporanController extends Controller
         }
 
         $nextproses=Proses::where('id_proses',$attributes['id_proses'])->first();
-        if ($attributes['id_material']==4 || $attributes['id_material']==8 || $attributes['id_material']==9 || $attributes['id_material']==11 || $attributes['id_material']==15 || $attributes['id_material']==16 || $attributes['id_material']==17 || $attributes['id_material']==27 || $attributes['id_material']==28 || $attributes['id_material']==25 || $attributes['id_material']==29 || $attributes['id_material']==30 || $attributes['id_material']==21 || $attributes['id_material']==20) {
+        if ($attributes['id_material']==4 || $attributes['id_material']==8 || $attributes['id_material']==9 || $attributes['id_material']==11 || $attributes['id_material']==15 || $attributes['id_material']==16 || $attributes['id_material']==17 || $attributes['id_material']==27 || $attributes['id_material']==28 || $attributes['id_material']==25 || $attributes['id_material']==29 || $attributes['id_material']==30 || $attributes['id_material']==21 || $attributes['id_material']==57) {
             if ($nextproses->nama_proses=='bending') {
 
                 $idmaterial=$attributes['id_material'];
@@ -296,8 +296,8 @@ class LaporanController extends Controller
                 else if ($attributes['id_material']==27 || $attributes['id_material']==28) {
                     $idmaterial=60;
                 }
-                else if ($attributes['id_material']==21 || $attributes['id_material']==20) {
-                    $idmaterial=57;
+                else if ($attributes['id_material']==21 || $attributes['id_material']==57) {
+                    $idmaterial=20;
                 }
                 if ($nextwip=Wip::where('id_material',$idmaterial)->where('id_proses',$idblanking)->first()) {
                     $jmlpart=$nextwip->jumlah_part;
