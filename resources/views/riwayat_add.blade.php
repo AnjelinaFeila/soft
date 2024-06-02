@@ -94,7 +94,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Kode Part') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number"  value="0"  id="name" name="kode_part" value="" >
+                                    <input class="form-control" type="text"  id="name" name="kode_part" value="" >
                                 </div>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                             <div class="form-group">
                                 <label for="user.location" class="form-control-label">{{ __('Part Number') }}</label>
                                 <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="number"  value="0"  id="name" name="part_number" value="">
+                                    <input class="form-control" type="text"   id="name" name="part_number" value="">
                                 </div>
                             </div>
                         </div>
