@@ -23,11 +23,11 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Suppier</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nomor</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tanggal</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nomor So</th>
-                      <th  class="text-secondary opacity-7"></th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Suppier</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nomor</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tanggal</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nomor So</th>
+                      <th></th>
                       <th></th>
                       @if(auth()->user()->position!='owner')
                       <th rowspan="2" class="text-secondary opacity-7"><a class="btn btn-success btn-md" href="{{ url('riwayat_add') }}"><i class="fa fa-plus"></i></a></th>
@@ -53,7 +53,7 @@
                           {{ $riw->tanggal_terima }}
                         </td>
                         <td class="align-middle text-center text-sm">
-                          {{ $riw->nomor_so }}
+                          {{ $riw->nomor_preorder }}
                         </td>
                         @if(auth()->user()->position!='owner')
                         <td class="align-middle">
