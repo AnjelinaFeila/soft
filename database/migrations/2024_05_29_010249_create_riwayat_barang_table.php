@@ -19,7 +19,8 @@ return new class extends Migration
             $table->date('tanggal_terima')->nullable(false);
             $table->string('nomor_preorder')->nullable(false);
             $table->string('kode_part')->nullable(true);
-            $table->integer('id_material')->nullable(false);
+            $table->string('id_material')->nullable(false);
+            $table->string('jumlah_barang')->nullable(false);
             $table->string('part_number')->nullable(true);
             $table->integer('jumlah_part')->nullable(false);
             $table->timestamps();

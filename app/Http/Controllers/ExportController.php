@@ -473,8 +473,9 @@ class ExportController extends Controller
         $sheet->setCellValue('E1', 'Nomor Preorder');
         $sheet->setCellValue('F1', 'Kode Part');
         $sheet->setCellValue('G1', 'Nama Material');
-        $sheet->setCellValue('H1', 'Part Number');
-        $sheet->setCellValue('I1', 'Jumlah Part');
+        $sheet->setCellValue('H1', 'Jumlah Material');
+        $sheet->setCellValue('I1', 'Part Number');
+        $sheet->setCellValue('J1', 'Jumlah Part');
 
      
         $row = 2;
@@ -482,6 +483,7 @@ class ExportController extends Controller
 
         foreach ($data as $item) {
             $id_materials = explode(',', $item->id_material);
+            $jumlah_materials = explode(',', $item->jumlah_barang);
 
             $material_names = [];
             foreach ($id_materials as $id) {
@@ -494,6 +496,7 @@ class ExportController extends Controller
 
             // Gabungkan nama material menjadi satu string dengan baris baru
             $merged_materials = implode("\n", $material_names);
+            $merged_jumlahs = implode("\n", $jumlah_materials);
 
             // Tampilkan data lainnya dengan nama material yang sudah digabungkan
             $sheet->setCellValue('A' . $row, $item->supplier->nama_supplier);
@@ -502,13 +505,15 @@ class ExportController extends Controller
             $sheet->setCellValue('D' . $row, $item->tanggal_terima);
             $sheet->setCellValue('E' . $row, $item->nomor_preorder);
             $sheet->setCellValue('F' . $row, $item->kode_part);
-            $sheet->setCellValue('G' . $row, $merged_materials); // Nama Material dengan baris baru
+            $sheet->setCellValue('G' . $row, $merged_materials);
+            $sheet->setCellValue('H' . $row, $merged_jumlahs);
 
             // Set wrap text untuk sel G
             $sheet->getStyle('G' . $row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('H' . $row)->getAlignment()->setWrapText(true);
 
-            $sheet->setCellValue('H' . $row, $item->part_number);
-            $sheet->setCellValue('I' . $row, $item->jumlah_part);
+            $sheet->setCellValue('I' . $row, $item->part_number);
+            $sheet->setCellValue('J' . $row, $item->jumlah_part);
 
             $row++;
         }

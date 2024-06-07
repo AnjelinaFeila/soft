@@ -29,6 +29,7 @@ class Riwayat extends Model
         'nomor_preorder',
         'kode_part',
         'id_material',
+        'jumlah_barang',
         'part_number',
         'jumlah_part',
     ];

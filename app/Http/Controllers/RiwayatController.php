@@ -32,7 +32,9 @@ class RiwayatController extends Controller
         $materialIds = explode(',', $riwayat->id_material);
         $materials = Material::whereIn('id_material', $materialIds)->get();
 
-        return view('riwayatshow', compact('riwayat', 'materials','materialIds'));
+        $jumlah_materials = explode(',', $riwayat->jumlah_barang);
+
+        return view('riwayatshow', compact('riwayat', 'materials','materialIds','jumlah_materials'));
     }
 
     public function destroy($id)
@@ -53,7 +55,9 @@ class RiwayatController extends Controller
         $materialIds = explode(',', $riwayat->id_material);
         $materials = Material::whereIn('id_material', $materialIds)->get();
 
-        return view('showriwayat',compact('riwayat','material','supplier','materials','materialIds'));
+        $jumlah_barangs = explode(',', $riwayat->jumlah_barang);
+
+        return view('showriwayat',compact('riwayat','material','supplier','materials','materialIds','jumlah_barangs'));
     }
 
     public function store(Request $request)
@@ -68,15 +72,19 @@ class RiwayatController extends Controller
             'kode_part'       => ['max:50'],
             'id_materials'     => ['array'],
             'id_materials.*'   => ['max:10'],
+            'jumlah_barangs'     => ['array'],
+            'jumlah_barangs.*'   => ['max:10'],
             'part_number'     => ['max:100'],
             'jumlah_part'     => ['max:100'],
         ]);
 
         $materials = $attributes['id_materials'];
-
         $id_materials = implode(',', $materials);
-
         $attributes['id_material'] = $id_materials;
+
+        $jumlah = $attributes['jumlah_barangs'];
+        $jumlah_barangs = implode(',', $jumlah);
+        $attributes['jumlah_barang'] = $jumlah_barangs;
 
         Riwayat::create($attributes);
 
@@ -95,15 +103,19 @@ class RiwayatController extends Controller
             'kode_part'       => ['max:50'],
             'id_materials'     => ['array'],
             'id_materials.*'   => ['max:10'],
+            'jumlah_barangs'     => ['array'],
+            'jumlah_barangs.*'   => ['max:10'],
             'part_number'     => ['max:100'],
             'jumlah_part'     => ['max:100'],
         ]);
 
         $materials = $attributes['id_materials'];
-
         $id_materials = implode(',', $materials);
-
         $attributes['id_material'] = $id_materials;
+
+        $jumlah = $attributes['jumlah_barangs'];
+        $jumlah_barangs = implode(',', $jumlah);
+        $attributes['jumlah_barang'] = $jumlah_barangs;
 
         
         Riwayat::where('id_riwayat',$id)
@@ -115,6 +127,7 @@ class RiwayatController extends Controller
             'nomor_preorder' => $attributes['nomor_preorder'],
             'kode_part' => $attributes['kode_part'],
             'id_material' => $attributes['id_material'],
+            'jumlah_barang' => $attributes['jumlah_barang'],
             'part_number' => $attributes['part_number'],
             'jumlah_part' => $attributes['jumlah_part'],
         ]);

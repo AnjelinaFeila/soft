@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                             <label for="user.location" class="form-control-label">{{ __('Nama Material') }}</label>
                             @foreach($materialIds as $index => $materialId)
@@ -95,6 +95,14 @@
                                         <p class="border-bottom">{{$mat->nama_barang}}</p>
                                     @endif
                                 @endforeach
+                            @endforeach
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                            <label for="user.location" class="form-control-label">{{ __('Jumlah Material') }}</label>
+                            @foreach($jumlah_materials as $jumlah_mat)
+                                <p class="border-bottom">{{$jumlah_mat}}</p>
                             @endforeach
                             </div>
                         </div>

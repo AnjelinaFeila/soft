@@ -118,7 +118,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user-email" class="form-control-label">{{ __('Nama Material') }}</label>
                                 <div id="material-selects">
@@ -131,6 +131,16 @@
                                     </div>
                                 </div>
                                 <button type="button" id="add-material" class="btn btn-success mt-2"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user-email" class="form-control-label">{{ __('Jumlah Material') }}</label>
+                                <div id="material-amounts">
+                                    <div class="material-select">
+                                        <input type="number" required="" name="jumlah_barangs[]" class="form-control">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -146,6 +156,8 @@
 <script>
     document.getElementById('add-material').addEventListener('click', function() {
         var materialSelects = document.getElementById('material-selects');
+        var materialAmounts = document.getElementById('material-amounts');
+
         var newSelect = document.createElement('div');
         newSelect.classList.add('material-select', 'mt-2');
         newSelect.innerHTML = `
@@ -154,6 +166,13 @@
                     <option value="{{$mat->id_material}}">{{$mat->nama_barang}}</option>
                 @endforeach
             </select>`;
+
+        var newAmount = document.createElement('div');
+        newAmount.classList.add('material-amount', 'mt-2');
+        newAmount.innerHTML = `
+            <input type="number" name="jumlah_barangs[]" class="form-control" placeholder="" required="">`;
+        
+        materialAmounts.appendChild(newAmount);
         materialSelects.appendChild(newSelect);
     });
 </script>
